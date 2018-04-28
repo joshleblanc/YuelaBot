@@ -1,23 +1,20 @@
 require 'discordrb'
+require 'rbnacl/libsodium'
+require 'google/apis/customsearch_v1'
+require_relative './commands/replace_command'
+require_relative './commands/google_image_command'
+include Commands
 
-TOKEN = File.read('config')
-bot = Discordrb::Bot.new token: TOKEN
-
-bot.message(starting_with: '!!s') do |event|
-  messages = JSON.parse(Discordrb::API::Channel.messages(TOKEN, event.channel.id, 100).body)
-  message = event.message.content.split(' ').first
-  parts = message.split('/', -1)
-
-  regex = /#{Regexp.quote(parts[1])}/
-  target = messages.find { |m| m['content'].match(regex) && m['id'] != event.message.id }
-  if target
-    if parts[3] === 'g'
-      target['content'].gsub! regex, parts[2]
-    else
-      target['content'].sub! regex, parts[2]
-    end
-    event.respond target['content']
-  end
+CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
+  parts = l.split('=')
+  o[parts[0]] = parts[1].strip
 end
+
+p CONFIG
+
+bot = Discordrb::Bot.new token: CONFIG['discord']
+
+bot.message(starting_with: '!!s', &replace_command)
+bot.message(starting_with: '!!image', &google_image_command)
 
 bot.run
