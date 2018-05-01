@@ -11,18 +11,17 @@ module Commands
       @service.key = key
     end
 
-    def command
-      lambda do |event|
-        @images = get_images(event.message.content)
-        @user = event.user
-        if @images.length > 0
-          update_embed!
-          @message = send! event
-          add_reactions!
-          add_awaits! event.bot
-        end
+    def run!(event)
+      @images = get_images(event.message.content)
+      @user = event.user
+      if @images.length > 0
+        update_embed!
+        @message = send! event
+        add_reactions!
+        add_awaits! event.bot
       end
     end
+
     private
     def send!(event)
       event.respond nil, false, @embed
