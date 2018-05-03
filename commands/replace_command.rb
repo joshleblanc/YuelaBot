@@ -18,4 +18,3 @@ module Commands
     end
   end
 end
-
