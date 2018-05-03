@@ -4,7 +4,6 @@ module Commands
         messages = JSON.parse(Discordrb::API::Channel.messages(CONFIG['discord'], event.channel.id, 100).body)
         message = event.message.content
         parts = message.split('/', -1)
-        p parts
         regex = /#{Regexp.quote(parts[1])}/
         target = messages.find { |m| m['content'].match(regex) && m['id'].to_i != event.message.id }
         if target
