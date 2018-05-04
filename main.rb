@@ -1,12 +1,11 @@
 require 'discordrb'
 require 'rbnacl/libsodium'
 require 'google/apis/customsearch_v1'
-require_relative './commands/replace_command'
-require_relative './commands/image_search'
-require_relative './commands/github'
-require_relative './commands/dice_command'
-require_relative './commands/towc'
-include Commands
+require 'fourchan/kit'
+require 'require_all'
+
+require_all './commands'
+require_all './reactions'
 
 
 
@@ -15,14 +14,26 @@ CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
   o[parts[0]] = parts[1].strip
 end
 
-bot = Discordrb::Bot.new token: CONFIG['discord']
+bot = Discordrb::Commands::CommandBot.new token: CONFIG['discord'], prefix: '!!'
 
-bot.message(starting_with: '!!s', &replace_command)
-bot.message(starting_with: '!!image') do |event|
-  ImageSearch.new(CONFIG['google'], CONFIG['search_id']).run!(event)
+Commands.constants.map do |c|
+  command = Commands.const_get(c)
+  command.is_a?(Class) ? command : nil
+end.compact.each do |command|
+  bot.command(command.name, command.attributes, &command.command)
 end
-bot.message(starting_with: '!!github', &github_command)
-bot.message(starting_with: '!!dice', &dice_command)
-bot.message(contains: 'towc', &towc_reaction)
-bot.send_message('346409372152496138-439726621130358795', 'Hello, world!')
+
+Reactions.constants.map do |r|
+  reaction = Reactions.const_get(r)
+  reaction.is_a?(Class) ? reaction : nil
+end.compact.each do |reaction|
+  bot.message(reaction.attributes, &reaction.command)
+end
+
+# bot.command(DiceCommand.name, DiceCommand.attributes, &DiceCommand.command)
+# bot.command(ImageSearch.name, ImageSearch.attributes, &ImageSearch.command)
+# bot.command(GithubCommand.name, GithubCommand.attributes, &GithubCommand.command)
+# bot.message(ReplaceReaction.attributes, &ReplaceReaction.command)
+# bot.message(TowcReaction.attributes, &TowcReaction.command)
+
 bot.run

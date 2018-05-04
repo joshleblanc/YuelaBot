@@ -24,6 +24,11 @@ GEM
     faraday (0.15.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.23)
+    fourchan-kit (0.2.1)
+      json (~> 1.8)
+      mechanize (~> 2.7)
+      parallel (~> 1.0)
+      thor (~> 0.19)
     google-api-client (0.20.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.5, < 0.7.0)
@@ -43,21 +48,38 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httpclient (2.8.3)
+    json (1.8.6)
     jwt (2.1.0)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
+    mechanize (2.7.5)
+      domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0)
+      mime-types (>= 1.17.2)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.6)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (>= 0.0.9, < 0.2)
     memoist (0.16.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_portile2 (2.3.0)
     multi_json (1.13.1)
     multipart-post (2.0.0)
+    net-http-digest_auth (1.4.1)
+    net-http-persistent (2.9.4)
     netrc (0.11.0)
+    nokogiri (1.8.2)
+      mini_portile2 (~> 2.3.0)
+    ntlm-http (0.1.1)
     opus-ruby (1.0.1)
       ffi
     os (0.9.6)
+    parallel (1.12.1)
     public_suffix (3.0.2)
     rbnacl (3.4.0)
       ffi
@@ -67,6 +89,7 @@ GEM
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
+    require_all (2.0.0)
     rest-client (2.1.0.rc1)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -78,10 +101,12 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
+    thor (0.20.0)
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    webrobots (0.1.2)
     websocket (1.2.5)
     websocket-client-simple (0.3.0)
       event_emitter
@@ -92,9 +117,11 @@ PLATFORMS
 
 DEPENDENCIES
   discordrb!
+  fourchan-kit
   google-api-client
   rbnacl
   rbnacl-libsodium
+  require_all
 
 BUNDLED WITH
    1.16.1
