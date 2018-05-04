@@ -1,3 +1,5 @@
+gem 'json', '=1.8.6'
+
 require 'discordrb'
 require 'rbnacl/libsodium'
 require 'google/apis/customsearch_v1'
