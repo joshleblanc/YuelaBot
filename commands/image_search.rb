@@ -1,18 +1,39 @@
 module Commands
   class ImageSearch
-    include Discordrb::Webhooks
-    include Discordrb::Events
-    def initialize(key, engine_id)
-      @index = 0
-      @images = []
-      @engine_id = engine_id
-      @embed = Embed.new(title: "Image Search Results")
-      @service = Google::Apis::CustomsearchV1::CustomsearchService.new
-      @service.key = key
+
+    class << self
+      def name
+        :image
+      end
+
+      def attributes
+        {
+            min_args: 1,
+            description: 'Searches google image for a given query',
+            usage: 'image [query]'
+        }
+      end
+
+      def command
+        lambda do |event, *args|
+          ImageSearch.new.run!(event, args.join)
+        end
+      end
     end
 
-    def run!(event)
-      @images = get_images(event.message.content)
+    include Discordrb::Webhooks
+    include Discordrb::Events
+    def initialize
+      @index = 0
+      @images = []
+      @engine_id = CONFIG['search_id']
+      @embed = Embed.new(title: "Image Search Results")
+      @service = Google::Apis::CustomsearchV1::CustomsearchService.new
+      @service.key = CONFIG['google']
+    end
+
+    def run!(event, query)
+      @images = get_images(query)
       @user = event.user
       if @images.length > 0
         update_embed!
@@ -20,6 +41,7 @@ module Commands
         add_reactions!
         add_awaits! event.bot
       end
+      nil
     end
 
     private
