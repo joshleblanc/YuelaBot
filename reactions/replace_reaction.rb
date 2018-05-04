@@ -20,7 +20,7 @@ module Reactions
           regex = Regexp.new(parts[1], options)
           target = messages.find { |m| m['content'].match(regex) && m['id'].to_i != event.message.id }
           if target
-            if parts[3] === 'g'
+            if parts[3].include? 'g'
               target['content'].gsub! regex, parts[2]
             else
               target['content'].sub! regex, parts[2]
