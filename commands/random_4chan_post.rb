@@ -39,10 +39,18 @@ module Commands
         num = quotes.length
         quotes.flatten.each do |quote|
           text.delete!(quote)
-          embed.add_field(name: '>' * num, value: quote.sub(/<span class="quote">&gt;(.*)<\/span>/, Nokogiri::HTML.parse("\\1").text))
+          value = quote.sub(/<span class="quote">&gt;(.*)<\/span>/, Nokogiri::HTML.parse("\\1").text)
+          if value.length > 1024
+            value = "#{value[0..1020]}..."
+          end
+          embed.add_field(name: '>' * num, value: value)
           num -= 1
         end
-        embed.add_field(name: '-', value: Nokogiri::HTML.parse(text).text) unless text.strip.empty?
+        value = Nokogiri::HTML.parse(text).text
+        if value.length > 2048
+          value = "#{value[0..2044]}..."
+        end
+        embed.description = value unless text.strip.empty?
       end
       embed.image = image unless image.url.nil?
       embed.author = author

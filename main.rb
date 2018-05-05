@@ -4,6 +4,7 @@ require 'discordrb'
 require 'rbnacl/libsodium'
 require 'google/apis/customsearch_v1'
 require 'fourchan/kit'
+require 'redd'
 require 'require_all'
 
 require_all './commands'

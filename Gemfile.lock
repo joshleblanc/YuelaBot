@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/avinashbot/redd.git
+  revision: 3b1519a2d121efd18de59b935da6e652757eee90
+  specs:
+    redd (0.9.0.pre.3)
+      http (~> 2.2)
+      lazy_lazer (~> 0.8.1)
+
+GIT
   remote: https://github.com/meew0/discordrb.git
   revision: a7baf7b47c052c0414d84134197002bc81ca24ca
   specs:
@@ -44,12 +52,20 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
+    http (2.2.2)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    http-form_data (1.0.3)
+    http_parser.rb (0.6.0)
     httpclient (2.8.3)
     json (1.8.6)
     jwt (2.1.0)
+    lazy_lazer (0.8.1)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
@@ -121,6 +137,7 @@ DEPENDENCIES
   google-api-client
   rbnacl
   rbnacl-libsodium
+  redd!
   require_all
 
 BUNDLED WITH
