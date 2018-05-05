@@ -19,9 +19,8 @@ module Commands
         end
       end
     end
-  end
-
-  def run(num)
-    Random.rand(num.to_i) + 1
+    def run(num)
+      Random.rand(num.to_i) + 1
+    end
   end
 end
