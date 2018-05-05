@@ -9,8 +9,6 @@ require 'require_all'
 require_all './commands'
 require_all './reactions'
 
-
-
 CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
   parts = l.split('=')
   o[parts[0]] = parts[1].strip
@@ -31,11 +29,5 @@ Reactions.constants.map do |r|
 end.compact.each do |reaction|
   bot.message(reaction.attributes, &reaction.command)
 end
-
-# bot.command(DiceCommand.name, DiceCommand.attributes, &DiceCommand.command)
-# bot.command(ImageSearch.name, ImageSearch.attributes, &ImageSearch.command)
-# bot.command(GithubCommand.name, GithubCommand.attributes, &GithubCommand.command)
-# bot.message(ReplaceReaction.attributes, &ReplaceReaction.command)
-# bot.message(TowcReaction.attributes, &TowcReaction.command)
 
 bot.run
