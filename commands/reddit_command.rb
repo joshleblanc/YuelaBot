@@ -31,7 +31,7 @@ module Commands
           if post.selftext.empty?
             image_url = URI.parse(post.url)
             http = Net::HTTP.new(image_url.host, image_url.port)
-            http.use_ssl = image_url.scheme == 'https'
+            http.use_ssl = (image_url.scheme == 'https')
             http.start do |http|
               if http.head(image_url.request_uri)['Content-Type'].start_with? 'image'
                 embed.image = Discordrb::Webhooks::EmbedImage.new(url: post.url)
