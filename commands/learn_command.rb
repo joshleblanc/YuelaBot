@@ -26,7 +26,12 @@ module Commands
               end
             end
             output = output.join(' ')
-            input = args.join(' ').split(output).last.strip
+            input = args.join(' ').split(output)
+            if input.length > 1
+              input = input.last.strip
+            else
+              input = '.*'
+            end
           end
 
           command = UserCommand.first(name: name)
