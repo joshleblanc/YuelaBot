@@ -15,24 +15,10 @@ module Commands
 
       def command
         lambda do |event, *args|
-          name = args[0]
-          output = args[1]
-          input = args[2] || '.*'
-          if args.length >= 3
-            output = []
-            args.each do |arg|
-              if arg.start_with?('"') .. arg.end_with?('"')
-                output << arg
-              end
-            end
-            output = output.join(' ')
-            input = args.join(' ').split(output)
-            if input.length > 1
-              input = input.last.strip
-            else
-              input = '.*'
-            end
-          end
+          parts = CSV.parse_line(args.join(' '), col_sep: ' ')
+          name = parts[0]
+          output = parts[1]
+          input = parts[2] || '.*'
 
           command = UserCommand.first(name: name)
           if command

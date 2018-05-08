@@ -7,6 +7,7 @@ require 'fourchan/kit'
 require 'redd'
 require 'require_all'
 require 'data_mapper'
+require 'csv'
 
 require_all './commands'
 require_all './reactions'
