@@ -24,14 +24,8 @@ module Commands
           if command
             'Command already exists'
           else
-            UserCommand.create(name: name, input: input, output: output, created_at: Time.now, creator: event.author.username)
-            BOT.command(name.to_sym) do |_, *args|
-              test = args.join(' ')
-              p test, /#{input}/, test.match(/#{input}/)
-              if input == '.*' || test.match(/#{input}/)
-                test.sub(/#{input}/, output)
-              end
-            end
+            command = UserCommand.create(name: name, input: input, output: output, created_at: Time.now, creator: event.author.username)
+            BOT.command(name.to_sym, &command.run)
             "Command #{name} learned"
           end
         end
