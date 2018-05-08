@@ -9,7 +9,8 @@ module Commands
         {
           min_args: 1,
           max_args: 1,
-          description: 'i[nfo] [learned command name]'
+          description: 'Provides information about a user taught command',
+          usage: 'i[nfo] [learned command name]'
         }
       end
 
