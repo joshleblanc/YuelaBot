@@ -3,8 +3,8 @@ class UserCommand
 
   property :id, Serial
   property :name, String
-  property :input, String
-  property :output, String
+  property :input, Text
+  property :output, Text
   property :creator, String
   property :created_at, DateTime
 
