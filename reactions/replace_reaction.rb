@@ -3,13 +3,12 @@ module Reactions
     class << self
       def attributes
         {
-            start_with: '!!s'
+            start_with: '!!s/'
         }
       end
 
       def command
         lambda do |event|
-          p "Running replace"
           messages = JSON.parse(Discordrb::API::Channel.messages(CONFIG['discord'], event.channel.id, 100).body)
           message = event.message.content
           parts = message.split('/', -1)
