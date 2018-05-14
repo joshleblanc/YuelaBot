@@ -13,7 +13,7 @@ require_all './commands'
 require_all './reactions'
 require_all './models'
 DataMapper.setup(:default, "sqlite://#{Dir.home}/yuela")
-DataMapper.finalize.auto_upgrade!
+DataMapper.finalize.auto_migrate!
 
 
 CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
