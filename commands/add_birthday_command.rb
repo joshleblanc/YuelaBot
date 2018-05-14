@@ -7,25 +7,32 @@ module Commands
 
       def attributes
         {
-          min_args: 3,
+          min_args: 4,
+          max_args: 4,
           description: "Add a birthday for a user",
-          usage: "[add_bday][abd] [user] [month (Number)] [day (Number)]"
+          usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)] [#channel]"
         }
       end
 
       def command
-        lambda do |e, *args|
-          birthday = Birthday.first(user: args[1])
-          if birthday
+        lambda do |e, user, month, day, channel|
+          mention = e.message.mentions.first
+          if mention.mention != user
+            return "User must be mentioned"
+          end
+
+          user = User.get(user.match(/<@(\d+)>/)[1])
+          if Birthday.first(user: user)
             "A birthday already exists for that user"
           else
             begin
-              month = Integer(args[1])
-              day = Integer(args[2])
+              user = User.first_or_new(id: mention.id)
+              user.name = mention.name
               Birthday.create(
-                user: args[0],
-                month: args[1],
-                day: args[2]
+                user: user,
+                month: Integer(month),
+                day: Integer(day),
+                channel: channel.match(/<#(\d+)>/)[1]
               )
             rescue Exception => _
               "Usage: `#{self.attributes[:usage]}`"
