@@ -13,7 +13,7 @@ module Reactions
           message = event.message.content
           parts = message.split('/', -1)
           options = 0
-          options += Regexp::IGNORECASE if parts[3].include? 'i'
+          options += Regexp::IGNORECASE
           options += REGEXP::MULTILINE if parts[3].include? 'm'
           options += REGEXP::EXTENDED if parts[3].include? 'x'
           regex = Regexp.new(parts[1], options)
