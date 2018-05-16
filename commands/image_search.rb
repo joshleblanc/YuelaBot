@@ -16,7 +16,7 @@ module Commands
 
       def command
         lambda do |event, *args|
-          ImageSearch.new.run!(event, args.join)
+          ImageSearch.new.run!(event, args.join(' '))
         end
       end
     end
