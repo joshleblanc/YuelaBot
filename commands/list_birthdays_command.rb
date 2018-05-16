@@ -16,7 +16,7 @@ module Commands
 
       def command
         lambda do |e|
-          birthdays = Birthday.all.map(&:to_s).join("\n")
+          birthdays = Birthday.all(server: e.server.id).map(&:to_s).join("\n")
           if birthdays.empty?
             "No birthdays found"
           else

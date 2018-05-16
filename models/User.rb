@@ -4,5 +4,5 @@ class User
   property :id, Integer, key: true
   property :name, String
 
-  has 1, :birthday
+  has n, :birthdays
 end

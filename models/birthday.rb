@@ -4,7 +4,7 @@ class Birthday
   property :id, Serial
   property :month, Integer
   property :day, Integer
-  property :channel, Integer
+  property :server, Integer
 
   belongs_to :user
 
