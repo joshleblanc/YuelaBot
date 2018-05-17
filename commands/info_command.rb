@@ -2,7 +2,7 @@ module Commands
   class InfoCommand
     class << self
       def name
-        [:i, :info]
+        [:info]
       end
 
       def attributes
