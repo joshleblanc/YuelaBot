@@ -26,7 +26,7 @@ module Commands
     include Discordrb::Webhooks
     include Discordrb::Events
     def initialize
-      @index = 0
+      @index = 0ee
       @images = []
       @engine_id = CONFIG['search_id']
       @embed = Embed.new(title: "Image Search Results")
