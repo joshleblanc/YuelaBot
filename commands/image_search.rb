@@ -3,7 +3,7 @@ module Commands
 
     class << self
       def name
-        :image
+        [:image, :i]
       end
 
       def attributes
