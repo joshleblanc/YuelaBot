@@ -15,12 +15,9 @@ module Commands
 
       def command
         lambda do |_, *args|
-          DiceCommand.new.run(args[0])
+          Random.rand(args[0].to_i) + 1
         end
       end
-    end
-    def run(num)
-      Random.rand(num.to_i) + 1
     end
   end
 end
