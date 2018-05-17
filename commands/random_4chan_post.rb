@@ -2,7 +2,7 @@ module Commands
   class Random4ChanCommand
     class << self
       def name
-        :'4chan'
+        [:chan, :'4chan']
       end
 
       def attributes

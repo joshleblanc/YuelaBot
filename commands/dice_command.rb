@@ -2,7 +2,7 @@ module Commands
   class DiceCommand
     class << self
       def name
-        :dice
+        [:dice, :d]
       end
       def attributes
         {

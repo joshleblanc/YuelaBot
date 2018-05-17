@@ -8,10 +8,14 @@ require 'redd'
 require 'require_all'
 require 'data_mapper'
 require 'csv'
+require 'rufus-scheduler'
 
 require_all './commands'
 require_all './reactions'
 require_all './models'
+require_all './routines'
+
+include Routines
 DataMapper.setup(:default, "sqlite://#{Dir.home}/yuela")
 DataMapper.finalize.auto_upgrade!
 
@@ -41,4 +45,10 @@ end.compact.each do |reaction|
   BOT.message(reaction.attributes, &reaction.command)
 end
 
+scheduler = Rufus::Scheduler.new
+
+scheduler.every '1d', first: :now do
+  birthday_routine(BOT)
+end
+p 'tmp'
 BOT.run
