@@ -15,8 +15,10 @@ module Commands
       end
 
       def command
+        is = ImageSearch.new
         lambda do |event, *args|
-          ImageSearch.new.run!(event, args.join)
+          is.reset!
+          is.run!(event, args.join)
         end
       end
     end
@@ -30,6 +32,11 @@ module Commands
       @embed = Embed.new(title: "Image Search Results")
       @service = Google::Apis::CustomsearchV1::CustomsearchService.new
       @service.key = CONFIG['google']
+    end
+
+    def reset!
+      @index = 0
+      @images = []
     end
 
     def run!(event, query)
