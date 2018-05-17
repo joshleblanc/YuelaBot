@@ -50,5 +50,5 @@ scheduler = Rufus::Scheduler.new
 scheduler.every '1d', first: :now do
   birthday_routine(BOT)
 end
-
+p 'tmp'
 BOT.run
