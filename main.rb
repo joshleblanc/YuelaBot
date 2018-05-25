@@ -17,6 +17,7 @@ require_all './routines'
 
 include Routines
 DataMapper.setup(:default, "sqlite://#{Dir.home}/yuela")
+DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize.auto_upgrade!
 
 
@@ -25,10 +26,17 @@ CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
   o[parts[0]] = parts[1].strip
 end
 
-BOT = Discordrb::Commands::CommandBot.new token: CONFIG['discord'], prefix: '!!'
+BOT = Discordrb::Commands::CommandBot.new token: CONFIG['discord'], prefix: '!!', advanced_functionality: true
 
 UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.run)
+end
+
+BOT.message do |event|
+  urs = UserReaction.all.find_all do |ur|
+    Regexp.new(ur.regex).match event.message.content
+  end
+  urs.each { |ur| event.respond(ur.output) }
 end
 
 Commands.constants.map do |c|
@@ -44,6 +52,8 @@ Reactions.constants.map do |r|
 end.compact.each do |reaction|
   BOT.message(reaction.attributes, &reaction.command)
 end
+
+
 
 scheduler = Rufus::Scheduler.new
 
