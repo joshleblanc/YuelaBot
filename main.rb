@@ -17,6 +17,8 @@ require_all './routines'
 
 include Routines
 DataMapper.setup(:default, "sqlite://#{Dir.home}/yuela")
+DataMapper.repository(:default).adapter.select("PRAGMA synchronous=OFF")
+DataMapper.repository(:default).adapter.select("PRAGMA journal_mode=WAL")
 DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize.auto_upgrade!
 
@@ -33,17 +35,12 @@ BOT = Discordrb::Commands::CommandBot.new({
   chain_delimiter: '',
   chain_args_delim: '',
 })
+
 BOT.set_user_permission(CONFIG['admin_id'].to_i, 1)
 
+Afk.all.destroy
 UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.run)
-end
-
-BOT.message do |event|
-  urs = UserReaction.all.find_all do |ur|
-    Regexp.new(ur.regex).match event.message.content
-  end
-  urs.each { |ur| event.respond(ur.output) }
 end
 
 Commands.constants.map do |c|
@@ -60,12 +57,28 @@ end.compact.each do |reaction|
   BOT.message(reaction.attributes, &reaction.command)
 end
 
+BOT.message do |event|
+  urs = UserReaction.all.find_all do |ur|
+    Regexp.new(ur.regex).match event.message.content
+  end
+  urs.each { |ur| event.respond(ur.output) }
 
+  user_ids = event.message.mentions.map(&:id)
+  user_ids.each do |uid|
+    user = User.get(uid)
+    if user&.afk
+      out = ''
+      out << "#{user.name} is afk"
+      out << ": #{user.afk.message}" if user.afk.message
+      event << out
+    end
+  end
+end
 
 scheduler = Rufus::Scheduler.new
 
 scheduler.every '1d', first: :now do
   birthday_routine(BOT)
 end
-p 'tmp'
+
 BOT.run
