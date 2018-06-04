@@ -17,13 +17,17 @@ module Commands
       def command
         lambda do |event|
           user_reactions = UserReaction.all
-          max = user_reactions.to_a.max { |ur| ur.regex.length }.regex.length
-          event << "User reactions:"
-          event << '```'
-          event << UserReaction.all.map do |r|
-            "(#{r.id}) #{r.regex.rjust(max)}: #{r.output}"
-          end.join("\n")
-          event << '```'
+          if user_reactions.empty?
+            event << "No reactions registered"
+          else
+            max = user_reactions.to_a.max { |ur| ur.regex.length }.regex.length
+            event << "User reactions:"
+            event << '```'
+            event << user_reactions.map do |r|
+              "(#{r.id}) #{r.regex.rjust(max)}: #{r.output}"
+            end.join("\n")
+            event << '```'
+          end
         end
       end
     end

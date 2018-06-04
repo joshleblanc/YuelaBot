@@ -26,7 +26,14 @@ CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
   o[parts[0]] = parts[1].strip
 end
 
-BOT = Discordrb::Commands::CommandBot.new token: CONFIG['discord'], prefix: '!!', advanced_functionality: true
+BOT = Discordrb::Commands::CommandBot.new({
+  token: CONFIG['discord'],
+  prefix: '!!',
+  advanced_functionality: true,
+  chain_delimiter: '',
+  chain_args_delim: '',
+})
+BOT.set_user_permission(CONFIG['admin_id'].to_i, 1)
 
 UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.run)

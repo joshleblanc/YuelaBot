@@ -2,7 +2,7 @@ class UserReaction
   include DataMapper::Resource
 
   property :id, Serial
-  property :regex, String, length: 300
+  property :regex, String
   property :output, Text
   property :created_at, Time
   property :creator, String

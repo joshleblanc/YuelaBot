@@ -10,7 +10,8 @@ module Commands
             min_args: 1,
             max_args: 1,
             usage: 'remove_reaction [id]',
-            description: 'Remove a reaction, given an ID'
+            description: 'Remove a reaction, given an ID',
+            arg_types: [Integer]
         }
       end
 
