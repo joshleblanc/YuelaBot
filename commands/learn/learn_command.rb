@@ -8,18 +8,15 @@ module Commands
       def attributes
         {
           min_args: 2,
+          max_args: 3,
           description: 'Create a new command for Yuela',
-          usage: 'l[earn] [name] "[output]" [regex]'
+          usage: 'l[earn] [name] [output] [regex]'
         }
       end
 
       def command
-        lambda do |event, *args|
-          parts = CSV.parse_line(args.join(' '), col_sep: ' ')
-          name = parts[0]
-          output = parts[1]
-          input = parts[2] || '.*'
-
+        lambda do |event, name, output, *rest|
+          input = rest.join || '.*'
           command = UserCommand.first(name: name)
           if command
             'Command already exists'
