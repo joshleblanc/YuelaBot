@@ -22,10 +22,11 @@ module Commands
             user.name = e.author.name
             user.save
             user.afk.destroy if user.afk
-            afk = Afk.create(message: (message.join(' ') unless message.empty?), user: user)
+            Afk.create(message: (message.join(' ') unless message.empty?), user: user)
 
-            e.user.await(:back) do |_|
-              afk.destroy
+            e.user.await(:back) do |back_event|
+              p 'removing afk'
+              User.get(back_event.author.id).afk.destroy
             end
             nil
           rescue StandardError => e
