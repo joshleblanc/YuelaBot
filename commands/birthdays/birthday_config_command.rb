@@ -16,11 +16,11 @@ module Commands
       end
 
       def command
-        lambda do |e, channel, message|
+        lambda do |e, channel, *message|
           begin
             bday_config = BirthdayConfig.first_or_new(server: e.server.id)
             bday_config.channel = channel.match(/<#(\d+)>/)[1]
-            bday_config.message = message
+            bday_config.message = message.join(' ')
             bday_config.save
             "Configuration saved"
           rescue
