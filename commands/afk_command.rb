@@ -17,7 +17,6 @@ module Commands
         lambda do |e, *message|
           begin
             user_id = e.author.id
-            p user_id
             user = User.first_or_new({ id: user_id })
             user.name = e.author.name
             user.save

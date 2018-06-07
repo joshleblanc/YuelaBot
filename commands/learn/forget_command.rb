@@ -10,14 +10,14 @@ module Commands
           min_args: 1,
           max_args: 1,
           description: 'Removes a user taught command',
-          usage: 'f[orget] [learned command name]'
+          usage: 'f[orget] [learned command name]',
+          permission_level: 1
         }
       end
 
       def command
-        lambda do |event, *args|
-          return "No" unless event.user.id.to_s == CONFIG['admin_id']
-          command = UserCommand.first(name: args[0])
+        lambda do |_, name|
+          command = UserCommand.first(name: name)
           if command
             command.destroy
             BOT.remove_command(command.name.to_sym)

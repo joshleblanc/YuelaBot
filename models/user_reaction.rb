@@ -11,7 +11,7 @@ class UserReaction
 
   def run
     lambda do |event|
-      event << output
+      event << event.message.sub(/#{regex}/, output)
     end
   end
 end

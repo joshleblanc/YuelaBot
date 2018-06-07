@@ -15,7 +15,8 @@ module Commands
       end
 
       def command
-        lambda do |event, name, output, *rest|
+        lambda do |event, *args|
+          name, output, *rest = CSV.parse_line(args.join(' '), col_sep: ' ')
           input = rest.join || '.*'
           command = UserCommand.first(name: name)
           if command

@@ -15,8 +15,8 @@ module Commands
       end
 
       def command
-        lambda do |_, *args|
-          command = UserCommand.first(name: args[0])
+        lambda do |_, name|
+          command = UserCommand.first(name: name)
           if command
             sio = StringIO.new
             sio << "Command #{command.name}\n"
@@ -25,7 +25,7 @@ module Commands
             sio << "created by #{command.creator} on #{command.created_at.strftime("%F")}"
             sio.string
           else
-            "Command #{args[0]} does not exist"
+            "Command #{name} does not exist"
           end
         end
       end

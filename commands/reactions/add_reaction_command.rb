@@ -10,14 +10,14 @@ module Commands
             min_args: 2,
             max_args: 2,
             usage: 'add_reaction [regex] [message]',
-            description: 'Create a reaction for Yuela',
-            arg_types: [String, String]
+            description: 'Create a reaction for Yuela'
         }
       end
 
       def command
-        lambda do |event, regex, output|
+        lambda do |event, *args|
           begin
+            regex, output = CSV.parse_line(args.join(' '), col_sep: ' ')
             reaction = UserReaction.first(regex: regex)
             if reaction
               'Reaction already exists'

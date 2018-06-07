@@ -31,9 +31,7 @@ end
 BOT = Discordrb::Commands::CommandBot.new({
   token: CONFIG['discord'],
   prefix: '!!',
-  advanced_functionality: true,
-  chain_delimiter: '',
-  chain_args_delim: '',
+  log_level: :debug
 })
 
 BOT.set_user_permission(CONFIG['admin_id'].to_i, 1)
@@ -61,7 +59,7 @@ BOT.message do |event|
   urs = UserReaction.all.find_all do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
-  urs.each { |ur| event.respond(ur.output) }
+  urs.each { |ur| event.respond(event.message.content.sub(/#{ur.regex}/, ur.output)) }
 
   user_ids = event.message.mentions.map(&:id)
   user_ids.each do |uid|
