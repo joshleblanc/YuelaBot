@@ -23,14 +23,9 @@ module Commands
             user.afk.destroy if user.afk
             Afk.create(message: (message.join(' ') unless message.empty?), user: user)
 
-            e.user.await(:back) do |back_event|
+            e.user.await(:"back_#{user_id}") do |back_event|
               p "Removing afk for #{back_event.author}"
-              user = User.get(back_event.author.id)
-              if user.afk.destroy
-                p "#{user.name} is back"
-              else
-                user.errors.full_messages
-              end
+              User.get(back_event.author.id).afk.destroy
             end
             nil
           rescue StandardError => e
