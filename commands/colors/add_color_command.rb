@@ -22,22 +22,23 @@ module Commands
           begin
             role = RoleColor.first(name: name)
             if role
-              e << "That color role already exists! Do you want to overwrite it? (Y/N)"
               e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
                 if confirm_event.message.content[0].downcase == 'y'
                   role.update(color: color)
                   confirm_event << "Role updated!"
                 end
               end
+              "That color role already exists! Do you want to overwrite it? (Y/N)"
             else
-              e.server.create_role(
+              role = e.server.create_role(
                   name: name,
                   colour: color.to_i(16),
-                  hoist: true,
+                  hoist: false,
                   mentionable: false,
                   permissions: [],
                   reason: 'Add Color Command'
               )
+              role.sort_above(e.server.roles.last)
               RoleColor.create(name: name, color: "##{color}")
               e << "Color role created"
             end
