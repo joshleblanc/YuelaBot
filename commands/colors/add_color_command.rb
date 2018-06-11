@@ -31,15 +31,20 @@ module Commands
               end
               "That color role already exists! Do you want to overwrite it? (Y/N)"
             else
-              role = e.server.create_role(
-                  name: name,
-                  colour: Discordrb::ColourRGB.new(color),
-                  hoist: false,
-                  mentionable: false,
-                  permissions: [],
-                  reason: 'Add Color Command'
-              )
-              role.sort_above(e.user.highest_role)
+              roles = e.server.roles.select { |r| r.name == name }
+              if roles
+                roles.each { |r| r.color = Discordrb::ColourRGB.new(color) }
+              else
+                role = e.server.create_role(
+                    name: name,
+                    colour: Discordrb::ColourRGB.new(color),
+                    hoist: false,
+                    mentionable: false,
+                    permissions: [],
+                    reason: 'Add Color Command'
+                )
+                role.sort_above(e.user.highest_role)
+              end
               RoleColor.create(name: name, color: "##{color}", server: e.server.id)
               "Color role created"
             end
