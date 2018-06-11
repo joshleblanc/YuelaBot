@@ -20,16 +20,27 @@ module Commands
           name, color = CSV.parse_line(args.join(' '), col_sep: ' ')
           color = color[1..-1] if color.start_with?('#')
           begin
-            e.server.create_role(
-              name: name,
-              colour: color.to_i(16),
-              hoist: true,
-              mentionable: false,
-              permissions: [],
-              reason: 'Add Color Command'
-            )
-            RoleColor.create(name: name, color: "##{color}")
-            e << "Color role created"
+            role = RoleColor.first(name: name)
+            if role
+              e << "That color role already exists! Do you want to overwrite it? (Y/N)"
+              e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
+                if confirm_event.message.content[0].downcase == 'y'
+                  role.update(color: color)
+                  confirm_event << "Role updated!"
+                end
+              end
+            else
+              e.server.create_role(
+                  name: name,
+                  colour: color.to_i(16),
+                  hoist: true,
+                  mentionable: false,
+                  permissions: [],
+                  reason: 'Add Color Command'
+              )
+              RoleColor.create(name: name, color: "##{color}")
+              e << "Color role created"
+            end
           rescue StandardError => e
             e.message
           end

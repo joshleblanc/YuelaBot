@@ -10,9 +10,9 @@ require 'data_mapper'
 require 'csv'
 require 'rufus-scheduler'
 
+require_all './models'
 require_all './commands'
 require_all './reactions'
-require_all './models'
 require_all './routines'
 
 include Routines
