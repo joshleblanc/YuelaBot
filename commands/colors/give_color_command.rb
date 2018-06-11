@@ -18,7 +18,7 @@ module Commands
         lambda do |e, *name|
           name = name.join(' ')
           break "That color role doesn't exist" unless RoleColor.first(name: name)
-          role = e.author.roles.first { |r| RoleColor.first(name: r.name) }
+          role = e.author.roles.find { |r| RoleColor.first(name: r.name) }
           if role
             e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|
               if confirm_event.message.content[0].downcase == 'y'
