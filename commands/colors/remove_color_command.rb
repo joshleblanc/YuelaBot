@@ -16,7 +16,7 @@ module Commands
       def command
         lambda do |e, *name|
           name = name.join(' ')
-          role = RoleColor.first(name: name)
+          role = RoleColor.first(name: name, server: e.server.id)
           break "That color role doesn't exist" unless role
           discord_role = e.author.roles.find { |r| r.name === name }
           if discord_role

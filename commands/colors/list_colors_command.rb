@@ -16,7 +16,7 @@ module Commands
 
       def command
         lambda do |e|
-          colors = RoleColor.all
+          colors = RoleColor.all(server: e.server.id)
           e << "Available colors:"
           e << '```'
           colors.each do |c|

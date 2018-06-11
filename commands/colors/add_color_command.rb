@@ -20,7 +20,7 @@ module Commands
           name, color = CSV.parse_line(args.join(' '), col_sep: ' ')
           color = color[1..-1] if color.start_with?('#')
           begin
-            role = RoleColor.first(name: name)
+            role = RoleColor.first(name: name, server: e.server.id)
             if role
               e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
                 if confirm_event.message.content[0].downcase == 'y'
@@ -39,7 +39,7 @@ module Commands
                   reason: 'Add Color Command'
               )
               role.sort_above(e.server.roles.last)
-              RoleColor.create(name: name, color: "##{color}")
+              RoleColor.create(name: name, color: "##{color}", server: e.server.id)
               e << "Color role created"
             end
           rescue StandardError => e
