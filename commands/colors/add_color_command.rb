@@ -25,6 +25,7 @@ module Commands
               e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
                 if confirm_event.message.content[0].downcase == 'y'
                   role.update(color: color)
+                  e.server.roles.select { |r| r.name == name }.each { |r| r.color = Discordrb::ColourRGB.new(color) }
                   confirm_event << "Role updated!"
                 end
               end
@@ -32,7 +33,7 @@ module Commands
             else
               role = e.server.create_role(
                   name: name,
-                  colour: color.to_i(16),
+                  colour: Discordrb::ColourRGB.new(color),
                   hoist: false,
                   mentionable: false,
                   permissions: [],
@@ -40,7 +41,7 @@ module Commands
               )
               role.sort_above(e.user.highest_role)
               RoleColor.create(name: name, color: "##{color}", server: e.server.id)
-              e << "Color role created"
+              "Color role created"
             end
           rescue StandardError => e
             e.message

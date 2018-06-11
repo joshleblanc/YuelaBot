@@ -5,4 +5,5 @@ class RoleColor
   property :color, String
   property :name, String
   property :server, Integer
+
 end
