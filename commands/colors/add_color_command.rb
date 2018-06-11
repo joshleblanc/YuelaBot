@@ -38,7 +38,7 @@ module Commands
                   permissions: [],
                   reason: 'Add Color Command'
               )
-              role.sort_above(e.server.roles.last)
+              role.sort_above(e.user.highest_role)
               RoleColor.create(name: name, color: "##{color}", server: e.server.id)
               e << "Color role created"
             end
