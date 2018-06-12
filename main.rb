@@ -10,9 +10,9 @@ require 'data_mapper'
 require 'csv'
 require 'rufus-scheduler'
 
+require_all './models'
 require_all './commands'
 require_all './reactions'
-require_all './models'
 require_all './routines'
 
 include Routines
@@ -34,7 +34,9 @@ BOT = Discordrb::Commands::CommandBot.new({
   log_level: :debug
 })
 
-BOT.set_user_permission(CONFIG['admin_id'].to_i, 1)
+CONFIG['admins'].split(',').each do |admin|
+  BOT.set_user_permission(admin.to_i, 1)
+end
 
 Afk.all.destroy
 UserCommand.all.each do |command|
