@@ -1,8 +1,10 @@
 module Reactions
   class SoChatReaction
     class << self
+      include Discordrb::Webhooks
+
       def regex
-        /https:\/\/chat\.stackoverflow\.com\/transcript\/message\/\d+/
+        /https:\/\/chat\.stackoverflow\.com\/transcript\/message\/(\d+)/
       end
 
       def attributes
@@ -13,21 +15,22 @@ module Reactions
 
       def command
         lambda do |event|
-          url = event.message.content.match(self.regex)[0]
-          page = Nokogiri::HTML(open(url))
-          container = page.at_css('div.highlight').parent.parent
+          match_data = event.message.content.match(self.regex)
+          url = match_data[0]
+
+          transcript = Nokogiri::HTML(open(url))
+          container = transcript.at_css('div.highlight').parent.parent
           user = container.at_css('div.username').children[0]
           avatar = container.at_css('div.avatar').at_css('img').attr('src')
-          time = container.at_css('div.timestamp').text
-          message = container.at_css('div.content')
-          room_name = page.at_css('span.room-name a').text
-          p room_name
-          embed = Discordrb::Webhooks::Embed.new(title: room_name)
-          embed.author = Discordrb::Webhooks::EmbedAuthor.new
-          embed.author.name = user.text
-          embed.author.icon_url = avatar
-          embed.author.url = "https://chat.stackoverflow.com#{user.attr('href')}"
-          p user.text, user.attr('href'), avatar, time, message.text
+          message = container.css('div.content').map do |el|
+            el.text.strip
+          end.join("\n")
+          room = transcript.at_css('span.room-name a')
+          embed = Embed.new(title: room.text)
+          embed.description = message
+          embed.color = '123123'.to_i(16)
+          embed.url = "http://chat.stackoverflow#{room.attr('href')}"
+          embed.author = EmbedAuthor.new(name: user.text, icon_url: avatar, url: "https://chat.stackoverflow.com#{user.attr('href')}")
           event.respond nil, false, embed
         end
       end
