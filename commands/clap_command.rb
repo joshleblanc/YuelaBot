@@ -2,7 +2,7 @@ module Commands
   class ClapCommand
     class << self
       def name
-        :clap
+        :cl
       end
 
       def attributes
