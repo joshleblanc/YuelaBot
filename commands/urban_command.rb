@@ -27,9 +27,12 @@ module Commands
                 description: definition['definition'],
                 url: definition['permalink'],
                 author: EmbedAuthor.new(name: definition['author']),
-                timestamp: definition['written_on'],
+                timestamp: Time.parse(definition['written_on']),
                 fields: [EmbedField.new(name: 'Example', value: definition['example'])]
             )
+            event.respond nil, false, embed
+          else
+            event << "I couldn't find anything for that"
           end
 
         end
