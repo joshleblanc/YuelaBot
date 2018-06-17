@@ -29,7 +29,7 @@ module Reactions
           embed.image = EmbedImage.new(url: image.attr('src')) unless image.empty?
           embed.description = message.css('.content').text
           embed.color = '123123'.to_i(16)
-          embed.url = "http://chat.stackoverflow#{room.attr('href')}"
+          embed.url = "https://chat.stackoverflow.com/#{room.attr('href')}"
           embed.author = EmbedAuthor.new(name: user.text, icon_url: avatar, url: "https://chat.stackoverflow.com#{user.attr('href')}")
           event.respond nil, false, embed
         end
