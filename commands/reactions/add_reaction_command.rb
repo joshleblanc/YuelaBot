@@ -7,8 +7,6 @@ module Commands
 
       def attributes
         {
-            min_args: 2,
-            max_args: 3,
             usage: 'add_reaction [regex] [message] [chance]',
             description: 'Create a reaction for Yuela'
         }
