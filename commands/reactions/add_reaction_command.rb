@@ -8,8 +8,8 @@ module Commands
       def attributes
         {
             min_args: 2,
-            max_args: 2,
-            usage: 'add_reaction [regex] [message]',
+            max_args: 3,
+            usage: 'add_reaction [regex] [message] [chance]',
             description: 'Create a reaction for Yuela'
         }
       end
@@ -17,7 +17,9 @@ module Commands
       def command
         lambda do |event, *args|
           begin
-            regex, output = CSV.parse_line(args.join(' '), col_sep: ' ')
+            regex, output, chance = CSV.parse_line(args.join(' '), col_sep: ' ')
+            chance = 1 if chance.nil?
+            p regex, output, chance
             reaction = UserReaction.first(regex: regex)
             if reaction
               'Reaction already exists'
@@ -26,7 +28,8 @@ module Commands
                 regex: regex,
                 output: output,
                 created_at: Time.now,
-                creator: event.author.username
+                creator: event.author.username,
+                chance: chance.to_f
               )
               'Reaction created'
             end

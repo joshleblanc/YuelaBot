@@ -6,6 +6,7 @@ class UserReaction
   property :output, Text
   property :created_at, Time
   property :creator, String
+  property :chance, Float, default: 1
 
   attr_accessor :handler
 

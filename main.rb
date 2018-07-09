@@ -61,7 +61,11 @@ BOT.message do |event|
   urs = UserReaction.all.find_all do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
-  urs.each { |ur| event.respond(event.message.content.sub(/#{ur.regex}/, ur.output)) }
+  urs.each do |ur|
+    if rand <= ur.chance
+      event.respond(event.message.content.sub(/#{ur.regex}/, ur.output))
+    end
+  end
 
   user_ids = event.message.mentions.map(&:id)
   user_ids.each do |uid|
