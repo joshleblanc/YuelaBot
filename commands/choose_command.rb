@@ -14,9 +14,8 @@ module Commands
       end
 
       def command
-        lambda do |e, *choices|
-          choices = choices.delete_if { |c| c.downcase == 'or' }
-          choices.sample.chomp ','
+        lambda do |_, *choices|
+          choices.join('').squeeze.split(/,|or/).map(&:strip).delete_if(&:empty?).sample
         end
       end
     end
