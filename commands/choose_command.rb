@@ -15,7 +15,7 @@ module Commands
 
       def command
         lambda do |_, *choices|
-          choices.join(' ').split(/,|or/).map(&:strip).delete_if(&:empty?).sample.squeeze
+          choices.join(' ').split(/,|or/).map(&:strip).delete_if(&:empty?).sample.squeeze(' ')
         end
       end
     end
