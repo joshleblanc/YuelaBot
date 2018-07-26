@@ -24,7 +24,7 @@ module Commands
             event << "User reactions:"
             event << '```'
             event << user_reactions.map do |r|
-              "(#{r.id}) #{r.regex.rjust(max)}: #{r.output}"
+              "(#{r.id}) (#{r.chance}) #{r.regex.rjust(max)}: #{r.output}"
             end.join("\n")
             event << '```'
           end

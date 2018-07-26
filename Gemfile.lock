@@ -199,6 +199,8 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2018.5)
+      tzinfo (>= 1.0.0)
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
@@ -226,6 +228,7 @@ DEPENDENCIES
   redd!
   require_all
   rufus-scheduler
+  tzinfo-data
 
 BUNDLED WITH
-   1.16.1
+   1.16.3
