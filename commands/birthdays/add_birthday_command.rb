@@ -10,21 +10,16 @@ module Commands
           min_args: 3,
           max_args: 3,
           description: "Add a birthday for a user",
-          usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]",
-          arg_types: [Discordrb::User, Integer, Integer]
+          usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]"
         }
       end
 
       def command
         lambda do |event, user, month, day|
           begin
-            user_id = user.id
             mention = event.message.mentions.first
-            if mention.id != user_id.to_i
-              event << "User must be mentioned"
-            end
 
-            user = User.get(user_id)
+            user = User.get(mention.id)
             if Birthday.first(user: user, server: event.server.id)
               "A birthday already exists for that user"
             else
@@ -32,12 +27,12 @@ module Commands
               user.name = mention.name
               Birthday.create(
                 user: user,
-                month: Integer(month),
-                day: Integer(day),
+                month: month.to_i,
+                day: day.to_i,
                 server: event.server.id
               )
             end
-          rescue
+          rescue StandardError => e
             "That's not going to work"
           end
         end
