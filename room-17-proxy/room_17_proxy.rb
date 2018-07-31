@@ -20,7 +20,6 @@ class Room17Proxy
     def auth!
         cookies = login
         fkey = get_fkey('https://chat.stackoverflow.com', cookies)
-        p fkey, cookies
         data = "roomid=17&fkey=#{fkey}"
         resp = RestClient.post("#{@base_url}/ws-auth", {
             roomid: 17,
@@ -85,8 +84,7 @@ class Room17Proxy
 
             ws.on(:open) { |e| p 'ws opened' }
 
-            ws.on(:error) do |e|
-                p e.tadat            end
+            ws.on(:error) { |e| p e.code, e.reason }
 
             ws.on(:close){ |e| p 'ws closed' }
             
@@ -95,7 +93,6 @@ class Room17Proxy
 
     def login
         fkey = get_fkey('https://stackoverflow.com/users/login')
-        p fkey
         resp = RestClient.post('https://stackoverflow.com/users/login', {
             fkey: fkey,
             email: @user,
