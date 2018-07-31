@@ -21,7 +21,7 @@ class Room17Proxy
         cookies = login
         fkey = get_fkey('https://chat.stackoverflow.com', cookies)
         data = "roomid=17&fkey=#{fkey}"
-        resp = RestClient.post("#{@base_url}/ws-auth", {
+        resp = RestClient.post(" dodddfwwefwfefefefefef{@base_url}/ws-auth", {
             roomid: 17,
             fkey: fkey
         }, {
@@ -62,32 +62,39 @@ class Room17Proxy
         message
     end
 
+    def run_websocket
+        ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
+            headers: {
+                "origin" => @base_url
+            }    
+        })
+        ws.on :message do |msg|
+            events = JSON.parse(msg.data)['r17']['e']
+            next unless events
+            events.each do |e|
+                next unless e['event_type'] == 1 # message event?
+                next unless e['content']
+
+                message = process_content(e['content'])
+                
+                BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
+            end
+        end
+
+        ws.on(:open) { |e| p 'ws opened' }
+
+        ws.on(:error) { |e| p e.data, e.code, e.reason }
+
+        ws.on(:close) do |e| 
+            p 'ws closed'
+            sleep 3
+            run_websocket
+        end
+    end
+
     def run_websocket_loop
         EM.run do
-            ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
-                headers: {
-                    "origin" => @base_url
-                }    
-            })
-            ws.on :message do |msg|
-                events = JSON.parse(msg.data)['r17']['e']
-                next unless events
-                events.each do |e|
-                    next unless e['event_type'] == 1 # message event?
-                    next unless e['content']
-
-                    message = process_content(e['content'])
-                    
-                    BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
-                end
-            end
-
-            ws.on(:open) { |e| p 'ws opened' }
-
-            ws.on(:error) { |e| p e.code, e.reason }
-
-            ws.on(:close){ |e| p 'ws closed' }
-            
+            run_websocket            
         end
     end
 
