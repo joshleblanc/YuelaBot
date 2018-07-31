@@ -2,7 +2,7 @@ class Room17Proxy
     include Discordrb::Webhooks
 
     def initialize(channel_id, user, pass)
-        @roomid =17
+        @roomid = 17
         @base_url = "https://chat.stackoverflow.com"
         @url = "https://chat.stackoverflow.com/rooms/17/javascript"
         @channel_id = channel_id
@@ -10,18 +10,31 @@ class Room17Proxy
         @pass = pass
     end
 
-    def auth
+    def listen!
+        p @ws_url
+        Thread.new do
+            run_websocket_loop
+        end
+    end
+
+    def auth!
         cookies = login
-        fkey = get_fkey('', cookies)
-        p cookies
-        data = "fkey=#{fkey}&roomid=17"
-        resp = RestClient.post("#{@base_url}/ws-auth", data, {
+        fkey = get_fkey('https://chat.stackoverflow.com', cookies)
+        p fkey, cookies
+        data = "roomid=17&fkey=#{fkey}"
+        resp = RestClient.post("#{@base_url}/ws-auth", {
+            roomid: 17,
+            fkey: fkey
+        }, {
             Origin: @base_url,
             Referer: "#{@base_url}/rooms/#{@roomid}",
-            "Content-Length": data.length,
-            "Content-Type": 'application/x-www-form-urlencoded',
+            content_type: 'application/x-www-form-urlencoded',
+            user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+            "X-Requested-With" => "XMLHttpRequest",
             cookies: cookies
         }) do |resp, req, res|
+            p req.headers
+            #p resp.body
             case resp.code
             when 301, 302, 307
                 resp.follow_redirection
@@ -29,45 +42,66 @@ class Room17Proxy
                 resp.return!
             end
         end
-        p resp
-        # data = "roomid=17&fkey=#{@fkey}"
-        # resp = RestClient.post("#{@base_url}/ws-auth", data, {
-        #     Origin: @base_url,
-        #     Referer: "#{@base_url}/rooms/#{@roomid}",
-        #     "Content-Length": data.length,
-        #     "Content-Type": 'application/x-www-form-urlencoded'
-        # })
-        # p resp
-    end
-
-    def run
-        Thread.new do
-            previous_ids = get_events.map { |e| e['message_id']}
-            loop do
-                events = get_events
-                events.reject { |e| previous_ids.include? e['message_id'] }.each do |e|
-                    next unless e['content']
-                    message = CGI.unescapeHTML e['content']
-                    message.gsub!('<code>', '`')
-                    message.gsub!('</code>', '`')
-                    message.gsub!(/<pre.*?>/, "```javascript\n")
-                    message.gsub!('</pre>', "```\n")
-                    BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
-                end
-                previous_ids = events.map { |e| e['message_id']}
-                sleep 20
-            end
-        end  
+        @ws_url = JSON.parse(resp.body)['url']
     end
 
     private
+
+    def process_tag!(message, tag, repl1, repl2 = nil)
+        repl2 = repl1 unless repl2
+        message.gsub!(/<#{tag}.*?>/, repl1)
+        message.gsub!(/<\/#{tag}>/, repl2)
+    end
+
+    def process_content(message)
+        message = CGI.unescapeHTML(message)
+        process_tag!(message, 'code', '`')
+        process_tag!(message, 'pre', "```javascript\n", "```\n")
+        process_tag!(message, 'i', '*')
+        process_tag!(message, 'b', '**')
+        process_tag!(message, 'strike', '~~')
+        message
+    end
+
+    def run_websocket_loop
+        EM.run do
+            ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
+                headers: {
+                    "origin" => @base_url
+                }    
+            })
+            ws.on :message do |msg|
+                events = JSON.parse(msg.data)['r17']['e']
+                next unless events
+                events.each do |e|
+                    next unless e['event_type'] == 1 # message event?
+                    next unless e['content']
+
+                    message = process_content(e['content'])
+                    
+                    BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
+                end
+            end
+
+            ws.on(:open) { |e| p 'ws opened' }
+
+            ws.on(:error) do |e|
+                p e.tadat            end
+
+            ws.on(:close){ |e| p 'ws closed' }
+            
+        end
+    end
+
     def login
-        fkey = get_fkey('users/login')
-        p fkey, @user, @pass
+        fkey = get_fkey('https://stackoverflow.com/users/login')
+        p fkey
         resp = RestClient.post('https://stackoverflow.com/users/login', {
             fkey: fkey,
             email: @user,
             password: @pass
+        }, {
+            "Content-Type": "application/x-www-form-urlencoded"
         }) do |resp, req, res|
            case resp.code
             when 301, 302, 307
@@ -80,12 +114,7 @@ class Room17Proxy
     end
 
     def get_fkey(path, cookies = nil)
-        resp = RestClient.get("https://stackoverflow.com/#{path}", cookies: cookies)
+        resp = RestClient.get(path, cookies: cookies) 
         Nokogiri::HTML(resp.body).at_css('input[name="fkey"]').attr('value')
-    end
-
-    def get_events
-        resp = RestClient.post 'https://chat.stackoverflow.com/chats/17/events', { fkey: @fkey, msgCount: 100, mode: 'Messages', since: 0}
-        JSON.parse(resp.body)['events']
     end
 end

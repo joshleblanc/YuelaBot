@@ -9,7 +9,7 @@ require 'require_all'
 require 'data_mapper'
 require 'csv'
 require 'rufus-scheduler'
-require 'websocket-client-simple'
+require 'faye/websocket'
 
 require_all './models'
 require_all './commands'
@@ -88,6 +88,7 @@ scheduler.every '1d', first: :now do
 end
 
 room17 = Room17Proxy.new(CONFIG['channel_id'], CONFIG['so_user'], CONFIG['so_pass'])
-room17.auth
+room17.auth!
+room17.listen!
 
 BOT.run
