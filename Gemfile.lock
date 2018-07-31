@@ -227,8 +227,10 @@ DEPENDENCIES
   rbnacl-libsodium
   redd!
   require_all
+  rest-client
   rufus-scheduler
   tzinfo-data
+  websocket-client-simple
 
 BUNDLED WITH
    1.16.3
