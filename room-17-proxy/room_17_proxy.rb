@@ -20,7 +20,7 @@ class Room17Proxy
         cookies = login
         fkey = get_fkey('https://chat.stackoverflow.com', cookies)
         data = "roomid=17&fkey=#{fkey}"
-        resp = RestClient.post("{@base_url}/ws-auth", {
+        resp = RestClient.post("#{@base_url}/ws-auth", {
             roomid: 17,
             fkey: fkey
         }, {
