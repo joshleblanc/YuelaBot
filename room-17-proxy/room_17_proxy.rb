@@ -1,10 +1,9 @@
 class Room17Proxy 
     include Discordrb::Webhooks
 
-    def initialize(channel_id, user, pass)
-        @roomid = 17
+    def initialize(channel_id, room_id, user, pass)
+        @roomid = room_id
         @base_url = "https://chat.stackoverflow.com"
-        @url = "https://chat.stackoverflow.com/rooms/17/javascript"
         @channel_id = channel_id
         @user = user
         @pass = pass
@@ -19,9 +18,9 @@ class Room17Proxy
     def auth!
         cookies = login
         fkey = get_fkey('https://chat.stackoverflow.com', cookies)
-        data = "roomid=17&fkey=#{fkey}"
+        data = "roomid=#{@roomid}&fkey=#{fkey}"
         resp = RestClient.post("#{@base_url}/ws-auth", {
-            roomid: 17,
+            roomid: @roomid,
             fkey: fkey
         }, {
             Origin: @base_url,
@@ -66,14 +65,13 @@ class Room17Proxy
             }    
         })
         ws.on :message do |msg|
-            events = JSON.parse(msg.data)['r17']['e']
+            events = JSON.parse(msg.data)["r#{@roomid}"]['e']
             next unless events
             events.each do |e|
                 next unless e['event_type'] == 1 # message event?
                 next unless e['content']
 
                 message = process_content(e['content'])
-                
                 BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
             end
         end
