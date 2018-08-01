@@ -11,7 +11,6 @@ class Room17Proxy
     end
 
     def listen!
-        p @ws_url
         Thread.new do
             run_websocket_loop
         end
@@ -21,7 +20,7 @@ class Room17Proxy
         cookies = login
         fkey = get_fkey('https://chat.stackoverflow.com', cookies)
         data = "roomid=17&fkey=#{fkey}"
-        resp = RestClient.post(" dodddfwwefwfefefefefef{@base_url}/ws-auth", {
+        resp = RestClient.post("{@base_url}/ws-auth", {
             roomid: 17,
             fkey: fkey
         }, {
@@ -32,8 +31,6 @@ class Room17Proxy
             "X-Requested-With" => "XMLHttpRequest",
             cookies: cookies
         }) do |resp, req, res|
-            p req.headers
-            #p resp.body
             case resp.code
             when 301, 302, 307
                 resp.follow_redirection
