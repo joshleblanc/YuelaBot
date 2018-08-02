@@ -10,7 +10,6 @@ class SoChat
     def auth!
         cookies = login
         @ws_url = get_ws_url(cookies)
-        p @ws_url
     end
 
     def on(type, callback)

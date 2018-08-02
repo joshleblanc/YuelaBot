@@ -47,6 +47,7 @@ class Room17Proxy
             so_message: e,
             discord_message: sent_message
         }
+        @history.shift if @history.length >= 100
     end
 
     def handle_edit(e)
