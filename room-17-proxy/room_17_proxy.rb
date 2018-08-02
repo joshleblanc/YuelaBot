@@ -7,6 +7,7 @@ class Room17Proxy
         @channel_id = channel_id
         @user = user
         @pass = pass
+        @history = []
     end
 
     def listen!
@@ -68,11 +69,15 @@ class Room17Proxy
             events = JSON.parse(msg.data)["r#{@roomid}"]['e']
             next unless events
             events.each do |e|
-                next unless e['event_type'] == 1 # message event?
-                next unless e['content']
-
-                message = process_content(e['content'])
-                BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
+                p e['event_type']
+                case e['event_type']
+                when 1
+                    handle_message(e)
+                when 2
+                    handle_edit(e)
+                when 10
+                    handle_delete(e)
+                end
             end
         end
 
@@ -85,6 +90,36 @@ class Room17Proxy
             sleep 3
             run_websocket
         end
+    end
+
+    def handle_message(e)
+        return unless e['content']
+        message = process_content(e['content'])
+        last = @history.last
+        sent_message = if last && last[:so_message]['user_id'] == e['user_id']
+            BOT.send_message(@channel_id, message)
+        else
+            BOT.send_message(@channel_id, "**#{e['user_name']}**\n#{message}")
+        end
+        @history << {
+            so_message: e,
+            discord_message: sent_message
+        }
+    end
+
+    def handle_edit(e)
+        edited_message = @history.find { |h| h[:so_message]['message_id'] == e['message_id'] }
+        return unless edited_message
+        message = process_content(e['content'])
+        edited_message[:discord_message] = edited_message[:discord_message].edit(message)
+    end
+
+    def handle_delete(e)
+        deleted_message = @history.find { |h| h[:so_message]['message_id'] == e['message_id']}
+        return unless deleted_message
+        discord_message = deleted_message[:discord_message]
+        content = discord_message.content
+        deleted_message[:discord_message] = discord_message.edit("#{content} [deleted]")
     end
 
     def run_websocket_loop
