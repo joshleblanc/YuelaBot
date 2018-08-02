@@ -10,14 +10,37 @@ class Room17Proxy
     def listen!
         Thread.new do
             @so_chat.auth!
-            @so_chat.on :message, method(:handle_message)
-            @so_chat.on :edit, method(:handle_edit)
-            @so_chat.on :delete, method(:handle_delete)
+            @so_chat.on :message do |e|
+                next unless e['content']
+                if is_onebox?(e['content'])
+                    handle_onebox(e)
+                else
+                    handle_message(e)
+                end
+            end
+            @so_chat.on(:edit) { |e| handle_edit(e) }
+            @so_chat.on(:delete) { |e| handle_delete(e) }
             @so_chat.run!
         end
     end
 
     private
+
+    def handle_onebox(e)
+        p 'is onebox'
+        onebox = Nokogiri::HTML(e['content'])
+        byebug
+        type = onebox.at_css('div.onebox').attributes['class'].value.split(' ')[1]
+        case type
+        when 'ob-tweet'
+            handle_tweet(e)
+        end
+        p onebox.at_css('div.onebox')
+    end
+
+    def is_onebox?(message)
+        !!Nokogiri::HTML(message).at_css('div.onebox')
+    end
 
     def process_tag!(message, tag, repl1, repl2 = nil)
         repl2 = repl1 unless repl2
@@ -36,7 +59,6 @@ class Room17Proxy
     end
 
     def handle_message(e)
-        return unless e['content']
         message = process_content(e['content'])
         last = @history.last
         unless last && last[:so_message]['user_id'] == e['user_id']

@@ -12,7 +12,7 @@ class SoChat
         @ws_url = get_ws_url(cookies)
     end
 
-    def on(type, callback)
+    def on(type, &callback)
         @listeners[type] = callback
     end
 

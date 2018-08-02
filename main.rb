@@ -10,6 +10,7 @@ require 'data_mapper'
 require 'csv'
 require 'rufus-scheduler'
 require 'faye/websocket'
+require 'byebug'
 
 require_all './models'
 require_all './commands'
