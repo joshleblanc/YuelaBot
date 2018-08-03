@@ -26,14 +26,18 @@ class Room17Proxy
 
     private
 
+    def handle_tweet(html) 
+        tweet_info = html.css('div.ob-tweet-info > a')
+        BOT.send_message(@channel_id, tweet_info[1].attr('href'))
+    end
+
     def handle_onebox(e)
         p 'is onebox'
         onebox = Nokogiri::HTML(e['content'])
-        byebug
         type = onebox.at_css('div.onebox').attributes['class'].value.split(' ')[1]
         case type
         when 'ob-tweet'
-            handle_tweet(e)
+            handle_tweet(onebox)
         end
         p onebox.at_css('div.onebox')
     end
