@@ -32,14 +32,12 @@ class Room17Proxy
     end
 
     def handle_onebox(e)
-        p 'is onebox'
         onebox = Nokogiri::HTML(e['content'])
         type = onebox.at_css('div.onebox').attributes['class'].value.split(' ')[1]
         case type
         when 'ob-tweet'
             handle_tweet(onebox)
         end
-        p onebox.at_css('div.onebox')
     end
 
     def is_onebox?(message)
