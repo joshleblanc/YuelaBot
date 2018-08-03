@@ -61,7 +61,8 @@ class Room17Proxy
     def process_content(message)
         message = CGI.unescapeHTML(message)
         html = Nokogiri::HTML(message)
-        if html.at_css('div'              message = html.at_css('div').inner_html.gsub(' <br> ', "\n")
+        if html.at_css('div')
+            message = html.at_css('div').inner_html.gsub(' <br> ', "\n")
         end
         process_tag!(message, 'code', '`')
         process_tag!(message, 'pre', "```javascript\n", "```\n")
