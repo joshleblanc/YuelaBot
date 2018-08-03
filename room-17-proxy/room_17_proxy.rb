@@ -31,12 +31,20 @@ class Room17Proxy
         BOT.send_message(@channel_id, tweet_info[1].attr('href'))
     end
 
+    def handle_image(html)
+        byebug
+        img_url = html.at_css('img').attr('src')
+        BOT.send_message(@channel_id, "http:#{img_url}")
+    end
+
     def handle_onebox(e)
         onebox = Nokogiri::HTML(e['content'])
         type = onebox.at_css('div.onebox').attributes['class'].value.split(' ')[1]
         case type
         when 'ob-tweet'
             handle_tweet(onebox)
+        when 'ob-image'
+            handle_image(onebox)
         end
     end
 
