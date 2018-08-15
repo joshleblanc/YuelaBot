@@ -15,7 +15,7 @@ module Commands
             def command
                 lambda do |event, *args|
                     message = args.join(' ')
-                    message.chars.map { |c| rand > 0.5 ? c.upcase : c }.join
+                    message.downcase.chars.map { |c| rand > 0.5 ? c.upcase : c }.join
                 end
             end
         end
