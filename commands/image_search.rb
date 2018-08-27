@@ -40,6 +40,9 @@ module Commands
     end
 
     def run!(event, query)
+      if query == '^'
+        query = event.channel.history(2).last.content
+      end
       @images = get_images(query)
       @user = event.user
       if @images.length > 0
