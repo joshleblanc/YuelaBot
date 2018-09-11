@@ -28,7 +28,6 @@ class SoChat
                 events = JSON.parse(msg.data)["r#{@room_id}"]['e']
                 next unless events
                 events.each do |e|
-                    p e['event_type']
                     case e['event_type']
                     when 1
                         @listeners[:message]&.call(e)
@@ -42,7 +41,12 @@ class SoChat
 
             ws.on(:open) { |e| p 'ws opened' }
 
-            ws.on(:error) { |e| p e.data, e.code, e.reason }
+            ws.on(:error) do |e|
+                p 'ws error'
+                p e.data, e.code, e.reason
+                sleep 3
+                run!
+            end
 
             ws.on(:close) do |e| 
                 p 'ws closed'
