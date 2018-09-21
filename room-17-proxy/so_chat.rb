@@ -58,7 +58,7 @@ class SoChat
         end
 
         ws.on(:close) do |e| 
-            p 'ws closed'
+            p 'ws closed', e
             sleep 60
             inner_run
         end
