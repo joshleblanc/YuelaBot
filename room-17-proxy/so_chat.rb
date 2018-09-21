@@ -28,7 +28,8 @@ class SoChat
         ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
             headers: {
                 "origin" => @base_url
-            }    
+            },
+            ping: 60    
         })
 
         ws.on :message do |msg|
