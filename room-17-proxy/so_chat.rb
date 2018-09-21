@@ -28,10 +28,9 @@ class SoChat
         ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
             headers: {
                 "origin" => @base_url
-            },
-            ping: 60    
+            }   
         })
-
+        
         ws.on :message do |msg|
             events = JSON.parse(msg.data)["r#{@room_id}"]['e']
             next unless events
@@ -47,18 +46,20 @@ class SoChat
             end
         end
 
-        ws.on(:open) { |e| p 'ws opened' }
-
+        ws.on(:open) do |e| 
+            p 'ws opened' 
+        end
+        
         ws.on(:error) do |e|
             p 'ws error'
             p e.data, e.code, e.reason
-            sleep 3
+            sleep 60
             inner_run
         end
 
         ws.on(:close) do |e| 
             p 'ws closed'
-            sleep 3
+            sleep 60
             inner_run
         end
     end
