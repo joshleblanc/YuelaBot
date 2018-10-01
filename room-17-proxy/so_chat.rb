@@ -53,14 +53,10 @@ class SoChat
         ws.on(:error) do |e|
             p 'ws error'
             p e.data, e.code, e.reason
-            sleep 60
-            inner_run
         end
 
         ws.on(:close) do |e| 
             p 'ws closed', e
-            sleep 60
-            inner_run
         end
     end
 
