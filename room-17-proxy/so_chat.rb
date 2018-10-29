@@ -18,41 +18,47 @@ class SoChat
 
     def run!
         EM.run do
-            ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
-                headers: {
-                    "origin" => @base_url
-                }    
-            })
-
-            ws.on :message do |msg|
-                events = JSON.parse(msg.data)["r#{@room_id}"]['e']
-                next unless events
-                events.each do |e|
-                    p e['event_type']
-                    case e['event_type']
-                    when 1
-                        @listeners[:message]&.call(e)
-                    when 2
-                        @listeners[:edit]&.call(e)
-                    when 10
-                        @listeners[:delete]&.call(e)
-                    end
-                end
-            end
-
-            ws.on(:open) { |e| p 'ws opened' }
-
-            ws.on(:error) { |e| p e.data, e.code, e.reason }
-
-            ws.on(:close) do |e| 
-                p 'ws closed'
-                sleep 3
-                run!
-            end
+            inner_run
         end
     end
 
     private 
+
+    def inner_run
+        ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
+            headers: {
+                "origin" => @base_url
+            }   
+        })
+        
+        ws.on :message do |msg|
+            events = JSON.parse(msg.data)["r#{@room_id}"]['e']
+            next unless events
+            events.each do |e|
+                case e['event_type']
+                when 1
+                    @listeners[:message]&.call(e)
+                when 2
+                    @listeners[:edit]&.call(e)
+                when 10
+                    @listeners[:delete]&.call(e)
+                end
+            end
+        end
+
+        ws.on(:open) do |e| 
+            p 'ws opened' 
+        end
+        
+        ws.on(:error) do |e|
+            p 'ws error'
+            p e.data, e.code, e.reason
+        end
+
+        ws.on(:close) do |e| 
+            p 'ws closed', e
+        end
+    end
 
     def get_fkey(path, cookies = nil)
         resp = RestClient.get(path, cookies: cookies) 

@@ -9,18 +9,22 @@ class Room17Proxy
 
     def listen!
         Thread.new do
-            @so_chat.auth!
-            @so_chat.on :message do |e|
-                next unless e['content']
-                if is_onebox?(e['content'])
-                    handle_onebox(e)
-                else
-                    handle_message(e)
+            Thread.current.abort_on_exception = true
+            loop do
+                p 'authenticating'
+                @so_chat.auth!
+                @so_chat.on :message do |e|
+                    next unless e['content']
+                    if is_onebox?(e['content'])
+                        handle_onebox(e)
+                    else
+                        handle_message(e)
+                    end
                 end
+                @so_chat.on(:edit) { |e| handle_edit(e) }
+                @so_chat.on(:delete) { |e| handle_delete(e) }
+                @so_chat.run!
             end
-            @so_chat.on(:edit) { |e| handle_edit(e) }
-            @so_chat.on(:delete) { |e| handle_delete(e) }
-            @so_chat.run!
         end
     end
 
@@ -32,7 +36,6 @@ class Room17Proxy
     end
 
     def handle_image(html)
-        byebug
         img_url = html.at_css('img').attr('src')
         BOT.send_message(@channel_id, "http:#{img_url}")
     end

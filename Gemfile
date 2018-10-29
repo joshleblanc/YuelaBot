@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'discordrb', git: 'https://github.com/meew0/discordrb.git'
+gem 'discordrb', git: 'https://github.com/HorizonShadow/discordrb', branch: 'edit'
 gem 'google-api-client'
 gem 'rbnacl'
 gem 'rbnacl-libsodium'
