@@ -10,7 +10,6 @@ module Commands
           description: 'Look up a word in the English dictionaries',
           usage: 'define word',
           min_args: 1,
-          max_args: 1
         }
       end
 
