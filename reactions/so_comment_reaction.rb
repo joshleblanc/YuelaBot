@@ -4,7 +4,7 @@ module Reactions
         include Discordrb::Webhooks
   
         def regex
-          /https?:\/\/stackoverflow\.com\/questions\/\d+\/.+?#comment(\d+)_\d+/
+          /https?:\/\/stackoverflow\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
         end
   
         def attributes
@@ -18,16 +18,20 @@ module Reactions
             match_data = event.message.content.match(self.regex)
             url = match_data[0]
             messageid = match_data.captures[0]
+
+            p url, messageid, match_data.captures[1]
   
             body = Nokogiri::HTML(open(url))
+            comments = Nokogiri::HTML(open("https://stackoverflow.com/posts/#{match_data.captures[1]}/comments"))
   
-            message = body.at_css("#comment-#{messageid}")
+            message = comments.at_css("#comment-#{messageid}")
             question = body.at_css('#question-header .question-hyperlink')
             user = message.at_css('a.comment-user')
             user_link = message.at_css('a.comment-user').attr('href')
             comment = message.at_css('span.comment-copy').text
-            timestamp = body.at_css('span.comment-date span').attr('title')
-            updoots = message.at_css('span.cool').text.to_i
+            timestamp = comments.at_css('span.comment-date span').attr('title')
+            updoots = message.at_css('span.cool')
+            updoots = updoots ? updoots.text.to_i : 0 
   
             embed = Embed.new(title: question.text)
             embed.description = comment
