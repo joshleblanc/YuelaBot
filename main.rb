@@ -11,6 +11,7 @@ require 'csv'
 require 'rufus-scheduler'
 require 'faye/websocket'
 require 'byebug'
+require 'mtg_sdk'
 
 require_all './models'
 require_all './commands'
@@ -89,7 +90,7 @@ scheduler.every '1d', first: :now do
   birthday_routine(BOT)
 end
 
-room17 = Room17Proxy.new(CONFIG['channel_id'], CONFIG['room_id'], CONFIG['so_user'], CONFIG['so_pass'])
-room17.listen!
+# room17 = Room17Proxy.new(CONFIG['channel_id'], CONFIG['room_id'], CONFIG['so_user'], CONFIG['so_pass'])
+# room17.listen!
 
 BOT.run

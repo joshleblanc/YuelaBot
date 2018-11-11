@@ -13,6 +13,7 @@ gem 'rufus-scheduler'
 gem 'tzinfo-data'
 gem 'faye-websocket'
 gem 'rest-client'
+gem 'mtg_sdk'
 
 group :development do
     gem 'byebug'
