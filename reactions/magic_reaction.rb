@@ -16,6 +16,7 @@ module Reactions
             def build_embed(card)
                 embed = Embed.new(title: card.name)
                 embed.color = 'black'
+                embed.description = card.description
                 embed.url = "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{card.multiverse_id}"
                 embed.footer = EmbedFooter.new(text: card.set_name)
                 embed.image = EmbedImage.new(url: card.image_url)
