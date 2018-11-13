@@ -15,7 +15,7 @@ module Reactions
 
             def build_embed(card)
                 embed = Embed.new(title: card.name)
-                embed.color = card.colors.first
+                embed.color = 'black'
                 embed.url = "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=#{card.multiverse_id}"
                 embed.footer = EmbedFooter.new(text: card.set_name)
                 embed.image = EmbedImage.new(url: card.image_url)
@@ -27,7 +27,9 @@ module Reactions
                     matches = event.message.content.scan(self.regex)
                     matches = matches.flatten.uniq
                     matches.each do |m|
-                        card = MTG::Card.where(name: %Q{"#{m}"}).all.find { |c| c.multiverse_id }
+                        cards = MTG::Card.where(name: %Q{#{m}}).all
+                        card = cards.find { |c| c.multiverse_id }
+
                         if card
                             event.respond nil, false, build_embed(card)
                         end
