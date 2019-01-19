@@ -13,6 +13,7 @@ gem 'rufus-scheduler'
 gem 'tzinfo-data'
 gem 'faye-websocket'
 gem 'rest-client'
+gem 'therubyracer'
 
 group :development do
     gem 'byebug'
