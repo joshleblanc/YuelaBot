@@ -11,6 +11,7 @@ require 'csv'
 require 'rufus-scheduler'
 require 'faye/websocket'
 require 'byebug'
+require 'mtg_sdk'
 
 require_all './models'
 require_all './commands'

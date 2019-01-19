@@ -10,13 +10,12 @@ module Commands
           description: 'Look up a word in the English dictionaries',
           usage: 'define word',
           min_args: 1,
-          max_args: 1
         }
       end
 
       def command
-        lambda do |event, term|
-          term = URI.encode_www_form_component(term)
+        lambda do |event, *term|
+          term = URI.encode_www_form_component(term.join(' '))
 
           wordnik_url = "https://api.wordnik.com/v4/word.json/#{term}/definitions"
           wordnik_headers = {

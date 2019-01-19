@@ -14,6 +14,7 @@ gem 'tzinfo-data'
 gem 'faye-websocket'
 gem 'rest-client'
 gem 'therubyracer'
+gem 'mtg_sdk'
 
 group :development do
     gem 'byebug'

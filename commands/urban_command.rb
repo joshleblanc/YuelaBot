@@ -23,12 +23,12 @@ module Commands
           definition = body['list'].first
           if definition
             embed = Embed.new(
-                title: definition['word'],
-                description: definition['definition'],
-                url: definition['permalink'],
-                author: EmbedAuthor.new(name: definition['author']),
-                timestamp: Time.parse(definition['written_on']),
-                fields: [EmbedField.new(name: 'Example', value: definition['example'])]
+              title: definition['word'],
+              description: definition['definition'],
+              url: definition['permalink'],
+              author: EmbedAuthor.new(name: definition['author']),
+              timestamp: Time.parse(definition['written_on']),
+              fields: [EmbedField.new(name: 'Example', value: definition['example'])]
             )
             event.respond nil, false, embed
           else

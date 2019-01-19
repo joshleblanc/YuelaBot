@@ -18,7 +18,7 @@ module Commands
         is = ImageSearch.new
         lambda do |event, *args|
           is.reset!
-          is.run!(event, args.join)
+          is.run!(event, args.join(' '))
         end
       end
     end

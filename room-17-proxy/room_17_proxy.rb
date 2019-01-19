@@ -72,6 +72,7 @@ class Room17Proxy
         process_tag!(message, 'i', '*')
         process_tag!(message, 'b', '**')
         process_tag!(message, 'strike', '~~')
+        process_tag!(message, 'a', '')
         message
     end
 
