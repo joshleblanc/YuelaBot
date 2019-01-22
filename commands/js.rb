@@ -4,7 +4,7 @@ module Commands
             include Discordrb::Webhooks
 
             def name
-                [:js, :eval]
+                [:js, :eval, :>]
             end
 
             def attributes
