@@ -2,7 +2,6 @@ module Commands
     class JSCommand
         class << self
             include Discordrb::Webhooks
-            require 'v8'
 
             def name
                 [:js, :eval]
@@ -19,7 +18,7 @@ module Commands
                 lambda do |event, *args|
                     code = args.join(' ')
 
-                    cxt = V8::Context.new timeout: 3000
+                    cxt = MiniRacer::Context.new timeout: 3000
 
                     begin
                         cxt.eval code

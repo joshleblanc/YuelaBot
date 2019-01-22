@@ -13,7 +13,7 @@ gem 'rufus-scheduler'
 gem 'tzinfo-data'
 gem 'faye-websocket'
 gem 'rest-client'
-gem 'therubyracer'
+gem 'mini_racer'
 gem 'mtg_sdk'
 
 group :development do
