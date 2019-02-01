@@ -4,7 +4,7 @@ module Reactions
         include Discordrb::Webhooks
   
         def regex
-          /https?:\/\/stackoverflow\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
+          /https?:\/\/(?:.*\.)?stack(overflow|exchange)\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
         end
   
         def attributes
