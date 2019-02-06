@@ -19,10 +19,10 @@ module Reactions
             url = match_data[0]
             messageid = match_data.captures[0]
 
-            p url, messageid, match_data.captures[1]
-  
+            p url, messageid, match_data.captures[1], match_data.captures
+            uri = URI.parse(url)
             body = Nokogiri::HTML(open(url))
-            comments = Nokogiri::HTML(open("https://stackoverflow.com/posts/#{match_data.captures[1]}/comments"))
+            comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"))
   
             message = comments.at_css("#comment-#{messageid}")
             question = body.at_css('#question-header .question-hyperlink')
