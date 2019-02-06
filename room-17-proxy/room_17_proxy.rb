@@ -10,20 +10,24 @@ class Room17Proxy
     def listen!
         Thread.new do
             Thread.current.abort_on_exception = true
-            loop do
-                p 'authenticating'
-                @so_chat.auth!
-                @so_chat.on :message do |e|
-                    next unless e['content']
-                    if is_onebox?(e['content'])
-                        handle_onebox(e)
-                    else
-                        handle_message(e)
+            begin 
+                loop do
+                    p 'authenticating'
+                    @so_chat.auth!
+                    @so_chat.on :message do |e|
+                        next unless e['content']
+                        if is_onebox?(e['content'])
+                            handle_onebox(e)
+                        else
+                            handle_message(e)
+                        end
                     end
+                    @so_chat.on(:edit) { |e| handle_edit(e) }
+                    @so_chat.on(:delete) { |e| handle_delete(e) }
+                    @so_chat.run!
                 end
-                @so_chat.on(:edit) { |e| handle_edit(e) }
-                @so_chat.on(:delete) { |e| handle_delete(e) }
-                @so_chat.run!
+            rescue RestClient::NotFound
+                p "SO Chat authorization failed"
             end
         end
     end
