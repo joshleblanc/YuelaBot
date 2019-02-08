@@ -28,7 +28,7 @@ so_user=<A SO chat user>
 so_pass=<The password for the SO chat user>
 ```
 
-One the file is there, you can run the bot with:
+Once the file is there, you can run the bot with:
 
 `bundle exec ruby main.rb`
 
