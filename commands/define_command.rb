@@ -13,9 +13,8 @@ module Commands
         }
       end
 
-      def command
-        lambda do |event, *term|
-          term = URI.encode_www_form_component(term.join(' '))
+      def command(event, *term)
+        term = URI.encode_www_form_component(term.join(' '))
 
           wordnik_url = "https://api.wordnik.com/v4/word.json/#{term}/definitions"
           wordnik_headers = {
@@ -34,7 +33,6 @@ module Commands
           else
             "No results found for #{term}"
           end
-        end
       end
     end
   end

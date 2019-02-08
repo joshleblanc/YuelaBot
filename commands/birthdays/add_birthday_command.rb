@@ -14,27 +14,25 @@ module Commands
         }
       end
 
-      def command
-        lambda do |event, user, month, day|
-          begin
-            mention = event.message.mentions.first
+      def command(event, user, month, day)
+        begin
+          mention = event.message.mentions.first
 
-            user = User.get(mention.id)
-            if Birthday.first(user: user, server: event.server.id)
-              "A birthday already exists for that user"
-            else
-              user = User.first_or_new(id: mention.id)
-              user.name = mention.name
-              Birthday.create(
-                user: user,
-                month: month.to_i,
-                day: day.to_i,
-                server: event.server.id
-              )
-            end
-          rescue StandardError => e
-            "That's not going to work"
+          user = User.get(mention.id)
+          if Birthday.first(user: user, server: event.server.id)
+            "A birthday already exists for that user"
+          else
+            user = User.first_or_new(id: mention.id)
+            user.name = mention.name
+            Birthday.create(
+              user: user,
+              month: month.to_i,
+              day: day.to_i,
+              server: event.server.id
+            )
           end
+        rescue StandardError => e
+          "That's not going to work"
         end
       end
     end

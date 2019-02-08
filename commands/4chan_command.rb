@@ -14,10 +14,8 @@ module Commands
         }
       end
 
-      def command
-        lambda do |event, *args|
-          Random4ChanCommand.new(args[0]).run(event)
-        end
+      def command(event, *args)
+        Random4ChanCommand.new(args[0]).run(event)
       end
     end
 

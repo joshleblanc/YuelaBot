@@ -14,28 +14,26 @@ module Commands
         }
       end
 
-      def command
-        lambda do |e, *name|
-          name = name.join(' ')
-          break "That color role doesn't exist" unless RoleColor.first(name: name, server: e.server.id)
-          role = e.author.roles.find { |r| RoleColor.first(name: r.name, server: e.server.id) }
-          if role
-            e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|
-              if confirm_event.message.content[0].downcase == 'y'
-                confirm_event.user.modify_roles(
-                    e.server.roles.find { |r| r.name == name },
-                    role
-                )
-                confirm_event << "Role #{role.name} removed, and role #{name} added"
-              end
+      def command(e, *name)
+        name = name.join(' ')
+        return "That color role doesn't exist" unless RoleColor.first(name: name, server: e.server.id)
+        role = e.author.roles.find { |r| RoleColor.first(name: r.name, server: e.server.id) }
+        if role
+          e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|
+            if confirm_event.message.content[0].downcase == 'y'
+              confirm_event.user.modify_roles(
+                  e.server.roles.find { |r| r.name == name },
+                  role
+              )
+              confirm_event << "Role #{role.name} removed, and role #{name} added"
             end
-            "Adding this role will remove #{role.name}, are you sure you want to continue? (Y/N)"
-          else
-            e.user.add_role(
-                e.server.roles.find { |r| r.name == name },
-            )
-            "Role added!"
           end
+          "Adding this role will remove #{role.name}, are you sure you want to continue? (Y/N)"
+        else
+          e.user.add_role(
+              e.server.roles.find { |r| r.name == name },
+          )
+          "Role added!"
         end
       end
     end

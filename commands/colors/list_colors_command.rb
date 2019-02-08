@@ -14,16 +14,14 @@ module Commands
         }
       end
 
-      def command
-        lambda do |e|
-          colors = RoleColor.all(server: e.server.id)
-          e << "Available colors:"
-          e << '```'
-          colors.each do |c|
-            e << "#{c.name} #{c.color}"
-          end
-          e << '```'
+      def command(e)
+        colors = RoleColor.all(server: e.server.id)
+        e << "Available colors:"
+        e << '```'
+        colors.each do |c|
+          e << "#{c.name} #{c.color}"
         end
+        e << '```'
       end
     end
   end

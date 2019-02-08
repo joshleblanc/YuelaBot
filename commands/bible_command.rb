@@ -13,17 +13,15 @@ module Commands
                 }
             end
 
-            def command
-                lambda do |e, book, *query|
-                    req = RestClient.get("http://bible-api.com/#{book}+#{query.join}")
-                    resp = JSON.parse req.body
-                    embed = Embed.new(
-                        title: resp["reference"],
-                        description: resp["text"],
-                        color: "#FF0000"
-                    )
-                    e.respond nil, false, embed
-                end
+            def command(e, book, *query)
+                req = RestClient.get("http://bible-api.com/#{book}+#{query.join}")
+                resp = JSON.parse req.body
+                embed = Embed.new(
+                    title: resp["reference"],
+                    description: resp["text"],
+                    color: "#FF0000"
+                )
+                e.respond nil, false, embed
             end
         end
     end

@@ -16,20 +16,18 @@ module Commands
         }
       end
 
-      def command
-        lambda do |e, user|
-          begin
-            user = User.get(user.id)
-            birthday = user && user.birthdays.first(server: e.server.id)
-            if user && birthday
-              birthday.destroy
-              "#{user.name}'s birthday has been forgotten"
-            else
-              "User does not have a birthday registered"
-            end
-          rescue
-            "Can't do anything with that"
+      def command(e, user)
+        begin
+          user = User.get(user.id)
+          birthday = user && user.birthdays.first(server: e.server.id)
+          if user && birthday
+            birthday.destroy
+            "#{user.name}'s birthday has been forgotten"
+          else
+            "User does not have a birthday registered"
           end
+        rescue
+          "Can't do anything with that"
         end
       end
     end

@@ -15,14 +15,12 @@ module Commands
         }
       end
 
-      def command
-        lambda do |_, id|
-          begin
-            UserReaction.get(id).destroy
-            "Reaction #{id} deleted"
-          rescue
-            "Mr. Stark, I don't feel so good"
-          end
+      def command(_, id)
+        begin
+          UserReaction.get(id).destroy
+          "Reaction #{id} deleted"
+        rescue
+          "Mr. Stark, I don't feel so good"
         end
       end
     end

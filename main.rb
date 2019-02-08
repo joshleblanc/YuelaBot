@@ -53,14 +53,14 @@ Commands.constants.map do |c|
   command = Commands.const_get(c)
   command.is_a?(Class) ? command : nil
 end.compact.each do |command|
-  BOT.command(command.name, command.attributes, &command.command)
+  BOT.command(command.name, command.attributes, &command.method(:command))
 end
 
 Reactions.constants.map do |r|
   reaction = Reactions.const_get(r)
   reaction.is_a?(Class) ? reaction : nil
 end.compact.each do |reaction|
-  BOT.message(reaction.attributes, &reaction.command)
+  BOT.message(reaction.attributes, &reaction.method(:command))
 end
 
 BOT.message do |event|

@@ -14,10 +14,8 @@ module Commands
         }
       end
 
-      def command
-        lambda do |event, *args|
-          'https://github.com/HorizonShadow/YuelaBot'
-        end
+      def command(event, *args)
+        'https://github.com/HorizonShadow/YuelaBot'
       end
     end
   end

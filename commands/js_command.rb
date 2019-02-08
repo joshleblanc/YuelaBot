@@ -14,17 +14,14 @@ module Commands
                 }
             end 
 
-            def command
-                lambda do |event, *args|
-                    code = args.join(' ')
+            def command(event, *args)
+                code = args.join(' ')
+                cxt = MiniRacer::Context.new timeout: 3000
 
-                    cxt = MiniRacer::Context.new timeout: 3000
-
-                    begin
-                        cxt.eval code
-                    rescue StandardError => bang
-                        bang
-                    end
+                begin
+                    cxt.eval code
+                rescue StandardError => bang
+                    bang
                 end
             end
         end

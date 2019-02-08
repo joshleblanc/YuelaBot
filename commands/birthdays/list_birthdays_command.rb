@@ -14,14 +14,12 @@ module Commands
         }
       end
 
-      def command
-        lambda do |e|
-          birthdays = Birthday.all(server: e.server.id, :order => [:month.asc, :day.asc]).map(&:to_s).join("\n")
-          if birthdays.empty?
-            "No birthdays found"
-          else
-            e.user.pm birthdays
-          end
+      def command(e)
+        birthdays = Birthday.all(server: e.server.id, :order => [:month.asc, :day.asc]).map(&:to_s).join("\n")
+        if birthdays.empty?
+          "No birthdays found"
+        else
+          e.user.pm birthdays
         end
       end
     end

@@ -12,11 +12,9 @@ module Commands
                 }
             end
 
-            def command
-                lambda do |event, *args|
-                    message = args.join(' ')
-                    message.downcase.chars.map { |c| rand > 0.5 ? c.upcase : c }.join
-                end
+            def command(event, *args)
+                message = args.join(' ')
+                message.downcase.chars.map { |c| rand > 0.5 ? c.upcase : c }.join
             end
         end
     end

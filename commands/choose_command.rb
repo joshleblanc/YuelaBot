@@ -13,10 +13,8 @@ module Commands
         }
       end
 
-      def command
-        lambda do |_, *choices|
-          choices.join(' ').split(/,|\bor\b/).map(&:strip).delete_if(&:empty?).sample.squeeze(' ')
-        end
+      def command(_, *choices)
+        choices.join(' ').split(/,|\bor\b/).map(&:strip).delete_if(&:empty?).sample.squeeze(' ')
       end
     end
   end

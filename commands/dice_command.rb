@@ -13,10 +13,8 @@ module Commands
         }
       end
 
-      def command
-        lambda do |_, *args|
-          Random.rand(args[0].to_i) + 1
-        end
+      def command(_, *args)
+        Random.rand(args[0].to_i) + 1
       end
     end
   end

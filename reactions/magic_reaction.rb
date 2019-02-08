@@ -23,17 +23,15 @@ module Reactions
                 embed
             end
 
-            def command
-                lambda do |event|
-                    matches = event.message.content.scan(self.regex)
-                    matches = matches.flatten.uniq
-                    matches.each do |m|
-                        cards = MTG::Card.where(name: %Q{#{m}}).all
-                        card = cards.find { |c| c.multiverse_id }
+            def command(event)
+                matches = event.message.content.scan(self.regex)
+                matches = matches.flatten.uniq
+                matches.each do |m|
+                    cards = MTG::Card.where(name: %Q{#{m}}).all
+                    card = cards.find { |c| c.multiverse_id }
 
-                        if card
-                            event.respond nil, false, build_embed(card)
-                        end
+                    if card
+                        event.respond nil, false, build_embed(card)
                     end
                 end
             end

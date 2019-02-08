@@ -13,20 +13,17 @@ module Commands
         }
       end
 
-      def command
-        lambda do |event, time, *args|
-          message = args.join(' ')
-
-          begin
-            Rufus::Scheduler.singleton.in time do
-              event.respond "<@#{event.author.id}> #{message}"
-            end
-            event.respond "Okay <@#{event.author.id}>, I'll remind you to #{message} in #{time}"
-          rescue Exception => err
-            event.respond err.message
+      def command(event, time, *args)
+        message = args.join(' ')
+        begin
+          Rufus::Scheduler.singleton.in time do
+            event.respond "<@#{event.author.id}> #{message}"
           end
-          nil
+          event.respond "Okay <@#{event.author.id}>, I'll remind you to #{message} in #{time}"
+        rescue Exception => err
+          event.respond err.message
         end
+        nil
       end
     end
   end

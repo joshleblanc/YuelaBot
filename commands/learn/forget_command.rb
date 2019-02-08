@@ -15,16 +15,14 @@ module Commands
         }
       end
 
-      def command
-        lambda do |_, name|
-          command = UserCommand.first(name: name)
-          if command
-            command.destroy
-            BOT.remove_command(command.name.to_sym)
-            "Command #{command.name} forgotten"
-          else
-            "Command #{args[0]} does not exist"
-          end
+      def command(_, name)
+        command = UserCommand.first(name: name)
+        if command
+          command.destroy
+          BOT.remove_command(command.name.to_sym)
+          "Command #{command.name} forgotten"
+        else
+          "Command #{args[0]} does not exist"
         end
       end
     end
