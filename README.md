@@ -17,6 +17,7 @@ reddit_user=<Your reddit username>
 reddit_pass=<Your reddit password>
 admins=<A comma delimited list of discord user ids, who can do administration tasks on the bot>
 open_weather_key=<An open weather map api key>
+wordnik_key=<API key for wordnik>
 ```
 
 The following keys are optional, and are only used for proxying chat.stackoverflow.com to a discord channel:
