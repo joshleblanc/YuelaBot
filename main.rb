@@ -28,7 +28,7 @@ DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize.auto_upgrade!
 
 
-CONFIG = File.read('config').lines.each_with_object({}) do |l,o|
+CONFIG = File.read('config/config').lines.each_with_object({}) do |l,o|
   parts = l.split('=')
   o[parts[0]] = parts[1].strip
 end
