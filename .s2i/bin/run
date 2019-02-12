@@ -1,3 +1,5 @@
 #!/bin/bash
 
+ls /opt/app-root/src/config
+ls /opt/app-root/src
 exec bundle exec ruby main.rb
