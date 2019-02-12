@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cp -Rf /tmp/src/. ./
-
-bundle install --deployment
-
-fix-permissions ./

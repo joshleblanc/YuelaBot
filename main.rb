@@ -27,20 +27,14 @@ DataMapper.repository(:default).adapter.select("PRAGMA journal_mode=WAL")
 DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize.auto_upgrade!
 
-
-CONFIG = File.read('config/config').lines.each_with_object({}) do |l,o|
-  parts = l.split('=')
-  o[parts[0]] = parts[1].strip
-end
-
 BOT = Discordrb::Commands::CommandBot.new({
-  token: CONFIG['discord'],
+  token: ENV['discord'],
   prefix: '!!',
   log_level: :debug,
   parse_edited: true
 })
 
-CONFIG['admins'].split(',').each do |admin|
+ENV['admins'].split(',').each do |admin|
   BOT.set_user_permission(admin.to_i, 1)
 end
 
@@ -91,7 +85,7 @@ scheduler.every '1d', first: :now do
   birthday_routine(BOT)
 end
 
-room17 = Room17Proxy.new(CONFIG['channel_id'], CONFIG['room_id'], CONFIG['so_user'], CONFIG['so_pass'])
+room17 = Room17Proxy.new(ENV['channel_id'], ENV['room_id'], ENV['so_user'], ENV['so_pass'])
 room17.listen!
 
 BOT.run

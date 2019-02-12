@@ -4,7 +4,7 @@
 
 # How to run
 
-There needs to be a file called `config` in the root directory.
+There needs to be a file called `config` in the `config` directory.
 This file is functionally a .env file, with the following keys:
 
 ```

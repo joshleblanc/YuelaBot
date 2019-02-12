@@ -17,10 +17,10 @@ module Commands
       def command(event, *args)
         session = Redd.it(
           user_agent: 'Redd:YuelaBot (by /u/horizonshadow)',
-          client_id: CONFIG['reddit_clientid'],
-          secret: CONFIG['reddit_secret'],
-          username: CONFIG['reddit_user'],
-          password: CONFIG['reddit_pass']
+          client_id: ENV['reddit_clientid'],
+          secret: ENV['reddit_secret'],
+          username: ENV['reddit_user'],
+          password: ENV['reddit_pass']
         )
         post = session.subreddit(args[0]).hot(limit: 100).to_a.sample
         embed = Discordrb::Webhooks::Embed.new

@@ -22,7 +22,7 @@ module Commands
             includeRelated: true,
             useCanonical: false,
             includeTags: false,
-            api_key: CONFIG['wordnik_key']
+            api_key: ENV['wordnik_key']
           }
 
           body = JSON.parse RestClient.get(wordnik_url, params: wordnik_headers)

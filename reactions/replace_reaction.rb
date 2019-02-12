@@ -8,7 +8,7 @@ module Reactions
       end
 
       def command(event)
-        messages = JSON.parse(Discordrb::API::Channel.messages(CONFIG['discord'], event.channel.id, 100).body)
+        messages = JSON.parse(Discordrb::API::Channel.messages(ENV['discord'], event.channel.id, 100).body)
         message = event.message.content
         parts = message.split('/', -1)
         options = 0

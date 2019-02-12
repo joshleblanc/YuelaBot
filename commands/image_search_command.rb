@@ -26,10 +26,10 @@ module Commands
     def initialize
       @index = 0
       @images = []
-      @engine_id = CONFIG['search_id']
+      @engine_id = ENV['search_id']
       @embed = Embed.new(title: "Image Search Results")
       @service = Google::Apis::CustomsearchV1::CustomsearchService.new
-      @service.key = CONFIG['google']
+      @service.key = ENV['google']
     end
 
     def reset!
