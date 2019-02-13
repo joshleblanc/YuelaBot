@@ -13,6 +13,7 @@ require 'faye/websocket'
 require 'byebug'
 require 'mtg_sdk'
 require 'mini_racer'
+require 'dotenv/load'
 
 require_all './models'
 require_all './commands'

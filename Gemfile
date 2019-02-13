@@ -15,6 +15,7 @@ gem 'faye-websocket'
 gem 'rest-client'
 gem 'mini_racer'
 gem 'mtg_sdk'
+gem 'dotenv'
 
 group :development do
     gem 'byebug'
