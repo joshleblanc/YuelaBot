@@ -1,6 +1,5 @@
 .env
 .git
 .gitignore
-Dockerfile
 heroku.yml
 README.md

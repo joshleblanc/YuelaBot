@@ -51,6 +51,9 @@ GEM
       dm-validations (~> 1.2.0)
     data_objects (0.10.17)
       addressable (~> 2.1)
+    debase (0.2.2)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.4)
     declarative (0.0.10)
     declarative-option (0.1.0)
     descendants_tracker (0.0.4)
@@ -192,6 +195,7 @@ GEM
     parallel (1.12.1)
     public_suffix (3.0.3)
     raabro (1.1.6)
+    rake (12.3.2)
     rbnacl (3.4.0)
       ffi
     rbnacl-libsodium (1.0.16)
@@ -215,6 +219,8 @@ GEM
     retriable (3.1.2)
     roar (1.1.0)
       representable (~> 3.0.0)
+    ruby-debug-ide (0.6.1)
+      rake (>= 0.8.1)
     rufus-scheduler (3.5.2)
       fugit (~> 1.1, >= 1.1.5)
     signet (0.9.1)
@@ -256,6 +262,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   data_mapper
+  debase
   discordrb!
   dm-sqlite-adapter
   faye-websocket
@@ -268,8 +275,9 @@ DEPENDENCIES
   redd!
   require_all
   rest-client
+  ruby-debug-ide
   rufus-scheduler
   tzinfo-data
 
 BUNDLED WITH
-   1.16.3
+   1.17.2

@@ -1,9 +1,14 @@
-from ruby:2.5
+FROM ruby:2.5
 
-run apt update && apt -y install libsodium-dev
-copy Gemfile Gemfile.lock ./
-run bundle install
 
-copy . .
+RUN mkdir /app
+WORKDIR /app
 
-cmd ["bundle", "exec", "ruby", "main.rb"]
+RUN apt update && apt -y install libsodium-dev
+ADD Gemfile ./Gemfile
+ADD Gemfile.lock ./Gemfile.lock
+RUN bundle install
+
+ADD . .
+
+CMD ["bundle", "exec", "ruby", "main.rb"]

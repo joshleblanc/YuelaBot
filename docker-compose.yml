@@ -2,5 +2,8 @@ version: '3'
 services:
   yuela:
     build: .
+    command: bundle exec ruby main.rb
+    volumes:
+      - .:/app
     env_file:
       - .env
