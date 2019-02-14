@@ -2,13 +2,14 @@ module Commands
   class AddReaction
     class << self
       def name
-        [:ar, :add_reaction]
+        :add_reaction
       end
 
       def attributes
         {
             usage: 'add_reaction [regex] [message] [chance]',
-            description: 'Create a reaction for Yuela'
+            description: 'Create a reaction for Yuela',
+            aliases: [:ar]
         }
       end
 
@@ -22,11 +23,11 @@ module Commands
             'Reaction already exists'
           else
             UserReaction.create(
-              regex: regex,
-              output: output,
-              created_at: Time.now,
-              creator: event.author.username,
-              chance: chance.to_f
+                regex: regex,
+                output: output,
+                created_at: Time.now,
+                creator: event.author.username,
+                chance: chance.to_f
             )
             'Reaction created'
           end

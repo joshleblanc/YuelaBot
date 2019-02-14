@@ -2,15 +2,16 @@ module Commands
   class AddBirthdayCommand
     class << self
       def name
-        [:add_bday, :abd]
+        :add_bday
       end
 
       def attributes
         {
-          min_args: 3,
-          max_args: 3,
-          description: "Add a birthday for a user",
-          usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]"
+            min_args: 3,
+            max_args: 3,
+            description: "Add a birthday for a user",
+            usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]",
+            aliases: [:abd]
         }
       end
 
@@ -25,10 +26,10 @@ module Commands
             user = User.first_or_new(id: mention.id)
             user.name = mention.name
             Birthday.create(
-              user: user,
-              month: month.to_i,
-              day: day.to_i,
-              server: event.server.id
+                user: user,
+                month: month.to_i,
+                day: day.to_i,
+                server: event.server.id
             )
           end
         rescue StandardError => e

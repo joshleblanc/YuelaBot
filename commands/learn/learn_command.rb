@@ -2,13 +2,14 @@ module Commands
   class LearnCommand
     class << self
       def name
-        [:learn, :l]
+        :learn
       end
 
       def attributes
         {
-          description: 'Create a new command for Yuela',
-          usage: 'l[earn] [name] [output] [regex]'
+            description: 'Create a new command for Yuela',
+            usage: 'l[earn] [name] [output] [regex]',
+            aliases: [:l]
         }
       end
 

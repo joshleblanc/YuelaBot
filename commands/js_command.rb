@@ -1,29 +1,30 @@
 module Commands
-    class JSCommand
-        class << self
-            include Discordrb::Webhooks
+  class JSCommand
+    class << self
+      include Discordrb::Webhooks
 
-            def name
-                [:js, :eval, :>]
-            end
+      def name
+        :js
+      end
 
-            def attributes
-                {
-                    description: 'JS Eval',
-                    usage: 'eval [code]'
-                }
-            end 
+      def attributes
+        {
+            description: 'JS Eval',
+            usage: 'eval [code]',
+            aliases: [:eval, :>]
+        }
+      end
 
-            def command(event, *args)
-                code = args.join(' ')
-                cxt = MiniRacer::Context.new timeout: 3000
+      def command(event, *args)
+        code = args.join(' ')
+        cxt = MiniRacer::Context.new timeout: 3000
 
-                begin
-                    cxt.eval code
-                rescue StandardError => bang
-                    bang
-                end
-            end
+        begin
+          cxt.eval code
+        rescue StandardError => bang
+          bang
         end
+      end
     end
+  end
 end

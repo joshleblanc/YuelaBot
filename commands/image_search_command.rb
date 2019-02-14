@@ -3,14 +3,15 @@ module Commands
 
     class << self
       def name
-        [:image, :i]
+        :image
       end
 
       def attributes
         {
             min_args: 1,
             description: 'Searches google image for a given query',
-            usage: 'image [query]'
+            usage: 'image [query]',
+            aliases: [:i]
         }
       end
 
@@ -23,6 +24,7 @@ module Commands
 
     include Discordrb::Webhooks
     include Discordrb::Events
+
     def initialize
       @index = 0
       @images = []
@@ -53,6 +55,7 @@ module Commands
     end
 
     private
+
     def send!(event)
       event.respond nil, false, @embed
     end

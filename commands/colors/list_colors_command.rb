@@ -2,7 +2,7 @@ module Commands
   class ListColorsCommand
     class << self
       def name
-        [:lc, :listcolours, :listcolors, :colours, :colors]
+        :listcolors
       end
 
       def attributes
@@ -10,7 +10,8 @@ module Commands
             min_args: 0,
             max_args: 0,
             usage: 'listcolors',
-            description: 'See a list of available color roles'
+            description: 'See a list of available color roles',
+            aliases: [:lc, :listcolours, :colours, :colors]
         }
       end
 

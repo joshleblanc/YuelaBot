@@ -2,16 +2,17 @@ module Commands
   class ForgetCommand
     class << self
       def name
-        [:f, :forget]
+        :forget
       end
 
       def attributes
         {
-          min_args: 1,
-          max_args: 1,
-          description: 'Removes a user taught command',
-          usage: 'f[orget] [learned command name]',
-          permission_level: 1
+            min_args: 1,
+            max_args: 1,
+            description: 'Removes a user taught command',
+            usage: 'f[orget] [learned command name]',
+            permission_level: 1,
+            aliases: [:f]
         }
       end
 

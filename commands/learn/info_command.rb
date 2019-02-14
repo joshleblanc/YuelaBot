@@ -2,15 +2,15 @@ module Commands
   class InfoCommand
     class << self
       def name
-        [:info]
+        :info
       end
 
       def attributes
         {
-          min_args: 1,
-          max_args: 1,
-          description: 'Provides information about a user taught command',
-          usage: 'i[nfo] [learned command name]'
+            min_args: 1,
+            max_args: 1,
+            description: 'Provides information about a user taught command',
+            usage: 'i[nfo] [learned command name]'
         }
       end
 

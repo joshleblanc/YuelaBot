@@ -2,14 +2,15 @@ module Commands
   class ChooseCommand
     class << self
       def name
-        [:c, :choose]
+        :choose
       end
 
       def attributes
         {
-          usage: 'choose [list of items]',
-          min_args: 1,
-          description: 'Choose from a list of items. Ignores "or"'
+            usage: 'choose [list of items]',
+            min_args: 1,
+            description: 'Choose from a list of items. Ignores "or"',
+            aliases: [:c]
         }
       end
 

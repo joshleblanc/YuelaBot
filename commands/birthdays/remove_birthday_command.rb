@@ -2,7 +2,7 @@ module Commands
   class RemoveBirthdayCommand
     class << self
       def name
-        [:rbd, :remove_bday]
+        :remove_bday
       end
 
       def attributes
@@ -12,7 +12,8 @@ module Commands
             description: "Remove a user's birthday",
             usage: '[rbd][remove_birthday] [@user]',
             arg_types: [Discordrb::User],
-            permission_level: 1
+            permission_level: 1,
+            aliases: [:rbd]
         }
       end
 

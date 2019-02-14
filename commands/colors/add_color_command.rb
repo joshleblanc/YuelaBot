@@ -2,7 +2,7 @@ module Commands
   class AddColorCommand
     class << self
       def name
-        [:addcolor, :addcolour, :ac]
+        :addcolor
       end
 
       def attributes
@@ -11,7 +11,8 @@ module Commands
             max_args: 2,
             usage: 'addcolor color_name hex_value',
             description: 'Create a role of name <color_name>, with color <hex_value>',
-            permission_level: 1
+            permission_level: 1,
+            aliases: [:ac, :addcolour]
         }
       end
 
@@ -24,15 +25,15 @@ module Commands
             e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
               if confirm_event.message.content[0].downcase == 'y'
                 role.update(color: color)
-                e.server.roles.select { |r| r.name == name }.each { |r| r.color = Discordrb::ColourRGB.new(color) }
+                e.server.roles.select {|r| r.name == name}.each {|r| r.color = Discordrb::ColourRGB.new(color)}
                 confirm_event << "Role updated!"
               end
             end
             "That color role already exists! Do you want to overwrite it? (Y/N)"
           else
-            roles = e.server.roles.select { |r| r.name == name }
+            roles = e.server.roles.select {|r| r.name == name}
             if roles
-              roles.each { |r| r.color = Discordrb::ColourRGB.new(color) }
+              roles.each {|r| r.color = Discordrb::ColourRGB.new(color)}
             else
               role = e.server.create_role(
                   name: name,

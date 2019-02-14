@@ -2,7 +2,7 @@ module Commands
   class RedditCommand
     class << self
       def name
-        [:reddit, :r]
+        :reddit
       end
 
       def attributes
@@ -10,17 +10,18 @@ module Commands
             min_args: 1,
             max_args: 1,
             description: 'Returns a random thread from a given subreddit',
-            usage: 'r[eddit] [subreddit]'
+            usage: 'r[eddit] [subreddit]',
+            aliases: [:r]
         }
       end
 
       def command(event, *args)
         session = Redd.it(
-          user_agent: 'Redd:YuelaBot (by /u/horizonshadow)',
-          client_id: ENV['reddit_clientid'],
-          secret: ENV['reddit_secret'],
-          username: ENV['reddit_user'],
-          password: ENV['reddit_pass']
+            user_agent: 'Redd:YuelaBot (by /u/horizonshadow)',
+            client_id: ENV['reddit_clientid'],
+            secret: ENV['reddit_secret'],
+            username: ENV['reddit_user'],
+            password: ENV['reddit_pass']
         )
         post = session.subreddit(args[0]).hot(limit: 100).to_a.sample
         embed = Discordrb::Webhooks::Embed.new

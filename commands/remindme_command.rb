@@ -2,14 +2,15 @@ module Commands
   class RemindMeCommand
     class << self
       def name
-        [:rm, :remind]
+        :remind
       end
 
       def attributes
         {
-          usage: 'remind [time] [message]',
-          min_args: 2,
-          description: 'Reminds the user after an allocated time has passed',
+            usage: 'remind [time] [message]',
+            min_args: 2,
+            description: 'Reminds the user after an allocated time has passed',
+            aliases: [:rm, :remindme]
         }
       end
 

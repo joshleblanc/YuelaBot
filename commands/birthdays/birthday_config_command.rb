@@ -2,7 +2,7 @@ module Commands
   class BirthdayConfigCommand
     class << self
       def name
-        [:bdc, :bday_config]
+        :bday_config
       end
 
       def attributes
@@ -11,7 +11,8 @@ module Commands
             description: 'Configure the birthday message and channel',
             usage: '[bday_config] [#channel] [message]',
             arg_types: [String, String],
-            permission_level: 1
+            permission_level: 1,
+            aliases: [:bdc]
         }
       end
 

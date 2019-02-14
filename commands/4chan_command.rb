@@ -2,7 +2,7 @@ module Commands
   class Random4ChanCommand
     class << self
       def name
-        [:chan, :'4chan']
+        :'4chan'
       end
 
       def attributes
@@ -10,7 +10,8 @@ module Commands
             min_args: 1,
             max_args: 1,
             description: 'Prints a random post from the selected 4chan board',
-            usage: '4chan [board]'
+            usage: '4chan [board]',
+            aliases: [:chan]
         }
       end
 

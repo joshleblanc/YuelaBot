@@ -2,7 +2,7 @@ module Commands
   class ListBirthdayCommand
     class << self
       def name
-        [:lbd, :list_bdays]
+        :list_bdays
       end
 
       def attributes
@@ -10,7 +10,8 @@ module Commands
             min_args: 0,
             max_args: 0,
             description: "PM the list of birthdays to the caller",
-            usage: "[list_bdays][lbd]"
+            usage: "[list_bdays]",
+            aliases: [:lbd]
         }
       end
 
