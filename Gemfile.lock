@@ -1,18 +1,4 @@
 GIT
-  remote: https://github.com/HorizonShadow/discordrb
-  revision: 408579985c209f9c45eaedbf1a9fee9719624d89
-  branch: edit
-  specs:
-    discordrb (3.2.1)
-      discordrb-webhooks (~> 3.2.0.1)
-      opus-ruby
-      rbnacl (~> 3.4.0)
-      rest-client (>= 2.1.0.rc1)
-      websocket-client-simple (>= 0.3.0)
-    discordrb-webhooks (3.2.0.1)
-      rest-client (>= 2.1.0.rc1)
-
-GIT
   remote: https://github.com/avinashbot/redd.git
   revision: 3b1519a2d121efd18de59b935da6e652757eee90
   specs:
@@ -58,6 +44,15 @@ GEM
     declarative-option (0.1.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    discordrb (3.3.0)
+      discordrb-webhooks (~> 3.3.0)
+      ffi (>= 1.9.24)
+      opus-ruby
+      rbnacl (~> 3.4.0)
+      rest-client (>= 2.1.0.rc1)
+      websocket-client-simple (>= 0.3.0)
+    discordrb-webhooks (3.3.0)
+      rest-client (>= 2.1.0.rc1)
     dm-aggregates (1.2.0)
       dm-core (~> 1.2.0)
     dm-constraints (1.2.0)
@@ -264,7 +259,7 @@ DEPENDENCIES
   byebug
   data_mapper
   debase
-  discordrb!
+  discordrb
   dm-sqlite-adapter
   dotenv
   faye-websocket
