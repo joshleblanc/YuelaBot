@@ -17,13 +17,13 @@ module Commands
       end
 
       def command(_, name)
-        command = UserCommand.first(name: name)
+        command = UserCommand.find_by(name: name)
         if command
           command.destroy
           BOT.remove_command(command.name.to_sym)
           "Command #{command.name} forgotten"
         else
-          "Command #{args[0]} does not exist"
+          "Command #{name} does not exist"
         end
       end
     end

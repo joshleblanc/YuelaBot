@@ -15,7 +15,7 @@ module Commands
       end
 
       def command(_, name)
-        command = UserCommand.first(name: name)
+        command = UserCommand.find_by(name: name)
         if command
           sio = StringIO.new
           sio << "Command #{command.name}\n"
