@@ -1,5 +1,6 @@
 require 'rake'
 require 'active_record'
+require 'dotenv/load'
 
 include ActiveRecord::Tasks
 DatabaseTasks.database_configuration = YAML::load(File.open('./config/database.yml'))
@@ -30,7 +31,7 @@ class #{migration_class} < ActiveRecord::Migration[5.2]
   end
 end
       EOF
-    ends
+    end
 
     puts "Migration #{path} created"
     abort # needed stop other tasks

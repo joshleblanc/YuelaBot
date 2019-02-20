@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 2019_02_20_143156) do
   end
 
   create_table "birthday_configs", force: :cascade do |t|
-    t.integer "server"
-    t.integer "channel"
+    t.bigint "server"
+    t.bigint "channel"
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_143156) do
   create_table "birthdays", force: :cascade do |t|
     t.integer "month"
     t.integer "day"
-    t.integer "server"
+    t.bigint "server"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_143156) do
   create_table "role_colors", force: :cascade do |t|
     t.string "color"
     t.string "name"
-    t.integer "server"
+    t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
