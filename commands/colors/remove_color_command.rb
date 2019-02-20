@@ -16,7 +16,7 @@ module Commands
 
       def command(e, *name)
         name = name.join(' ')
-        role = RoleColor.first(name: name, server: e.server.id)
+        role = RoleColor.find_by(name: name, server: e.server.id)
         return "That color role doesn't exist" unless role
         discord_role = e.author.roles.find {|r| r.name === name}
         if discord_role

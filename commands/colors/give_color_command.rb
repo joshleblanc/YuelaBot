@@ -17,7 +17,7 @@ module Commands
 
       def command(e, *name)
         name = name.join(' ')
-        return "That color role doesn't exist" unless RoleColor.first(name: name, server: e.server.id)
+        return "That color role doesn't exist" unless RoleColor.find_by(name: name, server: e.server.id)
         role = e.author.roles.find {|r| RoleColor.first(name: r.name, server: e.server.id)}
         if role
           e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|

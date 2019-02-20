@@ -16,7 +16,7 @@ module Commands
       end
 
       def command(e)
-        colors = RoleColor.all(server: e.server.id)
+        colors = RoleColor.where(server: e.server.id)
         e << "Available colors:"
         e << '```'
         colors.each do |c|
