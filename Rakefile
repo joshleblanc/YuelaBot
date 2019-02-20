@@ -30,7 +30,7 @@ class #{migration_class} < ActiveRecord::Migration[5.2]
   end
 end
       EOF
-    end
+    ends
 
     puts "Migration #{path} created"
     abort # needed stop other tasks
