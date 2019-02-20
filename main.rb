@@ -1,12 +1,9 @@
-gem 'json', '=1.8.6'
-
 require 'active_record'
 require 'discordrb'
 require 'google/apis/customsearch_v1'
 require 'fourchan/kit'
 require 'redd'
 require 'require_all'
-require 'data_mapper'
 require 'csv'
 require 'rufus-scheduler'
 require 'faye/websocket'
@@ -23,11 +20,6 @@ require_all './routines'
 require_all './room-17-proxy'
 
 include Routines
-DataMapper.setup(:default, "sqlite://#{Dir.home}/yuela")
-DataMapper.repository(:default).adapter.select("PRAGMA synchronous=OFF")
-DataMapper.repository(:default).adapter.select("PRAGMA journal_mode=WAL")
-DataMapper::Model.raise_on_save_failure = true
-DataMapper.finalize.auto_upgrade!
 
 ActiveRecord::Base.configurations = YAML::load(File.open('config/database.yml'))
 ActiveRecord::Base.establish_connection(ENV['RACK_ENV'] || :development)
