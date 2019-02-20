@@ -1,20 +1,11 @@
-class UserCommand
-  include DataMapper::Resource
-
-  property :id, Serial
-  property :name, String
-  property :input, Text
-  property :output, Text
-  property :creator, String
-  property :created_at, DateTime
-
-  def run
-    lambda do |_, *args|
-      test = args.join(' ')
-      p test, input, output
-      if input == '.*' || test.match(/#{input}/)
-        test.sub(/#{input}/, output)
-      end
+class UserCommand < ApplicationRecord
+    def run
+        lambda do |_, *args|
+            test = args.join(' ')
+            p test, input, output
+            if input == '.*' || test.match(/#{input}/)
+              test.sub(/#{input}/, output)
+            end
+          end
     end
-  end
 end

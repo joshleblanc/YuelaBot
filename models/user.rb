@@ -1,9 +1,4 @@
-class User
-  include DataMapper::Resource
-
-  property :id, Integer, key: true
-  property :name, String
-
-  has 1, :afk
-  has n, :birthdays
+class User < ApplicationRecord
+    has_one :afk
+    has_one :birthday
 end

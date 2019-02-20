@@ -16,6 +16,8 @@ gem 'mtg_sdk'
 gem 'dotenv'
 gem 'debase'
 gem 'ruby-debug-ide'
+gem 'activerecord'
+gem 'sqlite3', '~> 1.3', '< 1.4'
 
 group :development do
     gem 'byebug'
