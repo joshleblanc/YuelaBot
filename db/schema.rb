@@ -12,9 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2019_02_20_143156) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "afks", force: :cascade do |t|
     t.string "message"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_afks_on_user_id"
@@ -32,7 +35,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_143156) do
     t.integer "month"
     t.integer "day"
     t.integer "server"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_birthdays_on_user_id"

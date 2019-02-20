@@ -18,6 +18,7 @@ gem 'debase'
 gem 'ruby-debug-ide'
 gem 'activerecord'
 gem 'sqlite3', '~> 1.3', '< 1.4'
+gem 'pg'
 
 group :development do
     gem 'byebug'

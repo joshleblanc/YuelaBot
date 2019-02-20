@@ -1,5 +1,11 @@
 version: '3'
 services:
+  db:
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 32768:5432
   yuela:
     build: .
     command: bundle exec ruby main.rb
@@ -7,3 +13,7 @@ services:
       - .:/app
     env_file:
       - .env
+    depends_on:
+      - db
+volumes:
+  postgres:
