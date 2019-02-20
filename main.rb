@@ -1,5 +1,6 @@
 gem 'json', '=1.8.6'
 
+require 'active_record'
 require 'discordrb'
 require 'google/apis/customsearch_v1'
 require 'fourchan/kit'
@@ -14,6 +15,7 @@ require 'mtg_sdk'
 require 'mini_racer'
 require 'dotenv/load'
 
+require_relative 'models/application_record'
 require_all './models'
 require_all './commands'
 require_all './reactions'
@@ -27,6 +29,10 @@ DataMapper.repository(:default).adapter.select("PRAGMA journal_mode=WAL")
 DataMapper::Model.raise_on_save_failure = true
 DataMapper.finalize.auto_upgrade!
 
+ActiveRecord::Base.configurations = YAML::load(File.open('config/database.yml'))
+ActiveRecord::Base.establish_connection(ENV['RACK_ENV'] || :development)
+
+
 BOT = Discordrb::Commands::CommandBot.new({
   token: ENV['discord'],
   prefix: '!!',
@@ -38,7 +44,7 @@ ENV['admins'].split(',').each do |admin|
   BOT.set_user_permission(admin.to_i, 1)
 end
 
-Afk.all.destroy
+Afk.destroy_all
 UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.run)
 end
@@ -69,7 +75,7 @@ BOT.message do |event|
 
   user_ids = event.message.mentions.map(&:id)
   user_ids.each do |uid|
-    user = User.get(uid)
+    user = User.find_by(id: uid)
     if user&.afk
       out = ''
       out << "#{user.name} is afk"

@@ -19,21 +19,21 @@ module Commands
         begin
           mention = event.message.mentions.first
 
-          user = User.get(mention.id)
-          if Birthday.first(user: user, server: event.server.id)
+          if Birthday.find_by(user_id: mention.id, server: event.server.id)
             "A birthday already exists for that user"
           else
-            user = User.first_or_new(id: mention.id)
-            user.name = mention.name
-            Birthday.create(
-                user: user,
-                month: month.to_i,
-                day: day.to_i,
-                server: event.server.id
-            )
+            User.find_or_create_by(id: mention.id) do |u|
+              u.name = mention.name
+              u.birthdays << Birthday.new(
+                  month: month.to_i,
+                  day: day.to_i,
+                  server: event.server.id
+              )
+            end
+            "Saved #{mention.name}'s birthday"
           end
         rescue StandardError => e
-          "That's not going to work"
+          e.message
         end
       end
     end

@@ -18,13 +18,13 @@ module Commands
 
       def command(e, channel, *message)
         begin
-          bday_config = BirthdayConfig.first_or_new(server: e.server.id)
-          bday_config.channel = channel.match(/<#(\d+)>/)[1]
-          bday_config.message = message.join(' ')
-          bday_config.save
+          BirthdayConfig.find_or_create_by(server: e.server.id) do |bc|
+            bc.channel = channel.match(/<#(\d+)>/)[1]
+            bc.message = message.join(' ')
+          end
           "Configuration saved"
-        rescue
-          "Nope, not quite right"
+        rescue StandardError => e
+          e.message
         end
       end
     end

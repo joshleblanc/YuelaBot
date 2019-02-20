@@ -19,16 +19,16 @@ module Commands
 
       def command(e, user)
         begin
-          user = User.get(user.id)
-          birthday = user && user.birthdays.first(server: e.server.id)
-          if user && birthday
+          user = User.find(user.id)
+          birthday = user.birthdays.find_by(server: e.server.id)
+          if birthday
             birthday.destroy
             "#{user.name}'s birthday has been forgotten"
           else
             "User does not have a birthday registered"
           end
-        rescue
-          "Can't do anything with that"
+        rescue StandardError => e
+          e.message
         end
       end
     end

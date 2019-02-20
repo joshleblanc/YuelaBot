@@ -16,7 +16,7 @@ module Commands
       end
 
       def command(e)
-        birthdays = Birthday.all(server: e.server.id, :order => [:month.asc, :day.asc]).map(&:to_s).join("\n")
+        birthdays = Birthday.where(server: e.server.id).order(month: :asc, day: :asc).map(&:to_s).join("\n")
         if birthdays.empty?
           "No birthdays found"
         else
