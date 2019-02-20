@@ -10,5 +10,5 @@ development:
 production:
   adapter: postgresql
   database: <%= ENV['YUELA_DATABASE_URL'] %>
-  pool: 5
+  pool: 4
   timeout: 5000
