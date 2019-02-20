@@ -18,10 +18,10 @@ module Commands
 
       def command(_, id)
         begin
-          UserReaction.get(id).destroy
+          UserReaction.find(id).destroy
           "Reaction #{id} deleted"
-        rescue
-          "Mr. Stark, I don't feel so good"
+        rescue StandardError => e
+          e.message
         end
       end
     end

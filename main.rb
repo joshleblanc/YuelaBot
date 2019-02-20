@@ -64,7 +64,7 @@ end.compact.each do |reaction|
 end
 
 BOT.message do |event|
-  urs = UserReaction.all.find_all do |ur|
+  urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
   urs.each do |ur|

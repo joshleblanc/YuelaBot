@@ -16,9 +16,15 @@ module Commands
       def command(event, *args)
         begin
           regex, output, chance = CSV.parse_line(args.join(' '), col_sep: ' ')
-          chance = 1 if chance.nil?
           p regex, output, chance
-          reaction = UserReaction.first(regex: regex)
+          if regex.nil?
+            return "You need to provide a regex to match"
+          end
+          if output.nil?
+            return "You need to provide output for matching messages"
+          end
+          chance = 1 if chance.nil?
+          reaction = UserReaction.find_by(regex: regex)
           if reaction
             'Reaction already exists'
           else
@@ -31,8 +37,8 @@ module Commands
             )
             'Reaction created'
           end
-        rescue
-          "Something's not right - Check your input"
+        rescue StandardError => e
+          e.message
         end
       end
     end
