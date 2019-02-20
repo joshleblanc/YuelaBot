@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_185043) do
   create_table "game_keys", force: :cascade do |t|
     t.string "name"
     t.string "key"
+    t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

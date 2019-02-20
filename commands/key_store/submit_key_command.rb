@@ -14,16 +14,33 @@ module Commands
       end
 
       def command(event)
-        unless event.server.nil?
-          return "You need to do this in a private message!"
+        if event.server.nil?
+          return "Initiate this command in a server"
+        else
+          event.respond "Check your pms!"
         end
-        event.respond "What game are you submitting?"
-        response = event.message.await!
-        p response.message.content
-        return "You took too long" unless response
-        event.respond "What's the key?"
-        response = event.message.await!
-        p response.message.content
+        game_key = GameKey.new(server: event.server.id)
+
+        event.user.pm "You can cancel this at any time by saying 'stop'"
+        event.user.pm "What game are you submitting?"
+
+        response = nil
+        loop do
+          response = event.user.await!
+          break if response.server.nil?
+        end
+        return "Game key submission cancelled" if response.message.content == 'stop'
+        game_key.name = response.message.content
+
+        event.user.pm "What's the key?"
+        loop do
+          response = event.user.await!
+          break if response.server.nil?
+        end
+        return "Game key submission cancelled" if response.message.content == 'stop'
+        game_key.key = response.message.content
+        game_key.save
+        event.user.pm "Key submitted!"
       end
     end
   end
