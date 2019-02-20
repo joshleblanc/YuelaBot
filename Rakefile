@@ -37,3 +37,14 @@ end
     abort # needed stop other tasks
   end
 end
+
+task :console do
+  require 'require_all'
+  require 'irb'
+  require_relative 'models/application_record'
+  require_all './models'
+  ActiveRecord::Base.configurations = DatabaseTasks.database_configuration
+  ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym
+  ARGV.clear
+  IRB.start
+end
