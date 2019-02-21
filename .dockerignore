@@ -1,0 +1,5 @@
+.env
+.git
+.gitignore
+heroku.yml
+README.md

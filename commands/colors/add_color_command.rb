@@ -2,7 +2,7 @@ module Commands
   class AddColorCommand
     class << self
       def name
-        [:addcolor, :addcolour, :ac]
+        :addcolor
       end
 
       def attributes
@@ -11,46 +11,45 @@ module Commands
             max_args: 2,
             usage: 'addcolor color_name hex_value',
             description: 'Create a role of name <color_name>, with color <hex_value>',
-            permission_level: 1
+            permission_level: 1,
+            aliases: [:ac, :addcolour]
         }
       end
 
-      def command
-        lambda do |e, *args|
-          name, color = CSV.parse_line(args.join(' '), col_sep: ' ')
-          color = color[1..-1] if color.start_with?('#')
-          begin
-            role = RoleColor.first(name: name, server: e.server.id)
-            if role
-              e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
-                if confirm_event.message.content[0].downcase == 'y'
-                  role.update(color: color)
-                  e.server.roles.select { |r| r.name == name }.each { |r| r.color = Discordrb::ColourRGB.new(color) }
-                  confirm_event << "Role updated!"
-                end
+      def command(e, *args)
+        name, color = CSV.parse_line(args.join(' '), col_sep: ' ')
+        color = color[1..-1] if color.start_with?('#')
+        color = color.to_i(16)
+        begin
+          role = RoleColor.find_by(name: name, server: e.server.id)
+          if role
+            e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
+              if confirm_event.message.content[0].downcase == 'y'
+                role.update(color: color)
+                e.server.roles.select {|r| r.name == name}.each {|r| r.color = Discordrb::ColourRGB.new(color)}
+                confirm_event << "Role updated!"
               end
-              "That color role already exists! Do you want to overwrite it? (Y/N)"
-            else
-              roles = e.server.roles.select { |r| r.name == name }
-              if roles
-                roles.each { |r| r.color = Discordrb::ColourRGB.new(color) }
-              else
-                role = e.server.create_role(
-                    name: name,
-                    colour: Discordrb::ColourRGB.new(color),
-                    hoist: false,
-                    mentionable: false,
-                    permissions: [],
-                    reason: 'Add Color Command'
-                )
-                role.sort_above(e.user.highest_role)
-              end
-              RoleColor.create(name: name, color: "##{color}", server: e.server.id)
-              "Color role created"
             end
-          rescue StandardError => e
-            e.message
+            "That color role already exists! Do you want to overwrite it? (Y/N)"
+          else
+            roles = e.server.roles.select {|r| r.name == name}
+            if roles.empty?
+              role = e.server.create_role
+              role.name = name
+              role.colour = Discordrb::ColourRGB.new(color)
+              role.hoist = false
+              role.mentionable = false
+              role.reason = "Add Color Command"
+              role.sort_above(e.user.highest_role)
+            else
+              roles.each {|r| r.color = Discordrb::ColourRGB.new(color)}
+            end
+            RoleColor.create(name: name, color: "##{color}", server: e.server.id)
+            "Color role created"
           end
+        rescue StandardError => e
+          p e.backtrace
+          e.message
         end
       end
     end

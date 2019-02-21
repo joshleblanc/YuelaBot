@@ -2,7 +2,7 @@ module Commands
   class ListBirthdayCommand
     class << self
       def name
-        [:lbd, :list_bdays]
+        :list_bdays
       end
 
       def attributes
@@ -10,18 +10,17 @@ module Commands
             min_args: 0,
             max_args: 0,
             description: "PM the list of birthdays to the caller",
-            usage: "[list_bdays][lbd]"
+            usage: "[list_bdays]",
+            aliases: [:lbd]
         }
       end
 
-      def command
-        lambda do |e|
-          birthdays = Birthday.all(server: e.server.id, :order => [:month.asc, :day.asc]).map(&:to_s).join("\n")
-          if birthdays.empty?
-            "No birthdays found"
-          else
-            e.user.pm birthdays
-          end
+      def command(e)
+        birthdays = Birthday.where(server: e.server.id).order(month: :asc, day: :asc).map(&:to_s).join("\n")
+        if birthdays.empty?
+          "No birthdays found"
+        else
+          e.user.pm birthdays
         end
       end
     end

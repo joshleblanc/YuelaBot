@@ -1,0 +1,14 @@
+development:
+  adapter: postgresql
+  host: db
+  user: postgres
+  password: postgres
+  database: yuela_dev
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: postgresql
+  database: <%= ENV['YUELA_DATABASE_URL'] %>
+  pool: 4
+  timeout: 5000

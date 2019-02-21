@@ -3,35 +3,35 @@ module Commands
 
     class << self
       def name
-        [:image, :i]
+        :image
       end
 
       def attributes
         {
             min_args: 1,
             description: 'Searches google image for a given query',
-            usage: 'image [query]'
+            usage: 'image [query]',
+            aliases: [:i]
         }
       end
 
-      def command
+      def command(event, *args)
         is = ImageSearch.new
-        lambda do |event, *args|
-          is.reset!
-          is.run!(event, args.join(' '))
-        end
+        is.reset!
+        is.run!(event, args.join(' '))
       end
     end
 
     include Discordrb::Webhooks
     include Discordrb::Events
+
     def initialize
       @index = 0
       @images = []
-      @engine_id = CONFIG['search_id']
+      @engine_id = ENV['search_id']
       @embed = Embed.new(title: "Image Search Results")
       @service = Google::Apis::CustomsearchV1::CustomsearchService.new
-      @service.key = CONFIG['google']
+      @service.key = ENV['google']
     end
 
     def reset!
@@ -55,12 +55,14 @@ module Commands
     end
 
     private
+
     def send!(event)
       event.respond nil, false, @embed
     end
 
     def add_awaits!(bot)
-      bot.add_await(:image_search_next, ReactionAddEvent, emoji: "▶") do |reaction|
+      bot.add_await("#{@message.id}-image_search_next", ReactionAddEvent, emoji: "▶") do |reaction|
+        next false unless reaction.message.id == @message.id
         @message.delete_reaction(reaction.user.id, reaction.emoji.name)
         if reaction.user.id == @user.id && @index < @images.length - 1
           @index += 1
@@ -70,7 +72,8 @@ module Commands
         false
       end
 
-      bot.add_await(:image_search_prev, ReactionAddEvent, emoji: "◀") do |reaction|
+      bot.add_await("#{@message.id}-image-_search_prev", ReactionAddEvent, emoji: "◀") do |reaction|
+        next false unless react.message.id == @message.id
         @message.delete_reaction(reaction.user.id, reaction.emoji.name)
         if reaction.user.id == @user.id && @index > 0
           @index -= 1

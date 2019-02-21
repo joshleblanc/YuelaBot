@@ -2,7 +2,7 @@ module Commands
   class RemoveReactionCommand
     class << self
       def name
-        [:rr, :remove_reaction]
+        :remove_reaction
       end
 
       def attributes
@@ -11,18 +11,17 @@ module Commands
             max_args: 1,
             usage: 'remove_reaction [id]',
             description: 'Remove a reaction, given an ID',
-            arg_types: [Integer]
+            arg_types: [Integer],
+            aliases: [:rr]
         }
       end
 
-      def command
-        lambda do |_, id|
-          begin
-            UserReaction.get(id).destroy
-            "Reaction #{id} deleted"
-          rescue
-            "Mr. Stark, I don't feel so good"
-          end
+      def command(_, id)
+        begin
+          UserReaction.find(id).destroy
+          "Reaction #{id} deleted"
+        rescue StandardError => e
+          e.message
         end
       end
     end

@@ -2,39 +2,38 @@ module Commands
   class AddBirthdayCommand
     class << self
       def name
-        [:add_bday, :abd]
+        :add_bday
       end
 
       def attributes
         {
-          min_args: 3,
-          max_args: 3,
-          description: "Add a birthday for a user",
-          usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]"
+            min_args: 3,
+            max_args: 3,
+            description: "Add a birthday for a user",
+            usage: "[add_bday][abd] [@user] [month (Number)] [day (Number)]",
+            aliases: [:abd]
         }
       end
 
-      def command
-        lambda do |event, user, month, day|
-          begin
-            mention = event.message.mentions.first
+      def command(event, user, month, day)
+        begin
+          mention = event.message.mentions.first
 
-            user = User.get(mention.id)
-            if Birthday.first(user: user, server: event.server.id)
-              "A birthday already exists for that user"
-            else
-              user = User.first_or_new(id: mention.id)
-              user.name = mention.name
-              Birthday.create(
-                user: user,
-                month: month.to_i,
-                day: day.to_i,
-                server: event.server.id
+          if Birthday.find_by(user_id: mention.id, server: event.server.id)
+            "A birthday already exists for that user"
+          else
+            User.find_or_create_by(id: mention.id) do |u|
+              u.name = mention.name
+              u.birthdays << Birthday.new(
+                  month: month.to_i,
+                  day: day.to_i,
+                  server: event.server.id
               )
             end
-          rescue StandardError => e
-            "That's not going to work"
+            "Saved #{mention.name}'s birthday"
           end
+        rescue StandardError => e
+          e.message
         end
       end
     end
