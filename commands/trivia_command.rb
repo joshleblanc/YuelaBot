@@ -26,6 +26,9 @@ module Commands
 
       def command(event, *args)
         scores = {}
+        max_points = 10
+        duration = 10
+        stop = false
         loop do
           question = get_question
           p question['correct_answer']
@@ -33,28 +36,51 @@ module Commands
             embed.title = "Trivia!"
             embed.colour = 0x1c8fe
             embed.description = CGI.unescapeHTML(question['question'])
-
             embed.footer = EmbedFooter.new(text: "#{question['category']} | #{question['difficulty']} | #{question['type']}")
           end
           winner = nil
-          loop do
-            answer = event.message.await!
-            answer.message.delete
+          game_thread = Thread.new do
+            loop do
+              answer = event.message.await!
+              if answer.message.content == '!!stop' && !stop
+                stop = true
+                event.channel.send_embed do |embed|
+                  embed.title = "Trivia!"
+                  embed.description = "Okay, stopping after this question"
+                  embed.colour = 0x1c8fe
+                end
+              else
+                answer.message.delete
+              end
 
-            if answer.message.content.downcase == CGI.unescapeHTML(question['correct_answer']).downcase
-              winner = answer.user
-              break
+              if answer.message.content.downcase == CGI.unescapeHTML(question['correct_answer']).downcase
+                winner = answer.user
+                break
+              end
+            end
+            true
+          end
+          Thread.new do
+            sleep duration
+            game_thread.terminate
+          end
+          if game_thread.join.value
+            scores[winner&.id] ||= { score: 0 }
+            scores[winner&.id][:name] = winner&.name
+            scores[winner&.id][:score] += 1
+            event.channel.send_embed do |embed|
+              embed.title = "Trivia!"
+              embed.description = "<@#{winner&.id}> got it! The answer was: **#{question['correct_answer']}**"
+              embed.colour = 0x1c8fe
+            end
+          else
+            event.channel.send_embed do |embed|
+              embed.title = "Trivia!"
+              embed.description = "Time's up! The answer was: **#{question['correct_answer']}**"
+              embed.colour = 0x1c8fe
             end
           end
-          scores[winner&.id] ||= { score: 0 }
-          scores[winner&.id][:name] = winner&.name
-          scores[winner&.id][:score] += 1
-          event.channel.send_embed do |embed|
-            embed.title = "Trivia!"
-            embed.description = "<@#{winner&.id}> got it! The answer was: **#{question['correct_answer']}**"
-            embed.colour = 0x1c8fe
-          end
-          if scores[winner&.id][:score] == 2
+          if (winner && scores[winner&.id][:score] == max_points) || stop
             sorted_scores = scores.sort_by { |_, v| v[:score] }.reverse
             event.channel.send_embed do |embed|
               embed.title = "Trivia Complete!"
