@@ -28,7 +28,7 @@ module Commands
         begin
           weather = JSON.parse RestClient.get(url, params: {appid: ENV['open_weather_key'], units: 'metric', **options})
           main = weather['main']
-          fields = [];
+          fields = []
           fields << EmbedField.new(name: 'Temp (Celcius)', value: main['temp'].to_s, inline: true)
           fields << EmbedField.new(name: 'Max', value: main['temp_max'].to_s, inline: true)
           fields << EmbedField.new(name: 'Min', value: main['temp_min'].to_s, inline: true)

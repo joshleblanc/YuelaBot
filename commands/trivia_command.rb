@@ -25,29 +25,48 @@ module Commands
       end
 
       def command(event, *args)
-        p token
-        question = get_question
-        p question
-
-        event.channel.send_embed do |embed|
-          embed.title = "Trivia!"
-          embed.colour = 0x1c8fe
-          embed.description = CGI.unescapeHTML(question['question'])
-
-          embed.footer = EmbedFooter.new(text: "#{question['category']} | #{question['difficulty']} | #{question['type']}")
-        end
-        winner = nil
+        scores = {}
         loop do
-          answer = event.message.await!
-          if answer.message.content.downcase == CGI.unescapeHTML(question['correct_answer']).downcase
-            winner = answer.user
-            break
-          else
+          question = get_question
+          p question['correct_answer']
+          event.channel.send_embed do |embed|
+            embed.title = "Trivia!"
+            embed.colour = 0x1c8fe
+            embed.description = CGI.unescapeHTML(question['question'])
+
+            embed.footer = EmbedFooter.new(text: "#{question['category']} | #{question['difficulty']} | #{question['type']}")
+          end
+          winner = nil
+          loop do
+            answer = event.message.await!
             answer.message.delete
+
+            if answer.message.content.downcase == CGI.unescapeHTML(question['correct_answer']).downcase
+              winner = answer.user
+              break
+            end
+          end
+          scores[winner&.id] ||= { score: 0 }
+          scores[winner&.id][:name] = winner&.name
+          scores[winner&.id][:score] += 1
+          event.channel.send_embed do |embed|
+            embed.title = "Trivia!"
+            embed.description = "<@#{winner&.id}> got it! The answer was: **#{question['correct_answer']}**"
+            embed.colour = 0x1c8fe
+          end
+          if scores[winner&.id][:score] == 2
+            sorted_scores = scores.sort_by { |_, v| v[:score] }.reverse
+            event.channel.send_embed do |embed|
+              embed.title = "Trivia Complete!"
+              final_results = StringIO.new
+              sorted_scores.each do |k, v|
+                final_results.puts "**<@#{k}>** got #{v[:score]} points"
+              end
+              embed.description = final_results.string
+            end
+            break
           end
         end
-
-        event.respond "#{winner&.name} got it!"
       end
 
       private
