@@ -52,7 +52,7 @@ module Commands
         response = RestClient.get("jservice.io/api/random")
         result = JSON.parse(response.body)
         question = result.first
-        if question['invalid_count']
+        if question['invalid_count'] || question['question'].empty?
           get_question
         else
           question
