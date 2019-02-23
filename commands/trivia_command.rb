@@ -147,6 +147,7 @@ module Commands
       end
 
       def send_question
+        p @question['category']['title'], CGI.unescapeHTML(@question['question'])
         send_embed do |embed|
           embed.fields = [
               EmbedField.new(name: "Category", value: @question['category']['title']),
