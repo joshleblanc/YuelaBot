@@ -74,7 +74,7 @@ module Commands
       end
       voting_thread = Thread.new do
         loop do
-          response = @event.message.await!
+          response = @event.channel.await!
           next if voters.include? response.user.id
           option = @options.find { |o| o[:key].downcase === response.message.content.downcase }
           if option
