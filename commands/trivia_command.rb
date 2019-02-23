@@ -25,7 +25,7 @@ module Commands
         @stop = false
         loop do
           @question = get_question
-          @answer = @question['answer']
+          @answer = @question['answer'].gsub(/<i>(.+)<\/i>/, "\\1")
           p @answer
 
           question_message = send_question
@@ -80,6 +80,8 @@ module Commands
           question_message.edit(nil, new_embed)
 
           sleep step
+          new_embed.footer = EmbedFooter.new(text: update_hint(hint, 1))
+          question_message.edit(nil, new_embed)
           answer_loop.terminate
         end
       end
@@ -164,22 +166,23 @@ module Commands
       def make_hint
         @answer.chars.map do |c|
           if c == " "
-            "  "
+            "  "
           elsif rand < 0.10
-            c
+            "#{c} "
           else
             "_ "
           end
         end.join
       end
 
-      def update_hint(hint)
-        hint = hint.gsub("  ", " ").gsub("_ ", "_")
+      def update_hint(hint, chance = 0.5)
+        p hint, hint.gsub("  ", " "), hint.gsub("  ", " ").gsub(/(\w) /, "\1")
+        hint = hint.gsub("  ", " ").gsub(/(\w) /, "\\1")
         hint.chars.map.with_index do |c, i|
-          if c == "_" && rand < 0.50
+          if c == "_" && rand < chance
             "#{@answer[i]} "
           elsif c == " "
-            "  "
+            "  "
           else
             "#{c} "
           end
