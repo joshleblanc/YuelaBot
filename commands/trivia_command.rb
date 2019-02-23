@@ -26,7 +26,7 @@ module Commands
         loop do
           @question = get_question
           @answer = @question['answer'].gsub(/<i>(.+)<\/i>/, "\\1")
-
+          @winner = nil
           question_message = send_question
 
           answer_loop = start_answer_loop
@@ -107,15 +107,15 @@ module Commands
 
       def someone_won?
         if @winner
-          @scores[@winner.id] ||= { score: 0 }
           return @scores[@winner.id][:score] == @max_points
         end
         false
       end
 
       def handle_correct_answer
-        @scores[@winner&.id][:name] = @winner&.name
-        @scores[@winner&.id][:score] += 1
+        @scores[@winner.id] ||= { score: 0 }
+        @scores[@winner.id][:name] = @winner&.name
+        @scores[@winner.id][:score] += 1
 
         send_embed do |embed|
           embed.description = "<@#{@winner&.id}> got it! The answer was: **#{@answer}**"
