@@ -106,11 +106,14 @@ module Commands
       end
 
       def someone_won?
-        (@winner && @scores[@winner&.id][:score] == @max_points)
+        if @winner
+          @scores[@winner.id] ||= { score: 0 }
+          return @scores[@winner.id][:score] == @max_points
+        end
+        false
       end
 
       def handle_correct_answer
-        @scores[@winner&.id] ||= { score: 0 }
         @scores[@winner&.id][:name] = @winner&.name
         @scores[@winner&.id][:score] += 1
 
