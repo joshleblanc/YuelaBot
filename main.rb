@@ -22,7 +22,7 @@ require_all './room-17-proxy'
 include Routines
 
 ActiveRecord::Base.configurations = YAML::load(File.open('config/database.yml'))
-ActiveRecord::Base.establish_connection(ENV['RACK_ENV'].to_sym || :development)
+ActiveRecord::Base.establish_connection(ENV['RACK_ENV']&.to_sym || :development)
 
 
 BOT = Discordrb::Commands::CommandBot.new({
