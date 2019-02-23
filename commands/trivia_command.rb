@@ -135,8 +135,6 @@ module Commands
             if response.message.content == '!!stop' && !@stop
               @stop = true
               send_stop_message
-            else
-              response.message.delete
             end
 
             if response.message.content.downcase == CGI.unescapeHTML(@answer).downcase
