@@ -37,6 +37,7 @@ module Commands
         @answer = @question['answer'].gsub(/<i>(.+)<\/i>/, "\\1")
         @winner = nil
         question_message = send_question
+        @event.respond "The answer is #{@answer}. This is for debugging purposes."
 
         answer_loop = start_answer_loop
         time_limit_thread = time_limit_routine(answer_loop, question_message)
@@ -148,7 +149,7 @@ module Commands
     def start_answer_loop
       Thread.new do
         loop do
-          response = @event.message.await!
+          response = @event.channel.await!
           if response.message.content == '!!stop' && !@stop
             @stop = true
             send_stop_message
