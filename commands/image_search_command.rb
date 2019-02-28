@@ -73,7 +73,7 @@ module Commands
       end
 
       bot.add_await("#{@message.id}-image-_search_prev", ReactionAddEvent, emoji: "◀") do |reaction|
-        next false unless react.message.id == @message.id
+        next false unless reaction.message.id == @message.id
         @message.delete_reaction(reaction.user.id, reaction.emoji.name)
         if reaction.user.id == @user.id && @index > 0
           @index -= 1
