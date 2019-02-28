@@ -20,27 +20,36 @@ module Commands
           event.respond "Check your pms!"
         end
         game_key = GameKey.new(server: event.server.id)
-
-        event.user.pm "You can cancel this at any time by saying 'stop'"
-        event.user.pm "What game are you submitting?"
-
-        response = nil
+        event.respond "The game submission process will loop until you stop it."
         loop do
-          response = event.user.await!
-          break if response.server.nil?
-        end
-        return "Game key submission cancelled" if response.message.content == 'stop'
-        game_key.name = response.message.content
+          event.user.pm "You can cancel this at any time by saying 'stop'"
+          event.user.pm "What game are you submitting?"
 
-        event.user.pm "What's the key?"
-        loop do
-          response = event.user.await!
-          break if response.server.nil?
+          response = nil
+          loop do
+            response = event.user.await!
+            break if response.server.nil?
+          end
+          if response.message.content == 'stop'
+            event.user.pm "Game key submission cancelled"
+            break
+          end
+          game_key.name = response.message.content
+
+          event.user.pm "What's the key?"
+          loop do
+            response = event.user.await!
+            break if response.server.nil?
+          end
+          if response.message.content == 'stop'
+            event.user.pm "Game key submission cancelled"
+            break
+          end
+          game_key.key = response.message.content
+          game_key.save
+          event.user.pm "Key submitted!"
+          event.respond "#{game_key.name} has been added!"
         end
-        return "Game key submission cancelled" if response.message.content == 'stop'
-        game_key.key = response.message.content
-        game_key.save
-        event.user.pm "Key submitted!"
       end
     end
   end
