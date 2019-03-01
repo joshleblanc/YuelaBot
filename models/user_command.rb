@@ -4,7 +4,7 @@ class UserCommand < ApplicationRecord
             test = args.join(' ')
             p test, input, output
             if input == '.*' || test.match(/#{input}/)
-              test.sub(/#{input}/, output)
+              test.gsub(/#{input}/, output)
             end
           end
     end
