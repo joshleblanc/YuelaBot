@@ -13,14 +13,12 @@ module Commands
           }
         end
   
-        def command
-          lambda do |event, user, command, *args|
-            target_user = event.channel.users.find{ |u| u.username.match(/#{user}/i) }
-            if target_user
-              executed_command = BOT.simple_execute("#{command} #{args.join(' ')}", event)
-              if executed_command
-                event.respond "<@#{target_user.id}> #{executed_command}"
-              end
+        def command(event, user, command, *args)
+          target_user = event.channel.users.find{ |u| u.username.match(/#{user}/i) }
+          if target_user
+            executed_command = BOT.simple_execute("#{command} #{args.join(' ')}", event)
+            if executed_command
+              event.respond "<@#{target_user.id}> #{executed_command}"
             end
           end
         end
