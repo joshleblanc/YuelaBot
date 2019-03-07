@@ -1,6 +1,7 @@
 require 'active_record'
 require 'discordrb'
 require 'google/apis/customsearch_v1'
+require 'google/apis/youtube_v3'
 require 'fourchan/kit'
 require 'redd'
 require 'require_all'
