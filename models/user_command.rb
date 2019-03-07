@@ -4,19 +4,12 @@ class UserCommand < ApplicationRecord
             test = args.join(' ')
             if input == '.*' || test.match(/#{input}/)
               response = test.gsub(/#{input}/, output)
-              response.split(' ').map do |word|
-                if word.match /:.+?:/
-                  formatted_emoji = BOT.all_emoji.find { |e| e.name == word[1...-1] }
-                  p formatted_emoji, BOT.all_emoji, word
-                  if formatted_emoji
-                    formatted_emoji.mention
-                  else
-                    word
-                  end
-                else
-                  word
-                end
-              end.join(' ')
+              matches = response.scan /:.+?:(?!\d+>)/
+              matches.each do |m|
+                formatted_emoji = BOT.all_emoji.find { |e| e.name == m[1...-1] }
+                response.sub!(m, formatted_emoji) if formatted_emoji
+              end
+              response
             end
         end
     end
