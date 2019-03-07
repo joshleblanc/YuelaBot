@@ -7,7 +7,7 @@ class UserCommand < ApplicationRecord
               response.split(' ').map do |word|
                 if word.match /:.+?:/
                   formatted_emoji = BOT.all_emoji.find { |e| e.name == word[1...-1] }
-                  p formatted_emoji
+                  p formatted_emoji, BOT.all_emoji, word
                   if formatted_emoji
                     formatted_emoji.mention
                   else
