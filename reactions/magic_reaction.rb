@@ -24,16 +24,19 @@ module Reactions
             end
 
             def command(event)
-                matches = event.message.content.scan(self.regex)
-                matches = matches.flatten.uniq
-                matches.each do |m|
-                    cards = MTG::Card.where(name: %Q{#{m}}).all
-                    card = cards.find { |c| c.multiverse_id }
-
-                    if card
-                        event.respond nil, false, build_embed(card)
-                    end
-                end
+              event.channel.send_embed do |embed|
+                embed.image = EmbedImage.new(url: "https://i.imgur.com/DoZYwq5.png")
+              end
+                # matches = event.message.content.scan(self.regex)
+                # matches = matches.flatten.uniq
+                # matches.each do |m|
+                #     cards = MTG::Card.where(name: %Q{#{m}}).all
+                #     card = cards.find { |c| c.multiverse_id }
+                #
+                #     if card
+                #         event.respond nil, false, build_embed(card)
+                #     end
+                # end
             end
         end
     end

@@ -6,6 +6,6 @@ class UserCommand < ApplicationRecord
             if input == '.*' || test.match(/#{input}/)
               test.gsub(/#{input}/, output)
             end
-          end
+        end
     end
 end
