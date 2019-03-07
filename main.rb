@@ -31,7 +31,7 @@ BOT = Discordrb::Commands::CommandBot.new({
   token: ENV['discord'],
   prefix: '!!',
   log_level: :debug,
-  parse_edited: true
+  advanced_functionality: true
 })
 
 ENV['admins'].split(',').each do |admin|
