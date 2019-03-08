@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(e, *name)
+        return if e.from_bot?
+
         name = name.join(' ')
         return "That color role doesn't exist" unless RoleColor.find_by(name: name, server: e.server.id)
         role = e.author.roles.find {|r| RoleColor.first(name: r.name, server: e.server.id)}

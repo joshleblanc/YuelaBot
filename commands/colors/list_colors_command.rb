@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(e)
+        return if e.from_bot?
+
         colors = RoleColor.where(server: e.server.id)
         e << "Available colors:"
         e << '```'

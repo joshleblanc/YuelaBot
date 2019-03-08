@@ -18,6 +18,7 @@ module Commands
       end
 
       def command(e, user)
+        return if e.from_bot?
         begin
           user = User.find(user.id)
           birthday = user.birthdays.find_by(server: e.server.id)

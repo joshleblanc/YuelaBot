@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, id)
+        return if event.from_bot?
+
         if event.server.nil?
           return "Initiate this command in a server"
         end

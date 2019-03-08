@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         session = Redd.it(
             user_agent: 'Redd:YuelaBot (by /u/horizonshadow)',
             client_id: ENV['reddit_clientid'],

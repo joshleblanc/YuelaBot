@@ -14,6 +14,8 @@ module Commands
         end
   
         def command(event, user, command, *args)
+          return if event.from_bot?
+
           target_user = event.channel.users.find{ |u| u.username.match(/#{user}/i) }
           if target_user
             executed_command = BOT.simple_execute("#{command} #{args.join(' ')}", event)

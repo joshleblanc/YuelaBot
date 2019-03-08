@@ -14,7 +14,9 @@ module Commands
         }
       end
 
-      def command(event, *args)
+      def command(event)
+        return if event.from_bot?
+
         'https://github.com/HorizonShadow/YuelaBot'
       end
     end

@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event)
+        return if event.from_bot?
+
         user_reactions = UserReaction.all
         if user_reactions.empty?
           event << "No reactions registered"

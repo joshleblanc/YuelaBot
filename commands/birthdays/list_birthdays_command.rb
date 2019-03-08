@@ -16,6 +16,7 @@ module Commands
       end
 
       def command(e)
+        return if e.from_bot?
         birthdays = Birthday.where(server: e.server.id).order(month: :asc, day: :asc).map(&:to_s).join("\n")
         if birthdays.empty?
           "No birthdays found"

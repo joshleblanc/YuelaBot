@@ -14,6 +14,8 @@ module Commands
       end
 
       def command(e, *message)
+        return if e.from_bot?
+
         begin
           user_id = e.author.id
           user = User.find_or_create_by(id: user_id) do |u|

@@ -16,7 +16,8 @@ module Commands
         }
       end
 
-      def command(_, id)
+      def command(e, id)
+        return if e.from_bot?
         begin
           UserReaction.find(id).destroy
           "Reaction #{id} deleted"

@@ -15,7 +15,9 @@ module Commands
         }
       end
 
-      def command(_, *args)
+      def command(e, *args)
+        return if e.from_bot?
+
         Random.rand(args[0].to_i) + 1
       end
     end

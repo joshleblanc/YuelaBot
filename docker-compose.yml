@@ -9,6 +9,8 @@ services:
   yuela:
     build: .
     command: bundle exec ruby main.rb
+    stdin_open: true
+    tty: true
     volumes:
       - .:/app
     env_file:

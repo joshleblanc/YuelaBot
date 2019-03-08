@@ -14,6 +14,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         name, output, *rest = CSV.parse_line(args.join(' '), col_sep: ' ')
         input = rest.join || '.*'
         return "That's not quite right" unless name && output && input

@@ -13,6 +13,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         message = args.join(' ')
         message.downcase.chars.map {|c| rand > 0.5 ? c.upcase : c}.join
       end

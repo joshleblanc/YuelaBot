@@ -19,7 +19,9 @@ module Commands
 
       end
 
-      def command(_, source, target, *args)
+      def command(e, source, target, *args)
+        return if e.from_bot?
+
         service = Google::Apis::TranslateV2::TranslateService.new
         service.key = ENV['google']
         query = args.join(' ')

@@ -14,6 +14,8 @@ module Commands
       end
 
       def command(event, *term)
+        return if event.from_bot?
+
         term = URI.encode_www_form_component(term.join(' '))
 
         wordnik_url = "https://api.wordnik.com/v4/word.json/#{term}/definitions"

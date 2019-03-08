@@ -14,6 +14,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         begin
           regex, output, chance = CSV.parse_line(args.join(' '), col_sep: ' ')
           if regex.nil?

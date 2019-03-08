@@ -15,6 +15,8 @@ module Commands
       end
 
       def command(_, *args)
+        return if event.from_bot?
+
         query = args.join(' ')
         service = Google::Apis::YoutubeV3::YouTubeService.new
         service.key = ENV['google']

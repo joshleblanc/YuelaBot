@@ -31,6 +31,7 @@ BOT = Discordrb::Commands::CommandBot.new({
   token: ENV['discord'],
   prefix: '!!',
   log_level: :debug,
+  parse_self: true
 })
 
 ENV['admins'].split(',').each do |admin|
@@ -56,7 +57,10 @@ end.compact.each do |reaction|
   BOT.message(reaction.attributes, &reaction.method(:command))
 end
 
+BOT.message_edit(&method(:archive_routine))
+
 BOT.message do |event|
+  break if event.from_bot?
   urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end

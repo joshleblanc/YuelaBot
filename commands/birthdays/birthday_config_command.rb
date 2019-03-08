@@ -17,6 +17,7 @@ module Commands
       end
 
       def command(e, channel, *message)
+        return if e.from_bot?
         begin
           BirthdayConfig.find_or_create_by(server: e.server.id) do |bc|
             bc.channel = channel.match(/<#(\d+)>/)[1]

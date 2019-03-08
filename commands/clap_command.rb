@@ -14,6 +14,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         clap = '👏'
         event << args.join(clap)
       end

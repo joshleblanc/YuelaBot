@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         is = ImageSearch.new
         is.reset!
         is.run!(event, args.join(' '))

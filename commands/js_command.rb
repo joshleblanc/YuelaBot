@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         code = args.join(' ')
         cxt = MiniRacer::Context.new timeout: 3000
 

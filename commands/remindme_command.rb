@@ -15,6 +15,7 @@ module Commands
       end
 
       def command(event, time, *args)
+        return if event.from_bot?
         message = args.join(' ')
         begin
           Rufus::Scheduler.singleton.in time do

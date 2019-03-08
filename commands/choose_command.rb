@@ -14,7 +14,9 @@ module Commands
         }
       end
 
-      def command(_, *choices)
+      def command(e, *choices)
+        return if e.from_bot?
+
         choices.join(' ').split(/,|\bor\b/).map(&:strip).delete_if(&:empty?).sample.squeeze(' ')
       end
     end

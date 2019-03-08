@@ -14,7 +14,9 @@ module Commands
         }
       end
 
-      def command(_, name)
+      def command(e, name)
+        return if e.from_bot?
+
         command = UserCommand.find_by(name: name)
         if command
           sio = StringIO.new

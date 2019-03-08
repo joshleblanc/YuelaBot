@@ -1,0 +1,2 @@
+class ArchiveConfig < ApplicationRecord
+end

@@ -16,6 +16,7 @@ module Commands
       end
 
       def command(event, user, month, day)
+        return if event.from_bot?
         begin
           mention = event.message.mentions.first
 

@@ -17,6 +17,8 @@ module Commands
       end
 
       def command(event)
+        return if event.from_bot?
+
         trivia = TriviaCommand.new(event)
         trivia.run
       end

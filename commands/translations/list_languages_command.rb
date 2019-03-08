@@ -13,7 +13,9 @@ module Commands
         }
       end
 
-      def command(_, *_)
+      def command(e)
+        return if e.from_bot?
+
         service = Google::Apis::TranslateV2::TranslateService.new
         service.key = ENV['google']
         languages = service.list_languages(target: 'en').languages

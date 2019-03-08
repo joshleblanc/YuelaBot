@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, *args)
+        return if event.from_bot?
+
         place = args.join(' ')
         url = 'http://api.openweathermap.org/data/2.5/weather'
         is_id = Integer(place) rescue false

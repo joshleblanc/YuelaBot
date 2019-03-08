@@ -15,6 +15,8 @@ module Commands
       end
 
       def command(e, book, *query)
+        return if e.from_bot?
+
         req = RestClient.get("http://bible-api.com/#{book}+#{query.join}")
         resp = JSON.parse req.body
         embed = Embed.new(

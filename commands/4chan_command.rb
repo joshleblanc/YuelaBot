@@ -17,6 +17,8 @@ module Commands
       end
 
       def command(event, id)
+        return if event.from_bot?
+
         board = Fourchan::Kit::Board.new id
         res = board.posts.sample
         text, quotes = parse_response(res.com)

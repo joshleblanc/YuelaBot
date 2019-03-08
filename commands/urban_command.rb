@@ -16,6 +16,8 @@ module Commands
       end
 
       def command(event, *term)
+        return if event.from_bot?
+
         term = term.join ' '
         response = RestClient.get('http://api.urbandictionary.com/v0/define', params: {term: term})
         body = JSON.parse response

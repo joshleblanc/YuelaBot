@@ -17,6 +17,7 @@ module Commands
       end
 
       def command(e, *args)
+        return if e.from_bot?
         name, color = CSV.parse_line(args.join(' '), col_sep: ' ')
         color = color[1..-1] if color.start_with?('#')
         color = color.to_i(16)
