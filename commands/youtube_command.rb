@@ -14,7 +14,7 @@ module Commands
         }
       end
 
-      def command(_, *args)
+      def command(event, *args)
         return if event.from_bot?
 
         query = args.join(' ')
