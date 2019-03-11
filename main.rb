@@ -60,7 +60,7 @@ end
 BOT.message_edit(&method(:archive_routine))
 
 BOT.message do |event|
-  break if event.from_bot?
+  next if event.from_bot?
   urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
