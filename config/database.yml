@@ -9,6 +9,6 @@ development:
 
 production:
   adapter: postgresql
-  database: postgres.main.yuelabot
+  database: <%= ENV['YUELA_DATABASE_URL'] %>
   pool: 15
   timeout: 5000
