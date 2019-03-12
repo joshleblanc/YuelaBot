@@ -9,6 +9,6 @@ development:
 
 production:
   adapter: postgresql
-  database: <%= ENV['YUELA_DATABASE_URL'] %>
+  database: postgres.main.yuelabot.cereal.node.intern
   pool: 15
   timeout: 5000
