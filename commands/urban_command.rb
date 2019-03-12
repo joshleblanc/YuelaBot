@@ -10,18 +10,24 @@ module Commands
       def attributes
         {
             min_args: 1,
-            usage: 'urban term',
-            description: 'Return the urban dictionary definition for a term'
+            usage: 'urban term index?',
+            description: 'Return the urban dictionary definition for a term. Index is optional and will default to 1.'
         }
       end
 
       def command(event, *term)
         return if event.from_bot?
 
-        term = term.join ' '
+        index = 0
+        if term.last.numeric?
+          term = term.take(term.size - 1).join ' '
+          index = Integer(term.last - 1)
+        else
+          term = term.join ' '
+
         response = RestClient.get('http://api.urbandictionary.com/v0/define', params: {term: term})
         body = JSON.parse response
-        definition = body['list'].first
+        definition = body['list'][index]
         if definition
           embed = Embed.new(
               title: definition['word'],

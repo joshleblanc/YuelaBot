@@ -20,6 +20,7 @@ require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './room-17-proxy'
+require_all './sins'
 
 include Routines
 
