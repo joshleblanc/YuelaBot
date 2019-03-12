@@ -11,6 +11,7 @@ RUN bundle install
 
 ADD . .
 
-ENTRYPOINT ./entrypoint.sh
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["bundle", "exec", "ruby", "main.rb"]
