@@ -9,6 +9,6 @@ development:
 
 production:
   adapter: postgresql
-  database: postgres.main.yuelabot.cereal.node.intern
+  database: postgres.main.yuelabot
   pool: 15
   timeout: 5000
