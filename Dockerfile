@@ -11,4 +11,6 @@ RUN bundle install
 
 ADD . .
 
+ENTRYPOINT ./entrypoint.sh
+
 CMD ["bundle", "exec", "ruby", "main.rb"]
