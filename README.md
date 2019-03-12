@@ -1,6 +1,18 @@
+# Prerequisites
+
+* Ruby
+* Postgres*
+
+\* You can change the database driver in ./config/database.yml if you so desire. You'll need to include the 
+associated gem in the Gemfile as well.
+
 # Installation instructions
 
 `bundle install` will install the dependencies for the project
+
+`rake db:create` will create the database
+
+`rake db:migrate` will run the database migrations
 
 # How to run
 
