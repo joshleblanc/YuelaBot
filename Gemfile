@@ -23,5 +23,6 @@ end
 
 group :test do
   gem 'rake'
-  gem 'test-unit-rr'
+  gem 'test-unit-rr', require: false
+  gem 'simplecov', require: false
 end

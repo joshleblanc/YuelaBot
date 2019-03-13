@@ -48,6 +48,7 @@ GEM
       websocket-client-simple (>= 0.3.0)
     discordrb-webhooks (3.3.0)
       rest-client (>= 2.1.0.rc1)
+    docile (1.3.1)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.6.0)
@@ -195,6 +196,11 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
+    simplecov (0.16.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     test-unit (3.3.0)
       power_assert
     test-unit-rr (1.0.5)
@@ -249,6 +255,7 @@ DEPENDENCIES
   rest-client
   ruby-debug-ide
   rufus-scheduler
+  simplecov
   test-unit-rr
   tzinfo-data
 

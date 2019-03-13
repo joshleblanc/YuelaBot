@@ -2,3 +2,4 @@
 .env
 .byebug_history
 *.sqlite3
+coverage
