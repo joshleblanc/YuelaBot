@@ -1,0 +1,6 @@
+language: ruby
+rvm:
+  - 2.5
+before_install:
+  - sudo apt update
+  - sudo apt -y install libsodium-dev
