@@ -2,7 +2,7 @@ language: ruby
 rvm:
   - 2.5
 before_install:
-  - gem install bundler
+  - gem install bundle
   - sudo apt update
   - sudo apt -y install libsodium-dev
 dist: xenial
