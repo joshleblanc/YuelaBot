@@ -1,3 +1,5 @@
+![travis-ci status](https://travis-ci.org/HorizonShadow/YuelaBot.svg)
+
 # Prerequisites
 
 * Ruby
