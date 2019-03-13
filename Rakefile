@@ -1,4 +1,5 @@
 require 'rake'
+require 'rake/testtask'
 require 'active_record'
 require 'dotenv/load'
 
@@ -48,3 +49,11 @@ task :console do
   ARGV.clear
   IRB.start
 end
+
+
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/*_test.rb']
+end
+
+task default: :test

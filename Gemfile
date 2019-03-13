@@ -23,5 +23,5 @@ end
 
 group :test do
   gem 'rake'
-  gem 'rspec'
+  gem 'test-unit-rr'
 end
