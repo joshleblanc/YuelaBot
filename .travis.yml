@@ -7,6 +7,7 @@ before_install:
   - sudo apt -y install libsodium-dev
 before_script:
   - psql -c 'create database yuela_test;' -U postgres
+  - rake db:migrate
 dist: xenial
 services:
   - postgresql
