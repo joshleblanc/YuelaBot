@@ -23,7 +23,7 @@ require_all './room-17-proxy'
 
 include Routines
 
-ActiveRecord::Base.configurations = YAML::load(File.open('config/database.yml'))
+ActiveRecord::Base.configurations = YAML::load(ERB.new(File.read('config/database.yml')).result)
 ActiveRecord::Base.establish_connection(ENV['RACK_ENV']&.to_sym || :development)
 
 
@@ -43,7 +43,7 @@ UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.run)
 end
 
-BOT.command(:test) do |event|
+BOT.command(:ping) do |event|
   event.respond "pong"
 end
 
