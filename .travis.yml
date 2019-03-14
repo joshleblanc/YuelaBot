@@ -21,6 +21,7 @@ services:
 - postgresql
 deploy:
   provider: script
-  script: bundle exec rake deploy
+  script: rvm use 2.5.3 do bundle exec rake deploy
+  skip_cleanup: true
   on:
     branch: master
