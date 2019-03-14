@@ -1,10 +1,11 @@
 require 'rake'
+require 'erb'
 require 'rake/testtask'
 require 'active_record'
 require 'dotenv/load'
 
 include ActiveRecord::Tasks
-DatabaseTasks.database_configuration = YAML::load(File.open('./config/database.yml'))
+DatabaseTasks.database_configuration = YAML.load(ERB.new(File.read('./config/database.yml')).result)
 DatabaseTasks.root = "."
 DatabaseTasks.db_dir = 'db'
 DatabaseTasks.env = ENV['RACK_ENV'] || 'development'
@@ -69,6 +70,7 @@ task :deploy do
     ssh.exec! "mkdir -p ~/yuelabot"
     ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
     ssh.exec! "cd yuelabot"
+    ssh.exec! "ruby use 2.4.1"
     ssh.exec! "rake db:migrate"
     ssh.exec! "god restart yuela"
   end

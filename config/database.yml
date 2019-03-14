@@ -9,7 +9,7 @@ development:
 
 production:
   adapter: postgresql
-  database: <%= ENV['YUELA_DATABASE_URL'] %>
+  url: <%= ENV['YUELA_DATABASE_URL'] %>
   pool: 15
   timeout: 5000
 
