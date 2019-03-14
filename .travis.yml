@@ -2,10 +2,9 @@ language: ruby
 rvm:
 - 2.5.3
 before_install:
-- openssl aes-256-cbc -K $encrypted_6fd7155e1d69_key -iv $encrypted_6fd7155e1d69_iv
-  -in deploy_key.enc -out deploy_key -d
 - openssl aes-256-cbc -K $encrypted_5d3af34cb5fc_key -iv $encrypted_5d3af34cb5fc_iv
-  -in deploy_key.enc -out .travis/deploy_key -d
+  -in .travis/deploy_key.enc -out .travis/deploy_key -d
+- ssh-add .travis/deploy_key
 - gem install bundle
 - sudo apt update
 - sudo apt -y install libsodium-dev
