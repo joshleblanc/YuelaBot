@@ -50,6 +50,30 @@ task :console do
   IRB.start
 end
 
+task :deploy do
+  require 'net/scp'
+  require 'net/ssh'
+
+  host = "atlas.hostineer.com"
+  tar = "yuelabot.tar.gz"
+
+  `tar -czf ../#{tar} .`
+  Net::SCP.upload!(
+      host,
+      ENV['DEPLOY_USER'],
+      "../yuelabot.tar.gz",
+      "yuelabot.tar.gz",
+      ssh: { password: ENV['DEPLOY_PASS'] }
+  )
+  Net::SSH.start(host, ENV['DEPLOY_USER'], password: ENV['DEPLOY_PASS']) do |ssh|
+    ssh.exec! "mkdir -p ~/yuelabot"
+    ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
+    ssh.exec! "cd yuelabot"
+    ssh.exec! "rake db:migrate"
+    ssh.exec! "god restart yuela"
+  end
+end
+
 
 Rake::TestTask.new do |t|
   t.libs << "test"

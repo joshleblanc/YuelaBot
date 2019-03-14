@@ -14,6 +14,8 @@ gem 'mtg_sdk'
 gem 'dotenv'
 gem 'activerecord'
 gem 'pg'
+gem 'net-ssh'
+gem 'net-scp'
 
 group :development do
     gem 'byebug'
