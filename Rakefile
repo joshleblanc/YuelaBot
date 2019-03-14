@@ -68,12 +68,15 @@ task :deploy do
   )
   Net::SSH.start(host, ENV['DEPLOY_USER'], password: ENV['DEPLOY_PASS']) do |ssh|
     ssh.open_channel do |ch|
+      ch.on_data do |_, data|
+        p data
+      end
       ch.exec "mkdir -p ~/yuelabot"
       ch.exec "tar -C ~/yuelabot/ -zxvf #{tar}"
       ch.exec "cd ~/yuelabot"
-      p ch.exec "rvm 2.4.1 do bundle install"
-      p ch.exec "rvm 2.4.1 do rake db:migrate"
-      p ch.exec "rvm 2.4.1 do god restart yuela"
+      ch.exec "rvm 2.4.1 do bundle install"
+      ch.exec "rvm 2.4.1 do rake db:migrate"
+      ch.exec "rvm 2.4.1 do god restart yuela"
     end.wait
   end
 end
