@@ -71,19 +71,22 @@ task :deploy do
       ch.on_data do |_, data|
         p data
       end
-      ch.exec "mkdir -p ~/yuelabot" do |c, succes|
+      ch.exec "mkdir -p ~/yuelabot" do |c, success|
         p "mkdir failed" unless success
-      end
-      ch.exec "tar -C ~/yuelabot/ -zxvf #{tar}"
-      ch.exec "cd ~/yuelabot"
-      ch.exec "rvm 2.4.1 do bundle install" do |c, success|
-        p "bundle install failed" unless success
         c.on_data do |_, data|
           p data
         end
       end
-      ch.exec "rvm 2.4.1 do rake db:migrate"
-      ch.exec "rvm 2.4.1 do god restart yuela"
+      # ch.exec "tar -C ~/yuelabot/ -zxvf #{tar}"
+      # ch.exec "cd ~/yuelabot"
+      # ch.exec "rvm 2.4.1 do bundle install" do |c, success|
+      #   p "bundle install failed" unless success
+      #   c.on_data do |_, data|
+      #     p data
+      #   end
+      # end
+      # ch.exec "rvm 2.4.1 do rake db:migrate"
+      # ch.exec "rvm 2.4.1 do god restart yuela"
     end
     ssh.loop
   end
