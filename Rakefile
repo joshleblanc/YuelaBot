@@ -71,6 +71,7 @@ task :deploy do
     ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
     ssh.exec! "cd yuelabot"
     ssh.exec! "ruby use 2.4.1"
+    ssh.exec! "bundle install"
     ssh.exec! "rake db:migrate"
     ssh.exec! "god restart yuela"
   end
