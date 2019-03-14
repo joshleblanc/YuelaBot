@@ -74,9 +74,21 @@ task :deploy do
       ch.exec "mkdir -p ~/yuelabot"
       ch.exec "tar -C ~/yuelabot/ -zxvf #{tar}"
       ch.exec "cd ~/yuelabot"
-      ch.exec "rvm 2.4.1 do bundle install"
-      ch.exec "rvm 2.4.1 do rake db:migrate"
-      ch.exec "rvm 2.4.1 do god restart yuela"
+      ch.exec "rvm 2.4.1 do bundle install" do |c|
+        c.on_data do |_, data|
+          p data
+        end
+      end
+      ch.exec "rvm 2.4.1 do rake db:migrate" do |c|
+        c.on_data do |_, data|
+          p data
+        end
+      end
+      ch.exec "rvm 2.4.1 do god restart yuela" do |c|
+        c.on_data do |_, data|
+          p data
+        end
+      end
     end.wait
   end
 end
