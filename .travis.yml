@@ -5,8 +5,8 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_6fd7155e1d69_key -iv $encrypted_6fd7155e1d69_iv
   -in .travis/deploy_key.enc -out .travis/deploy_key -d
 - gem install bundle
-- sudo apt update
-- sudo apt -y install libsodium-dev
+- sudo apt-get update
+- sudo apt-get -y install libsodium-dev
 before_script:
 - psql -c 'create database yuela_test;' -U postgres
 - bundle exec rake db:migrate
