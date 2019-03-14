@@ -67,13 +67,13 @@ task :deploy do
       ssh: { password: ENV['DEPLOY_PASS'] }
   )
   Net::SSH.start(host, ENV['DEPLOY_USER'], password: ENV['DEPLOY_PASS']) do |ssh|
-    ssh.exec! "mkdir -p ~/yuelabot"
-    ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
-    ssh.exec! "cd yuelabot"
-    ssh.exec! "ruby use 2.4.1"
-    ssh.exec! "bundle install"
-    ssh.exec! "rake db:migrate"
-    ssh.exec! "god restart yuela"
+    p ssh.exec! "mkdir -p ~/yuelabot"
+    p ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
+    p ssh.exec! "cd yuelabot"
+    p ssh.exec! "ruby use 2.4.1"
+    p ssh.exec! "bundle install"
+    p ssh.exec! "rake db:migrate"
+    p ssh.exec! "god restart yuela"
   end
 end
 
