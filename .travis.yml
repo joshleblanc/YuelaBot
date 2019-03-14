@@ -9,7 +9,7 @@ before_install:
 - sudo apt-get -y install libsodium-dev
 before_script:
 - psql -c 'create database yuela_test;' -U postgres
-- RACK_ENV=TEST bundle exec rake db:migrate
+- RACK_ENV=test bundle exec rake db:migrate
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
