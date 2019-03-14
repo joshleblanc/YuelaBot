@@ -70,9 +70,9 @@ task :deploy do
     ssh.exec! "mkdir -p ~/yuelabot"
     ssh.exec! "tar -C ~/yuelabot/ -zxvf #{tar}"
     ssh.exec! "cd yuelabot"
-    p ssh.exec! "rvm do 2.4.1 bundle install"
-    p ssh.exec! "rvm do 2.4.1 rake db:migrate"
-    p ssh.exec! "rvm do 2.4.1 god restart yuela"
+    p ssh.exec! "rvm 2.4.1 do bundle install"
+    p ssh.exec! "rvm 2.4.1 do rake db:migrate"
+    p ssh.exec! "rvm 2.4.1 do god restart yuela"
   end
 end
 
