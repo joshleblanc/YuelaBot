@@ -23,6 +23,8 @@ after_success:
 - eval "$(ssh-agent -s)"
 - chmod 600 .travis/deploy_key
 - ssh-add .travis/deploy_key
+- ssh-add -L
+- ssh -vvvv cereal#grep.sh@atlas.hostineer.com
 - ssh-keyscan atlas.hostineer.com > ~/.ssh/known_hosts
 - git remote add deploy cereal#grep.sh@atlas.hostineer.com:repos/YuelaBot.git
 - git push deploy HEAD:master
