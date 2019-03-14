@@ -16,6 +16,7 @@ gem 'activerecord'
 gem 'pg'
 gem 'net-ssh'
 gem 'net-scp'
+gem 'rake'
 
 group :development do
     gem 'byebug'
@@ -24,7 +25,6 @@ group :development do
 end
 
 group :test do
-  gem 'rake'
   gem 'test-unit-rr', require: false
   gem 'simplecov', require: false
 end
