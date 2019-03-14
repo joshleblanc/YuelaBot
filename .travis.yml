@@ -24,4 +24,4 @@ after_success:
 - chmod 600 .travis/deploy_key
 - ssh-add .travis/deploy_key
 - git remote add deploy cereal#grep.sh@atlas.hostineer.com:repos/YuelaBot.git
-- git push master
+- git push deploy
