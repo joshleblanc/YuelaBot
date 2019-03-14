@@ -21,6 +21,6 @@ services:
 - postgresql
 deploy:
   provider: script
-  script: rake deploy
+  script: bundle exec rake deploy
   on:
     branch: master
