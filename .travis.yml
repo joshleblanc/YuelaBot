@@ -1,18 +1,23 @@
 language: ruby
 rvm:
-  - 2.5.3
+- 2.5.3
 before_install:
-  - gem install bundle
-  - sudo apt update
-  - sudo apt -y install libsodium-dev
+- openssl aes-256-cbc -K $encrypted_6fd7155e1d69_key -iv $encrypted_6fd7155e1d69_iv
+  -in deploy_key.enc -out deploy_key -d
+- openssl aes-256-cbc -K $encrypted_5d3af34cb5fc_key -iv $encrypted_5d3af34cb5fc_iv
+  -in deploy_key.enc -out .travis/deploy_key -d
+- gem install bundle
+- sudo apt update
+- sudo apt -y install libsodium-dev
 before_script:
-  - psql -c 'create database yuela_test;' -U postgres
-  - bundle exec rake db:migrate
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+- psql -c 'create database yuela_test;' -U postgres
+- bundle exec rake db:migrate
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT --debug
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT --debug"
 dist: xenial
 services:
-  - postgresql
+- postgresql

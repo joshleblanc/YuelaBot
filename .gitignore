@@ -3,3 +3,4 @@
 .byebug_history
 *.sqlite3
 coverage
+.travis/deploy_key
