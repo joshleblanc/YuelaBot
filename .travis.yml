@@ -15,7 +15,7 @@ before_script:
 - chmod +x ./cc-test-reporter
 - "./cc-test-reporter before-build"
 after_script:
-- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT --debug"
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 dist: xenial
 services:
 - postgresql
