@@ -78,7 +78,7 @@ task :deploy do
           c.send_data "tar -C ~/yuelabot/ -zxvf #{tar}\n"
           c.send_data "cd ~/yuelabot\n"
           c.send_data "rvm use 2.4.1\n"
-          c.send_data "bundle install\n"
+          c.send_data "bundle install --deployment\n"
           c.send_data "rake db:migrate\n"
           c.send_data "god restart yuela\n"
 
