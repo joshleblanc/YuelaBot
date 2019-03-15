@@ -18,11 +18,14 @@ module Commands
       def command(event, *term)
         return if event.from_bot?
 
-        index = if term.last.to_i > 0
+        has_index = Integer(term.last) rescue false
+        index = if has_index
           term.pop
         else
           0
         end
+
+        index = 0 if index < 0
 
         response = RestClient.get('http://api.urbandictionary.com/v0/define', params: {term: term.join(' ')})
         body = JSON.parse response

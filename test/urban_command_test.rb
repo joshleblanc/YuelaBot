@@ -37,7 +37,9 @@ class UrbanCommandTest < Test::Unit::TestCase
   end
 
   def test_negative_index
+    definition = @urban.first
+
     result = Commands::UrbanCommand.command(@event, "test", -1)
-    assert(result.eql? "I couldn't find anything for that")
+    assert(result.description.eql?(definition['definition']), "expected #{definition['definition']}, but was #{result.description}")
   end
 end
