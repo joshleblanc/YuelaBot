@@ -44,7 +44,7 @@ UserCommand.all.each do |command|
 end
 
 BOT.command(:ping) do |event|
-  event.respond "pong 3"
+  event.respond "pong"
 end
 
 Commands.constants.map do |c|

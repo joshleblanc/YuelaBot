@@ -58,7 +58,9 @@ task :deploy do
   host = "atlas.hostineer.com"
   tar = "yuelabot.tar.gz"
 
-  `tar -czf ../#{tar} .`
+  p "Compressing folder..."
+  `tar --exclude-vcs-ignores --exclude-vcs --exclude .env -czf ../#{tar} .`
+  p "Done compressing folder"
   Net::SCP.upload!(
       host,
       ENV['DEPLOY_USER'],
@@ -66,28 +68,39 @@ task :deploy do
       "yuelabot.tar.gz",
       ssh: { password: ENV['DEPLOY_PASS'] }
   )
+
   Net::SSH.start(host, ENV['DEPLOY_USER'], password: ENV['DEPLOY_PASS']) do |ssh|
     ssh.open_channel do |ch|
-      ch.on_data do |_, data|
-        p data
-      end
-      ch.exec "mkdir -p ~/yuelabot"
-      ch.wait
-      ch.exec "tar -C ~/yuelabot/ -zxvf #{tar}"
-      ch.wait
-      ch.exec "cd ~/yuelabot"
-      ch.wait
-      ch.exec "rvm 2.4.1 do bundle install" do |c, success|
-        p "bundle install failed" unless success
-        c.on_data do |_, data|
-          p data
+      ch.request_pty
+      ch.send_channel_request "shell" do |c, success|
+        if success
+          c.send_data "mkdir -p ~/yuelabot\n"
+          c.send_data "tar -C ~/yuelabot/ -zxvf #{tar}\n"
+          c.send_data "cd ~/yuelabot\n"
+          c.send_data "rvm use 2.4.1\n"
+          c.send_data "bundle install\n"
+          c.send_data "rake db:migrate\n"
+          c.send_data "god restart yuela\n"
+
+          c.on_data do |_, data|
+            $stdout.print data
+          end
+
+          c.on_extended_data do |_, type, data|
+            $stderr.print data
+          end
+
+          c.on_close do
+            p "Channel closed"
+          end
+        else
+          p "Channel failed to open"
+        end
+        ch.send_data "exit\n"
+        ch.on_close do
+          p "Shell closed"
         end
       end
-      ch.wait
-      ch.exec "rvm 2.4.1 do rake db:migrate"
-      ch.wait
-      ch.exec "rvm 2.4.1 do god restart yuela"
-      ch.wait
     end
     ssh.loop
   end
