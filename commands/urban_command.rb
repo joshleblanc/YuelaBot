@@ -20,7 +20,7 @@ module Commands
 
         has_index = Integer(term.last) rescue false
         index = if has_index
-          term.pop
+          Integer(term.pop)
         else
           0
         end
