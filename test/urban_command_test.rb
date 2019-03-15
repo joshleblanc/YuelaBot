@@ -27,19 +27,19 @@ class UrbanCommandTest < Test::Unit::TestCase
   def test_with_index
     definition = @urban[1]
 
-    result = Commands::UrbanCommand.command(@event, "test", 1)
+    result = Commands::UrbanCommand.command(@event, "test", "1")
     assert(definition['definition'].eql?(result.description), "expected #{definition['definition']} but was #{result.description}")
   end
 
   def test_with_out_of_bounds_index
-    result = Commands::UrbanCommand.command(@event, "test", 99999)
+    result = Commands::UrbanCommand.command(@event, "test", "99999")
     assert(result.eql? "I couldn't find anything for that")
   end
 
   def test_negative_index
     definition = @urban.first
 
-    result = Commands::UrbanCommand.command(@event, "test", -1)
+    result = Commands::UrbanCommand.command(@event, "test", "-1")
     assert(result.description.eql?(definition['definition']), "expected #{definition['definition']}, but was #{result.description}")
   end
 end
