@@ -75,7 +75,7 @@ task :deploy do
       ch.send_channel_request "shell" do |c, success|
         if success
           c.send_data "mkdir -p ~/yuelabot\n"
-          c.send_data "tar -C ~/yuelabot/ -zxvf #{tar}\n"
+          c.send_data "tar -C ~/yuelabot/ -zxf #{tar}\n"
           c.send_data "cd ~/yuelabot\n"
           c.send_data "rvm use 2.4.1\n"
           c.send_data "bundle install --deployment\n"
