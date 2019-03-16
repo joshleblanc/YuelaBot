@@ -17,6 +17,7 @@ gem 'pg'
 gem 'net-ssh'
 gem 'net-scp'
 gem 'rake'
+gem "octokit", "~> 4.0"
 
 group :development do
     gem 'byebug'

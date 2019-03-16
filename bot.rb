@@ -12,6 +12,7 @@ require 'faye/websocket'
 require 'byebug'
 require 'mtg_sdk'
 require 'mini_racer'
+require 'octokit'
 require 'dotenv/load'
 
 require_relative 'models/application_record'
