@@ -13,6 +13,8 @@ module Commands
       end
 
       def command(e, *terms)
+        return if e.from_bot?
+
         suggestion = terms.join(' ')
         client = Octokit::Client.new(login: ENV['github_login'], password: ENV['github_password'])
         client.create_issue('horizonshadow/yuelabot', suggestion)
