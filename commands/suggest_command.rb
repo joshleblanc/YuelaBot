@@ -17,7 +17,7 @@ module Commands
 
         suggestion = terms.join(' ')
         client = Octokit::Client.new(login: ENV['github_login'], password: ENV['github_password'])
-        body = "Added by #{e.user.name} from server #{e.server.name}##{e.channel.name}"
+        body = "Added by #{e.user.name} from #{e.server.name}##{e.channel.name}"
         client.create_issue('horizonshadow/yuelabot', suggestion, body, labels: "from-bot")
         e.respond "Suggestion added!"
       end
