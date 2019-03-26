@@ -45,7 +45,7 @@ class FourChanCommandTest < Test::Unit::TestCase
     posts = @board.posts
     any_instance_of(Fourchan::Kit::Board) do |klass|
       stub(klass).posts do
-        [posts[6]]
+        [posts.first]
       end
     end
   end
