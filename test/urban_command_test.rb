@@ -8,10 +8,15 @@ class UrbanCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
 
   def setup
+    p "Running setup"
     @event = Object.new
     stub(@event).from_bot? { false }
     stub(@event).respond { |_, _, c| c }
     stub(@event).<< { |c| c }
+
+    stub(RestClient).get do |_, _|
+      File.read("./test/support/fixtures/urban/urban.json")
+    end
 
     urban_response = RestClient.get('http://api.urbandictionary.com/v0/define', params: {term: 'test'})
     @urban = JSON.parse(urban_response)['list']
