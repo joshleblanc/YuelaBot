@@ -2,7 +2,9 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../bot'
+require 'discordrb'
+require 'fourchan/kit'
+require_relative '../commands/4chan_command'
 
 class FourChanCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
@@ -28,7 +30,7 @@ class FourChanCommandTest < Test::Unit::TestCase
     end
 
     stub(Fourchan::Kit::API).get_thread do |_, _|
-      JSON.parse(open("./test/support/fixtures/4chan/wg_thread_6872254.json").read)['posts']
+      JSON.parse(open("./test/support/fixtures/4chan/wg_thread.json").read)['posts']
     end
 
     stub(Fourchan::Kit::API).get_threads do |_|
@@ -43,15 +45,16 @@ class FourChanCommandTest < Test::Unit::TestCase
     posts = @board.posts
     any_instance_of(Fourchan::Kit::Board) do |klass|
       stub(klass).posts do
-        [posts.first]
+        [posts[6]]
       end
     end
   end
 
   def test_parse_response
-    text, quotes = Commands::Random4ChanCommand.parse_response(@board.posts.first.com)
-    assert quotes.empty?
-    assert text == open("./test/support/fixtures/4chan/parsed_post.json").read
+    text, quotes = Commands::Random4ChanCommand.parse_response(@board.posts[0].com)
+    expected_text = open("./test/support/fixtures/4chan/parsed_post.json").read
+    assert quotes.length == 7, "Expected 7 quotes, found #{quotes.length}"
+    assert text == expected_text, "Expected: #{expected_text}\ngot: #{text}"
   end
 
   def test_it_gets_a_random_post

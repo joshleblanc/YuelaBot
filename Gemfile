@@ -9,7 +9,7 @@ gem 'rufus-scheduler'
 gem 'tzinfo-data'
 gem 'faye-websocket'
 gem 'rest-client'
-gem 'mini_racer'
+gem 'mini_racer', platform: [:ruby]
 gem 'mtg_sdk'
 gem 'dotenv'
 gem 'activerecord'
