@@ -43,7 +43,6 @@ module Commands
         quotes = quotes.flatten.map do |quote|
           text.slice! quote
           value = quote.sub(/<span class="quote">&gt;(.*)<\/span>/, Nokogiri::HTML.parse("\\1").text)
-          p value.length
           if value.length > 1024
             value = "#{value[0..1020]}..."
           end
@@ -52,7 +51,6 @@ module Commands
         end
 
         value = Nokogiri::HTML.parse(text).text
-        p value.length
         if value.length > 2048
           value = "#{value[0..2044]}..."
         end
