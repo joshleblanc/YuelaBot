@@ -45,6 +45,8 @@ class ArchiveTest < Test::Unit::TestCase
     stub(@event).from_bot? { false }
 
     stub(BOT).channel { channel }
+
+    ArchiveConfig.find_or_create_by(server: 1)
   end
 
   def test_it_ignores_bot
