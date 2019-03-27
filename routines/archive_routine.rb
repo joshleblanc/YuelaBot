@@ -1,6 +1,6 @@
 module Routines
 
-  def archive_text(archive_channel, last_pin)
+  def archive_text(event, archive_channel, last_pin)
     archive_channel.send_embed do |embed|
       embed.author = EmbedAuthor.new(name: last_pin.author.name, icon_url: last_pin.author.avatar_url)
       embed.description = last_pin.content
@@ -10,43 +10,43 @@ module Routines
   end
 
   def archive_embed(archive_channel, last_pin)
-    # Are you fucking kidding me. Why do I have to manually create all this shit
+    last_embed = last_pin.embeds.first
     archive_channel.send_embed(last_pin.content) do |embed|
-      embed.timestamp = last_pin.embeds[0].timestamp
-      embed.description = last_pin.embeds[0].description
-      if last_pin.embeds[0].author
+      embed.timestamp = last_embed.timestamp
+      embed.description = last_embed.description
+      if last_embed.author
         embed.author = EmbedAuthor.new(
-            name: last_pin.embeds[0].author.name,
-            url: last_pin.embeds[0].author.url,
-            icon_url: last_pin.embeds[0].author.icon_url
+            name: last_embed.author.name,
+            url: last_embed.author.url,
+            icon_url: last_embed.author.icon_url
         )
       end
-      embed.color = last_pin.embeds[0].color
-      embed.fields = Array(last_pin.embeds[0].fields).map do |field|
+      embed.color = last_embed.color
+      embed.fields = Array(last_embed.fields).map do |field|
         EmbedField.new(
             name: field.name,
             inline: field.inline,
             value: field.value
         )
       end
-      if last_pin.embeds[0].footer
+      if last_embed.footer
         embed.footer = EmbedFooter.new(
-            text: last_pin.embeds[0].footer.text,
-            icon_url: last_pin.embeds[0].footer.icon_url
+            text: last_embed.footer.text,
+            icon_url: last_embed.footer.icon_url
         )
       end
-      if last_pin.embeds[0].image
+      if last_embed.image
         embed.image = EmbedImage.new(
-            url: last_pin.embeds[0].image.url
+            url: last_embed.image.url
         )
       end
-      if last_pin.embeds[0].thumbnail
+      if last_embed.thumbnail
         embed.thumbnail = EmbedThumbnail.new(
-            url: last_pin.embeds[0].thumbnail.url
+            url: last_embed.thumbnail.url
         )
       end
-      embed.title = last_pin.embeds[0].title
-      embed.url = last_pin.embeds[0].url
+      embed.title = last_embed.title
+      embed.url = last_embed.url
     end
   end
 
@@ -57,11 +57,11 @@ module Routines
 
     archive = ArchiveConfig.find_by(server: event.server.id)
     return unless archive
-    last_pin = pins.last
+    last_pin = event.channel.pins.last
     last_pin.unpin
     archive_channel = BOT.channel(archive.channel, event.server)
     if last_pin.embeds.empty?
-      archive_text(archive_channel, last_pin)
+      archive_text(event, archive_channel, last_pin)
     else
       archive_embed(archive_channel, last_pin)
     end
