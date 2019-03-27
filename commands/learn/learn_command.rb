@@ -24,7 +24,7 @@ module Commands
           'Command already exists'
         else
           command = UserCommand.create(name: name, input: input, output: output, creator: event.author.username)
-          BOT.command(name.to_sym, &command.run)
+          BOT.command(name.to_sym, &command.method(:run))
           "Command #{name} learned"
         end
       end

@@ -41,7 +41,7 @@ end
 
 Afk.destroy_all
 UserCommand.all.each do |command|
-  BOT.command(command.name.to_sym, &command.run)
+  BOT.command(command.name.to_sym, &command.method(:run))
 end
 
 BOT.command(:ping) do |event|
