@@ -1,0 +1,21 @@
+[
+  {
+    "id": 125378,
+    "answer": "Medici With A Space",
+    "question": "Last name of Lorenzino, who on Jan. 5, 1537 decided the Duke of Florence needed to breathe a lot less",
+    "value": 600,
+    "airdate": "2014-03-12T12:00:00.000Z",
+    "created_at": "2015-01-18T18:12:08.110Z",
+    "updated_at": "2015-01-18T18:12:08.110Z",
+    "category_id": 17211,
+    "game_id": null,
+    "invalid_count": null,
+    "category": {
+      "id": 17211,
+      "title": "too bad",
+      "created_at": "2015-01-18T18:12:07.233Z",
+      "updated_at": "2015-01-18T18:12:07.233Z",
+      "clues_count": 10
+    }
+  }
+]

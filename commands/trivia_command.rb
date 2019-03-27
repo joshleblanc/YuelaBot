@@ -92,6 +92,8 @@ module Commands
         sleep step
         new_embed.footer = EmbedFooter.new(text: update_hint(hint, 1))
         question_message.edit(nil, new_embed)
+
+        sleep step
         answer_loop.terminate
       end
     end
@@ -108,7 +110,6 @@ module Commands
               EmbedField.new(name: "Final Scores:", value: "No one played!")
           ]
         else
-
           embed.fields = [
               EmbedField.new(name: "Final Scores:", value: final_results.string)
           ]
