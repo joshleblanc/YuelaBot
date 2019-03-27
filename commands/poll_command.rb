@@ -15,12 +15,10 @@ module Commands
 
       def command(event)
         return if event.from_bot?
-
         poll = PollCommand.new(event)
         event.user.pm "What question do you want to ask? Cancel with !!cancel"
         return if poll.get_question == '!!cancel'
         event.user.pm "Enter the options now. Stop with !!done"
-
         loop do
           break unless poll.get_answer
         end
