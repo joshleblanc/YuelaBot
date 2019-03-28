@@ -23,15 +23,15 @@ module Commands
         color = color.to_i(16)
         begin
           role = RoleColor.find_by(name: name, server: e.server.id)
+          p role
           if role
-            e.user.await(:"role_color_create_confirmation#{e.user.id}") do |confirm_event|
-              if confirm_event.message.content[0].downcase == 'y'
-                role.update(color: color)
-                e.server.roles.select {|r| r.name == name}.each {|r| r.color = Discordrb::ColourRGB.new(color)}
-                confirm_event << "Role updated!"
-              end
+            e.respond "That color role already exists! Do you want to overwrite it? (Y/N)"
+            response = e.user.await!
+            if response.message.content[0].downcase == 'y'
+              role.update(color: color)
+              e.server.roles.select {|r| r.name == name}.each {|r| r.color = Discordrb::ColourRGB.new(color)}
+              "Role updated!"
             end
-            "That color role already exists! Do you want to overwrite it? (Y/N)"
           else
             roles = e.server.roles.select {|r| r.name == name}
             if roles.empty?
