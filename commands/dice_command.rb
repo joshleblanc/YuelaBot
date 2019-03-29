@@ -11,7 +11,7 @@ module Commands
             max_args: 1,
             description: 'Return a random number between 1 and n',
             usage: 'dice [max]',
-            aliases: [:d]
+            aliases: [:d, :roll]
         }
       end
 
