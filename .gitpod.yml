@@ -2,6 +2,7 @@ image:
   file: Dockerfile.gitpod
 tasks:
   - command: >
+      pg_start.sh &&
       bundle install &&
       rake db:create &&
       rake db:setup
