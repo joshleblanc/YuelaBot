@@ -1,3 +1,11 @@
+gitpod:
+  adapter: postgresql
+  user: gitpod
+  host: localhost
+  database: yuela_dev
+  pool: 5
+  timeout: 5000
+
 development:
   adapter: postgresql
   user: postgres
