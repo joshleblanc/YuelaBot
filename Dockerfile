@@ -4,9 +4,7 @@ FROM ruby:2.5
 RUN mkdir /app
 WORKDIR /app
 
-USER root
 RUN apt-get update && apt-get -y install libsodium-dev
-USER gitpod
 ADD Gemfile ./Gemfile
 ADD Gemfile.lock ./Gemfile.lock
 RUN gem update --system
