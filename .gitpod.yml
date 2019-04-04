@@ -1,2 +1,8 @@
 image:
   file: Dockerfile.gitpod
+tasks:
+  - command: >
+      bundle install &&
+      rake db:create &&
+      rake db:setup
+      bundle exec ruby main.rb
