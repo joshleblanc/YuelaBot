@@ -27,6 +27,9 @@ include Routines
 ActiveRecord::Base.configurations = YAML::load(ERB.new(File.read('config/database.yml')).result)
 ActiveRecord::Base.establish_connection(ENV['RACK_ENV']&.to_sym || :development)
 
+unless ENV['discord']
+    abort "You're missing your discord API token! put discord=<your token here> in a .env file"
+end
 
 BOT = Discordrb::Commands::CommandBot.new({
     token: ENV['discord'],
