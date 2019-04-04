@@ -3,7 +3,7 @@ image:
 tasks:
   - init:
       bundle install &&
-      RACK_ENV=gitpod bundle exec rake db:create &&
-      RACK_ENV=gitpod bundle exec rake db:migrate
+      bundle exec rake db:create &&
+      bundle exec rake db:migrate
     command: >
       pg_start.sh

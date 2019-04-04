@@ -18,5 +18,6 @@ RUN echo '#!/bin/bash\n\
 pg_ctl -D ~/pg/data/ -l ~/pg/logs/log -o "-k ~/pg/sockets" stop' > ~/pg/scripts/pg_stop.sh
 RUN chmod +x ~/pg/scripts/*
 ENV PATH="$HOME/pg/scripts:$PATH"
+ENV RACK_ENV=gitpod
 
 USER root
