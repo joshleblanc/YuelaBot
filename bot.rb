@@ -35,8 +35,10 @@ BOT = Discordrb::Commands::CommandBot.new({
     parse_self: true
 })
 
-ENV['admins'].split(',').each do |admin|
-  BOT.set_user_permission(admin.to_i, 1)
+if ENV['admins']
+    ENV['admins'].split(',').each do |admin|
+        BOT.set_user_permission(admin.to_i, 1)
+    end
 end
 
 Afk.destroy_all
