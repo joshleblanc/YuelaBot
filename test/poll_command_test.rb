@@ -54,6 +54,10 @@ class PollCommandTest < Test::Unit::TestCase
     stub(answer).user { user }
     stub(answer).message { answer_message }
 
+    any_instance_of(Commands::PollCommand) do |klass|
+        stub(klass).sleep
+    end
+
     channel = stub! do
       send_embed do |_, block|
         embed = Embed.new
@@ -67,7 +71,7 @@ class PollCommandTest < Test::Unit::TestCase
           inner_step = 1
           answer
         when 1
-          sleep 61
+          sleep 1
         end
       end
     end
