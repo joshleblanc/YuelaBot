@@ -4,6 +4,6 @@ tasks:
   - command: >
       pg_start.sh &&
       bundle install &&
-      RACK_ENV=gitpod rake db:create &&
-      RACK_ENV=gitpod rake db:setup
+      RACK_ENV=gitpod bundle exec rake db:create &&
+      RACK_ENV=gitpod bundle exec rake db:setup
       RACK_ENV=gitpod bundle exec ruby main.rb
