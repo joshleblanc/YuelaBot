@@ -1,13 +1,18 @@
 ![travis-ci status](https://travis-ci.org/HorizonShadow/YuelaBot.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c5616b0415f4470e44d/maintainability)](https://codeclimate.com/github/HorizonShadow/YuelaBot/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5c5616b0415f4470e44d/test_coverage)](https://codeclimate.com/github/HorizonShadow/YuelaBot/test_coverage)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/horizonshadow/YuelaBot)
+
+# Quick Start
+
+Click the gitpod button above to launch into a pre-configured cloud IDE. All you have to do is setup your bot token in .env, then run `bundle exec ruby main.rb`
 
 # Prerequisites
 
 * Ruby
 * Postgres*
 
-\* You can change the database driver in ./config/database.yml if you so desire. You'll need to include the 
+\* You can change the database driver in ./config/database.yml if you so desire. You'll need to include the
 associated gem in the Gemfile as well.
 
 # Installation instructions
