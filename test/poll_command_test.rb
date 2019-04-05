@@ -55,7 +55,7 @@ class PollCommandTest < Test::Unit::TestCase
     stub(answer).message { answer_message }
 
     any_instance_of(Commands::PollCommand) do |klass|
-        stub(klass).sleep
+        stub(klass).sleep { sleep 0.5 }
     end
 
     channel = stub! do

@@ -43,6 +43,10 @@ class TriviaCommandTest < Test::Unit::TestCase
         open("./test/support/fixtures/trivia/trivia.json").read
       end
     end
+
+    any_instance_of(Commands::TriviaCommand) do |klass|
+        stub(klass).sleep { sleep 0.1 }
+    end
   end
 
   def test_it_ignores_bot
@@ -69,7 +73,7 @@ class TriviaCommandTest < Test::Unit::TestCase
         case step
         when 0
           assert_equal "You can stop trivia with !!stop", embed.description,
-              step = 1
+          step = 1
         when 1
           assert_equal "<@1> got it! The answer was: **Medici With A Space**", embed.description
           step = 0
@@ -135,9 +139,12 @@ class TriviaCommandTest < Test::Unit::TestCase
   def test_slow_answer
     step = 0
     edits = 0
+    any_instance_of(Commands::TriviaCommand) do |klass|
+        stub(klass).done? { true }
+    end
     stub(@channel).await! do
       if step == 0
-        sleep 31
+        sleep 1
         step = 1
       end
       @response
