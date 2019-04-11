@@ -11,7 +11,7 @@ module Commands
             min_args: 1,
             description: 'Searches google image for a given query',
             usage: 'image [query]',
-            aliases: [:i, :img]
+            aliases: [:i, :img, :I]
         }
       end
 
