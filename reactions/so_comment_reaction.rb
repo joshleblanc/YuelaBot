@@ -2,18 +2,18 @@ module Reactions
     class SoCommentReaction
       class << self
         include Discordrb::Webhooks
-  
+
         def regex
           /https?:\/\/(?:.*\.)?stack(?:overflow|exchange)\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
         end
-  
+
         def attributes
           {
               contains: self.regex
           }
         end
-  
-        def command
+
+        def command(event)
           match_data = event.message.content.match(self.regex)
           url = match_data[0]
           messageid = match_data.captures[0]
@@ -30,7 +30,7 @@ module Reactions
           comment = message.at_css('span.comment-copy').text
           timestamp = comments.at_css('span.comment-date span').attr('title')
           updoots = message.at_css('span.cool')
-          updoots = updoots ? updoots.text.to_i : 0 
+          updoots = updoots ? updoots.text.to_i : 0
 
           embed = Embed.new(title: question.text)
           embed.description = comment
