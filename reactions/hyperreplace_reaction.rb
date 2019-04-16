@@ -18,7 +18,7 @@ module Reactions
         options += Regexp::IGNORECASE if parts[3].include? 'i'
         options += REGEXP::MULTILINE if parts[3].include? 'm'
         options += REGEXP::EXTENDED if parts[3].include? 'x'
-        regexes = parts[2].split(/(?<!\\)\//)
+        regexes = parts[2].split(/(?<!\\)\//, -1)
         if regexes.length.odd?
           event.respond 'Missing a replacement'
           return
