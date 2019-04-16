@@ -4,7 +4,7 @@ tasks:
   - before:
       pg_start.sh
   - init:
-      bundle install &&
+      bundle install
   - command:
       bundle exec rake db:create &&
       bundle exec rake db:migrate
