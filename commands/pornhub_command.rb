@@ -18,7 +18,7 @@ module Commands
 
           query = args.join(' ')
 
-          resp = open("http://www.pornhub.com/webmasters/search?id=44bc40f3bc04f65b7a35&search=#{query}").read
+          resp = open("http://www.pornhub.com/webmasters/search?search=#{query}").read
           json = JSON.parse(resp)
           video = json['videos'].first
           video['url']
