@@ -21,11 +21,7 @@ module Commands
           resp = open("http://www.pornhub.com/webmasters/search?id=44bc40f3bc04f65b7a35&search=#{query}").read
           json = JSON.parse(resp)
           video = json['videos'].first
-          if video
-            video['url']
-          else
-           "Nothing found for #{query}"
-          end
+          video['url']
         end
       end
     end

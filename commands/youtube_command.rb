@@ -24,7 +24,7 @@ module Commands
         byebug
         video = response.items.first
         if video
-          "https://www.youtube.com/watch?v=#{video.id.video_id}"
+
         else
           "No results found"
         end
