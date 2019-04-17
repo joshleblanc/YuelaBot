@@ -21,10 +21,9 @@ module Commands
         service = Google::Apis::YoutubeV3::YouTubeService.new
         service.key = ENV['google']
         response = service.list_searches('snippet', q: query, type: "video")
-        byebug
         video = response.items.first
         if video
-
+          "https://www.youtube.com/watch?v=#{video.id.video_id}"
         else
           "No results found"
         end
