@@ -20,7 +20,8 @@ module Commands
         query = args.join(' ')
         service = Google::Apis::YoutubeV3::YouTubeService.new
         service.key = ENV['google']
-        response = service.list_searches('snippet', q: query)
+        response = service.list_searches('snippet', q: query, type: "video")
+        byebug
         video = response.items.first
         if video
           "https://www.youtube.com/watch?v=#{video.id.video_id}"
