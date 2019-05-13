@@ -29,7 +29,7 @@ module Commands
         end
 
         groups.sort_by! { |num_syllables| num_syllables }
-        embed_fields = groups_sorted.map do |(num_syllables, syllables)|
+        embed_fields = groups.map do |(num_syllables, syllables)|
           EmbedField.new(
             name: "Syllables: #{num_syllables}",
             value: syllables
