@@ -41,7 +41,7 @@ module Commands
 
         embed = Embed.new(
           title: 'Words that rhyme with ' << term[0],
-          fields: embed_fields
+          fields: groups
         )
         event.respond nil, false, embed
       end
