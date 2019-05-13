@@ -28,7 +28,7 @@ module Commands
           event << 'No synonyms for the word ' << term[0] << ' were found'
         end
 
-        groups_sorted = groups.sort_by { |num_syllables| num_syllables }
+        groups.sort_by! { |num_syllables| num_syllables }
         embed_fields = groups_sorted.map do |(num_syllables, syllables)|
           EmbedField.new(
             name: "Syllables: #{num_syllables}",
