@@ -22,7 +22,7 @@ module Commands
         response = RestClient.get(request)
         body = JSON.parse response
 
-        wordset = body.sort { |word| word['score'] }
+        body.sort_by! { |word| word['score'] }
         words = body.map { |word| word['word'] }
 
         if words.empty?
