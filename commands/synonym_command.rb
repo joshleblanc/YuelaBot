@@ -24,6 +24,7 @@ module Commands
 
         body.sort_by! { |word| word['score'] }
         body.map! { |word| word['word'] }
+        body.reverse!
 
         if body.empty?
           return 'No synonyms for the word were found'
