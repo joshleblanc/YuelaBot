@@ -18,21 +18,20 @@ module Commands
       def command(event, *term)
         return if event.from_bot?
 
-        request = 'https://api.datamuse.com/words?rel_syn=' << term[0]
+        request = "https://api.datamuse.com/words?rel_syn=#{term[0]}"
         response = RestClient.get(request)
         body = JSON.parse response
 
         body.sort_by! { |word| word['score'] }
-        words = body.map { |word| word['word'] }
+        body.map! { |word| word['word'] }
 
-        if words.empty?
-          event << 'No synonyms for the word were found'
-          return
+        if body.empty?
+          return 'No synonyms for the word were found'
         end
 
         embed = Embed.new(
-          title: 'Synonyms for ' << term[0],
-          description: words.join(', ')
+          title: "Synonyms for #{term[0]}",
+          description: body.join(', ')
         )
         event.respond nil, false, embed
       end
