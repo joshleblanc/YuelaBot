@@ -18,30 +18,28 @@ module Commands
       def command(event, *term)
         return if event.from_bot?
 
-        request = 'https://api.datamuse.com/words?rel_rhy=' << term[0]
+        request = "https://api.datamuse.com/words?rel_rhy=#{term[0]}"
         response = RestClient.get(request)
         body = JSON.parse response
 
         groups = body.group_by { |word| word['numSyllables'] }
 
         if groups.empty?
-          event << 'No synonyms for the word ' << term[0] << ' were found'
+          return "No synonyms for the word #{term[0]} were found"
         end
 
-        groups.sort_by! { |num_syllables| num_syllables }
-        embed_fields = groups.map do |(num_syllables, syllables)|
+        embed_fields = groups.sort_by { |g| g }.map do |(num_syllables, words)|
+          words.sort_by! { |word| word['score'] || 0 }
+          words.map! { |word| word['word'] }
           EmbedField.new(
             name: "Syllables: #{num_syllables}",
-            value: syllables
-                .sort_by { |group| group['score'] }
-                .map { |group| group['word'] }
-                .join(', ')
+            value: words.join(', ')
           )
         end
 
         embed = Embed.new(
           title: 'Words that rhyme with ' << term[0],
-          fields: groups
+          fields: embed_fields
         )
         event.respond nil, false, embed
       end
