@@ -31,6 +31,7 @@ module Commands
         embed_fields = groups.sort_by { |g| g }.map do |(num_syllables, words)|
           words.sort_by! { |word| word['score'] || 0 }
           words.map! { |word| word['word'] }
+          words.reverse!
           EmbedField.new(
             name: "Syllables: #{num_syllables}",
             value: words.join(', ')
