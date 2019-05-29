@@ -16,6 +16,7 @@ require 'octokit'
 require 'dotenv/load'
 
 require_relative 'models/application_record'
+require_all './lib'
 require_all './models'
 require_all './commands'
 require_all './reactions'

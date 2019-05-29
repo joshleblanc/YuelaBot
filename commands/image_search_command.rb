@@ -18,103 +18,16 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
 
-        is = ImageSearch.new
-        is.reset!
-        is.run!(event, args.join(' '))
-      end
-    end
-
-    include Discordrb::Webhooks
-    include Discordrb::Events
-
-    def initialize
-      @index = 0
-      @images = []
-      @engine_id = ENV['search_id']
-      @embed = Embed.new(title: "Image Search Results")
-      @service = Google::Apis::CustomsearchV1::CustomsearchService.new
-      @service.key = ENV['google']
-    end
-
-    def reset!
-      @index = 0
-      @images = []
-    end
-
-    def run!(event, query)
-      if query == '^'
-        query = event.channel.history(2).last.content
-      end
-      @images = get_images(query)
-      @user = event.user
-      if @images.length > 0
-        update_embed!
-        @message = send! event
-        add_reactions!
-        add_awaits! event.bot
-      end
-      nil
-    end
-
-    private
-
-    def send!(event)
-      event.respond nil, false, @embed
-    end
-
-    def add_awaits!(bot)
-      bot.add_await("#{@message.id}-image_search_next", ReactionAddEvent, emoji: "▶") do |reaction|
-        next false unless reaction.message.id == @message.id
-        @message.delete_reaction(reaction.user.id, reaction.emoji.name)
-        if reaction.user.id == @user.id && @index < @images.length - 1
-          @index += 1
-          update_embed!
-          @message.edit nil, @embed
+        service = Google::Apis::CustomsearchV1::CustomsearchService.new
+        service.key = ENV['google']
+        container = Lib::PaginatedContainer.new("Image Search Results", :image)
+        container.set_data_routine do |query|
+          images = service.list_cses(query, cx: ENV['search_id'], search_type: 'image').items || []
+          images.map(&:link)
         end
-        false
+        container.run(args.join(' '), event)
+        nil
       end
-
-      bot.add_await("#{@message.id}-image-_search_prev", ReactionAddEvent, emoji: "◀") do |reaction|
-        next false unless reaction.message.id == @message.id
-        @message.delete_reaction(reaction.user.id, reaction.emoji.name)
-        if reaction.user.id == @user.id && @index > 0
-          @index -= 1
-          update_embed!
-          @message.edit nil, @embed
-        end
-        false
-      end
-    end
-
-    def add_reactions!
-      @message.create_reaction("▶")
-      @message.create_reaction("◀")
-    end
-
-    def update_embed!
-      update_image!
-      update_author!
-      update_footer!
-    end
-
-    def update_footer!
-      @embed.footer ||= EmbedFooter.new
-      @embed.footer.text = "Page #{@index + 1}/#{@images.length} (#{@images.length} entries)"
-    end
-
-    def update_author!
-      @embed.author ||= EmbedAuthor.new
-      @embed.author.name = @user.name
-      @embed.author.icon_url = @user.avatar_url
-    end
-
-    def update_image!
-      @embed.image ||= EmbedImage.new
-      @embed.image.url = @images[@index].link
-    end
-
-    def get_images(query)
-      @service.list_cses(query, cx: @engine_id, search_type: 'image').items || []
     end
   end
 end
