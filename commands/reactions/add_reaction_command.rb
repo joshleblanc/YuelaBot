@@ -26,14 +26,14 @@ module Commands
           if reaction
             'Reaction already exists'
           else
-            UserReaction.create(
+            ur = UserReaction.create(
                 regex: regex,
                 output: output,
                 created_at: Time.now,
                 creator: event.author.username,
                 chance: chance.to_f
             )
-            'Reaction created'
+            "Reaction #{ur.id} created"
           end
         rescue StandardError => e
           e.message
