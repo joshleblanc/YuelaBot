@@ -22,7 +22,7 @@ module Commands
           event.respond "Check your pms!"
         end
         game_key = GameKey.new(server: event.server.id)
-        event.respond "The game submission process will loop until you stop it."
+        event.user.pm "The game submission process will loop until you stop it."
         loop do
           event.user.pm "You can cancel this at any time by saying 'stop'"
           event.user.pm "What game are you submitting?"
