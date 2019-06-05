@@ -38,6 +38,10 @@ BOT = Discordrb::Commands::CommandBot.new({
     parse_self: true
 })
 
+User.where(banned: true).each do |user|
+  BOT.ignore_user user.id
+end
+
 if ENV['admins']
     ENV['admins'].split(',').each do |admin|
         BOT.set_user_permission(admin.to_i, 1)
