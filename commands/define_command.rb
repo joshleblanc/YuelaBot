@@ -27,13 +27,21 @@ module Commands
             api_key: ENV['wordnik_key']
         }
 
-        body = JSON.parse RestClient.get(wordnik_url, params: wordnik_headers)
-        p body
+        begin
+          body = JSON.parse RestClient.get(wordnik_url, params: wordnik_headers)
+          p body
 
-        if body.first
-          body.first['text']
-        else
-          "No results found for #{term}"
+          if body.first
+            if body.first['text']
+              body.first['text']
+            else
+              "Word found, but no definition provided"
+            end
+          else
+            "No results found for #{term}"
+          end
+        rescue RestClient::NotFound => e
+          "Word not found"
         end
       end
     end
