@@ -25,9 +25,8 @@ module Commands
         if command
           command_class = Commands.const_get(command)
           location = command_class.method(:name).source_location.first
-          p location
           result = "```ruby\n"
-          result << File.read(location)
+          result << File.read(location).gsub('```') { "`​`​`" } # The replacement here has zero-width spaces between the tildes
           result << "\n```"
           result
         else
