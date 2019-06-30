@@ -14,7 +14,7 @@ module Commands
           usage: 'unban @user',
           description: 'Allow a previously banned user to interact with the ban'
         }
-      end
+    end
 
       def command(event, user)
         mention = event.message.mentions.first
@@ -23,9 +23,9 @@ module Commands
             u.name = mention.name
           end
           if user.banned
-            user.update(banned: true)
+            user.update(banned: false)
             event.bot.unignore_user mention
-            "I'm not longer ignoring #{mention.name}."
+            "I'm no longer ignoring #{mention.name}."
           else
             "#{mention.name} is not current banned."
           end
