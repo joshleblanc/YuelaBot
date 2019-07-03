@@ -2,14 +2,15 @@ module Commands
   class ClapCommand
     class << self
       def name
-        :cl
+        :clap
       end
 
       def attributes
         {
             min_args: 1,
             description: 'meme 👏 review',
-            usage: 'clap message'
+            usage: 'clap message',
+            aliases: [:cl]
         }
       end
 
