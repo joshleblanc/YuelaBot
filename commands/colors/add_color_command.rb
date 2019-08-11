@@ -40,7 +40,6 @@ module Commands
               role.colour = Discordrb::ColourRGB.new(color)
               role.hoist = false
               role.mentionable = false
-              role.reason = "Add Color Command"
               role.sort_above(e.user.highest_role)
             else
               roles.each {|r| r.color = Discordrb::ColourRGB.new(color)}
