@@ -20,22 +20,25 @@ module Commands
 
         name = name.join(' ')
         return "That color role doesn't exist" unless RoleColor.find_by(name: name, server: e.server.id)
-        role = e.author.roles.find {|r| RoleColor.first(name: r.name, server: e.server.id)}
+        role = e.author.roles.find {|r| RoleColor.find_by(name: r.name, server: e.server.id) }
+        new_role = e.server.roles.find { |r| r.name == name }
         if role
-          e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|
-            if confirm_event.message.content[0].downcase == 'y'
-              confirm_event.user.modify_roles(
-                  e.server.roles.find {|r| r.name == name},
-                  role
-              )
-              confirm_event << "Role #{role.name} removed, and role #{name} added"
+          if role == new_role
+            "You already have this color"
+          else
+            e.user.await(:"role_color_confirmation#{e.user.id}") do |confirm_event|
+              if confirm_event.message.content[0].downcase == 'y'
+                confirm_event.user.modify_roles(
+                    new_role,
+                    role
+                )
+                confirm_event << "Role #{role.name} removed, and role #{name} added"
+              end
             end
+            "Adding this role will remove #{role.name}, are you sure you want to continue? (Y/N)"
           end
-          "Adding this role will remove #{role.name}, are you sure you want to continue? (Y/N)"
         else
-          e.user.add_role(
-              e.server.roles.find {|r| r.name == name},
-          )
+          e.user.add_role(new_role)
           "Role added!"
         end
       end
