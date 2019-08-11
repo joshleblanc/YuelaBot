@@ -23,7 +23,6 @@ module Commands
         color = color.to_i(16)
         begin
           role = RoleColor.find_by(name: name, server: e.server.id)
-          p role
           if role
             e.respond "That color role already exists! Do you want to overwrite it? (Y/N)"
             response = e.user.await!

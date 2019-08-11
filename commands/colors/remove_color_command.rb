@@ -7,20 +7,17 @@ module Commands
 
       def attributes
         {
-            min_args: 1,
             usage: 'removecolor color_name',
-            description: 'Removes a color role',
+            description: 'Removes your color role',
             aliases: [:removecolour, :rc]
         }
       end
 
       def command(e, *name)
         return if e.from_bot?
-
-        name = name.join(' ')
-        role = RoleColor.find_by(name: name, server: e.server.id)
-        return "That color role doesn't exist" unless role
-        discord_role = e.author.roles.find {|r| r.name === name}
+        role = e.author.roles.find {|r| RoleColor.find_by(name: r.name, server: e.server.id) }
+        return "You don't have a color role" unless role
+        discord_role = e.author.roles.find { |r| r.name === role.name }
         if discord_role
           e.author.remove_role(discord_role)
           "Color role removed"
