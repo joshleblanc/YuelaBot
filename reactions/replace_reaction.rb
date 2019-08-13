@@ -9,7 +9,7 @@ module Reactions
 
       def command(event)
         return if event.from_bot?
-        messages = JSON.parse(Discordrb::API::Channel.messages(ENV['discord'], event.channel.id, 100).body)
+        messages = event.channel.history(100)
         message = event.message.content
         parts = message.split('/', -1)
         options = 0
@@ -17,14 +17,14 @@ module Reactions
         options += REGEXP::MULTILINE if parts[3].include? 'm'
         options += REGEXP::EXTENDED if parts[3].include? 'x'
         regex = Regexp.new(parts[1], options)
-        target = messages.find { |m| m['content'].match(regex) && m['id'].to_i != event.message.id }
+        target = messages.find { |m| m.content.match(regex) && m.id.to_i != event.message.id }
         if target
           if parts[3].include? 'g'
-            target['content'].gsub! regex, parts[2]
+            target.content.gsub! regex, parts[2]
           else
-            target['content'].sub! regex, parts[2]
+            target.content.sub! regex, parts[2]
           end
-          event.respond target['content']
+          event.respond target.content
         end
       end
     end
