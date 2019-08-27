@@ -18,6 +18,7 @@ gem 'net-ssh'
 gem 'net-scp'
 gem 'rake'
 gem "octokit", "~> 4.0"
+gem 'mini_magick'
 
 group :development do
     gem 'byebug'

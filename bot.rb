@@ -14,6 +14,7 @@ require 'mtg_sdk'
 require 'mini_racer'
 require 'octokit'
 require 'dotenv/load'
+require 'mini_magick'
 
 require_relative 'models/application_record'
 require_all './models'
