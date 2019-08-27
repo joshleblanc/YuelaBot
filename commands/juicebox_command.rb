@@ -62,6 +62,8 @@ module Commands
                 end
 
                 data = JSON.parse(response.body)[0]
+
+                return "Found an image, but couldn't find a face" unless data
                 face_landmarks = data['faceLandmarks']
                 pupil_left = face_landmarks['pupilLeft']
                 pupil_right = face_landmarks['pupilRight']
