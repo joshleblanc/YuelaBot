@@ -43,12 +43,18 @@ module Commands
                 return "No images found" unless image_url
                 
                 response = RestClient.get("https://juiceboxify.me/api?url=#{CGI.escape(image_url)}")
-                file = Tempfile.new(['juicebox', '.jpeg'])
-                file.binmode
-                file.write(response.body)
-                file.rewind
-                event.send_file file
-                file.close
+                begin
+                    error = JSON.parse(response)
+                    return error['error']
+                rescue StandardError => e
+                    file = Tempfile.new(['juicebox', '.jpeg'])
+                    file.binmode
+                    file.write(response.body)
+                    file.rewind
+                    event.send_file file
+                    file.close
+                end
+                
             end
         end
     end
