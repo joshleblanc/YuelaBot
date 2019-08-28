@@ -43,11 +43,9 @@ module Commands
                 return "No images found" unless image_url
                 
                 response = RestClient.get("https://juiceboxify.me/api?url=#{CGI.escape(image_url)}")
-                byebug
-                body = response.body
 
                 # api returns an error as json if there's na error, otherwise just throws the file at you
-                if body[0] == "{"
+                if response.headers[:content_type] == "application/json"
                     error = JSON.parse(response)
                     return error['error']
                 else
