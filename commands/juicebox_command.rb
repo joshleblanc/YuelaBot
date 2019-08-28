@@ -43,18 +43,21 @@ module Commands
                 return "No images found" unless image_url
                 
                 response = RestClient.get("https://juiceboxify.me/api?url=#{CGI.escape(image_url)}")
-                begin
+                byebug
+                body = response.body
+
+                # api returns an error as json if there's na error, otherwise just throws the file at you
+                if body[0] == "{"
                     error = JSON.parse(response)
                     return error['error']
-                rescue StandardError => e
+                else
                     file = Tempfile.new(['juicebox', '.jpeg'])
                     file.binmode
                     file.write(response.body)
                     file.rewind
                     event.send_file file
                     file.close
-                end
-                
+                end               
             end
         end
     end
