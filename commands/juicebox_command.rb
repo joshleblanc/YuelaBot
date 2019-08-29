@@ -42,7 +42,7 @@ module Commands
                 
                 return "No images found" unless image_url
                 
-                response = RestClient.get("https://juiceboxify.me/api?url=#{CGI.escape(image_url)}")
+                response = RestClient::Request.execute(method: :get, url: "https://juiceboxify.me/api?url=#{CGI.escape(image_url)}", timeout: -1)
 
                 # api returns an error as json if there's na error, otherwise just throws the file at you
                 if response.headers[:content_type] == "application/json"
