@@ -2,6 +2,9 @@ module Commands
   class ImageSearch
 
     class << self
+      include Discordrb::Webhooks
+      include Discordrb::Events
+
       def name
         :image
       end
@@ -18,9 +21,27 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
 
-        is = ImageSearch.new
-        is.reset!
-        is.run!(event, args.join(' '))
+        query = args.join(' ')
+        if query == '^'
+          query = event.channel.history(2).last.content
+        end
+
+        engine_id = ENV['search_id']
+        service = Google::Apis::CustomsearchV1::CustomsearchService.new
+        service.key = ENV['google']
+        images = service.list_cses(query, cx: engine_id, search_type: 'image').items || []
+
+        pagination_container = PaginationContainer.new("Image Search Results", images, event.user)
+        pagination_container.build_embed do |embed, index|
+          p "woernhfwoenf"
+          embed.image ||= EmbedImage.new
+          embed.image.url = images[index].link
+        end
+        pagination_container.send(event)
+        nil
+        # is = ImageSearch.new
+        # is.reset!
+        # is.run!(event, args.join(' '))
       end
     end
 
