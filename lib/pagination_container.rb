@@ -14,21 +14,21 @@ class PaginationContainer
         @embed.author.icon_url = user.avatar_url
     end
     
-    def build_embed(&blk)
+    def paginate(event, &blk)
         @update_block = -> {
             @embed.footer.text = "Page #{@index + 1}/#{@data.length} (#{@data.length} entries)"
             blk.call(@embed, @index)
         }
         @update_block.call
+        send(event)
     end
+    private
 
     def send(event)
         @message = event.respond nil, false, @embed
         add_reactions
         add_awaits(event)
     end
-
-    private
 
     def add_reactions
         @message.create_reaction("▶")
