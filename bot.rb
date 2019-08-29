@@ -14,12 +14,14 @@ require 'mtg_sdk'
 require 'mini_racer'
 require 'octokit'
 require 'dotenv/load'
+require 'timeout'
 
 require_relative 'models/application_record'
 require_all './models'
 require_all './commands'
 require_all './reactions'
 require_all './routines'
+require_all './lib'
 require_all './room-17-proxy'
 
 include Routines
