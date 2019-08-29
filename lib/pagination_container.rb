@@ -16,7 +16,7 @@ class PaginationContainer
     
     def build_embed(&blk)
         @update_block = -> {
-            @embed.footer.text = "Page #{@index}/#{@data.length} (#{@data.length} entries)"
+            @embed.footer.text = "Page #{@index + 1}/#{@data.length} (#{@data.length} entries)"
             blk.call(@embed, @index)
         }
         @update_block.call
@@ -40,8 +40,8 @@ class PaginationContainer
             next false unless reaction.message.id == @message.id
             @message.delete_reaction(reaction.user.id, reaction.emoji.name)
             if reaction.user.id == @user.id && @index < @data.length - 1
-                @update_block.call
                 @index += 1
+                @update_block.call
                 @message.edit nil, @embed
             end
             false
@@ -50,7 +50,7 @@ class PaginationContainer
         BOT.add_await(:"#{@message.id}-pagination-prev", ReactionAddEvent, emoji: "◀") do |reaction|
             next false unless reaction.message.id == @message.id
             @message.delete_reaction(reaction.user.id, reaction.emoji.name)
-            if reaction.user.id == @user.id && @index > 1
+            if reaction.user.id == @user.id && @index > 0
                 @index -= 1
                 @update_block.call
                 @message.edit nil, @embed
