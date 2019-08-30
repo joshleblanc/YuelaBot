@@ -60,19 +60,21 @@ class PaginationContainer
       response = BOT.add_await!(ReactionAddEvent, timeout: 60)
       break unless response
       next unless response.user.id == @user.id
-      case response.emoji.name
-      when emojis[:start]
-        @index = 0 unless @index == 0
-      when emojis[:back]
-        @index -= 1 if @index > 0
-      when emojis[:next]
-        @index += 1 if @index < @data.length - 1
-      when emojis[:end]
-        @index = num_pages - 1 unless @index == num_pages
-      end
-      if emojis.values.include?(response.emoji.name)
-        update
-        @message.delete_reaction(response.user.id, response.emoji.name)
+      Thread.new do
+        case response.emoji.name
+        when emojis[:start]
+          @index = 0 unless @index == 0
+        when emojis[:back]
+          @index -= 1 if @index > 0
+        when emojis[:next]
+          @index += 1 if @index < @data.length - 1
+        when emojis[:end]
+          @index = num_pages - 1 unless @index == num_pages
+        end
+        if emojis.values.include?(response.emoji.name)
+          update
+          @message.delete_reaction(response.user.id, response.emoji.name)
+        end
       end
     end
     @message.delete_all_reactions
