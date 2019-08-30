@@ -49,59 +49,32 @@ class PaginationContainer
   end
   
   def add_awaits
-
-    async_await(ReactionAddEvent, { emoji: "⏮"}, true) do |response|
-      next unless response.message.id == @message.id
-      @message.delete_reaction(response.user.id, response.emoji.name)
-      if response.user.id == @user.id && @index != 0
-        @index = 0
+    threads = []
+    emojis = {
+      start: "⏮",
+      back: "◀",
+      next: "▶",
+      end: "⏭"
+    }
+    loop do
+      response = BOT.add_await!(ReactionAddEvent, timeout: 60)
+      break unless response
+      next unless response.user.id == @user.id
+      case response.emoji.name
+      when emojis[:start]
+        @index = 0 unless @index == 0
+      when emojis[:back]
+        @index -= 1 if @index > 0
+      when emojis[:next]
+        @index += 1 if @index < @data.length - 1
+      when emojis[:end]
+        @index = num_pages - 1 unless @index == num_pages
+      end
+      if emojis.values.include?(response.emoji.name)
         update
+        @message.delete_reaction(response.user.id, response.emoji.name)
       end
     end
-
-    async_await(ReactionAddEvent, { emoji: "▶" }, true) do |response|
-      next unless response.message.id == @message.id
-      @message.delete_reaction(response.user.id, response.emoji.name)
-      if response.user.id == @user.id && @index < @data.length - 1
-        @index += 1
-        update
-      end
-    end
-    
-    async_await(ReactionAddEvent, { emoji: "◀" }, true) do |response|
-      next unless response.message.id == @message.id
-      @message.delete_reaction(response.user.id, response.emoji.name)
-      if response.user.id == @user.id && @index > 0
-        @index -= 1
-        update
-      end
-    end
-
-    async_await(ReactionAddEvent, { emoji: "⏭" }, true) do |response|
-      next unless response.message.id == @message.id
-      @message.delete_reaction(response.user.id, response.emoji.name)
-      if response.user.id == @user.id && @index != num_pages
-        @index = num_pages - 1
-        update
-      end
-    end
-  end
-  
-  def async_await(type, attr = {}, repeat = false)
-    Thread.new do
-      begin
-        Timeout.timeout(attr.delete(:timeout) || 600) do
-          loop do
-            response = BOT.add_await!(type, attr)
-            yield response
-            break unless repeat
-          end
-        end
-      rescue StandardError => e
-        p e.message
-        p "Async await expired"
-        Thread.current.kill
-      end 
-    end
+    @message.delete_all_reactions
   end
 end
