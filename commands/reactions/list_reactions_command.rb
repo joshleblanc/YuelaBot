@@ -31,11 +31,11 @@ module Commands
             right = left + 10
             embed.description = <<HEADER
 ```
-ID   | Regex                | Output               | Chance
------|----------------------|----------------------| ------
+ID   | Regex      | Output               | Chance
+-----|------------|----------------------| ------
 HEADER
             embed.description += user_reactions[left...right].map do |ur|
-              "#{ur.id.to_s.rjust(4, '0')} | #{ur.regex.rjust(10, ' ')} | #{ur.output.rjust(30, ' ')} | #{(ur.chance * 100).to_s.rjust(3, ' ')}%"
+              "#{ur.id.to_s.rjust(4, '0')} | #{ur.regex.rjust(10, ' ')} | #{ur.output.rjust(30, ' ')[0...30]} | #{(ur.chance * 100).to_s.rjust(3, ' ')}%"
             end.join("\n") 
             embed.description += "```"
           end
