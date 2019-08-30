@@ -37,10 +37,14 @@ class PaginationContainer
   end
   
   def add_reactions
-    @message.create_reaction("⏮")
-    @message.create_reaction("◀")
-    @message.create_reaction("▶")
-    @message.create_reaction("⏭")
+    # this takes forever to do because of rate limiting, so
+    # do it in a new thread so we can immediately add the awaits
+    Thread.new do
+      @message.create_reaction("⏮")
+      @message.create_reaction("◀")
+      @message.create_reaction("▶")
+      @message.create_reaction("⏭")
+    end
   end
 
   def update
