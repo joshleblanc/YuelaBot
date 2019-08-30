@@ -30,7 +30,7 @@ module Commands
             left = index * 10
             right = left + 10
             embed.fields = user_reactions[left...right].map do |ur|
-              EmbedField.new(name: ur.regex, value: ur.output)
+              EmbedField.new(name: "(#{ur.id} - #{ur.chance * 100}%) #{ur.regex}", value: ur.output)
             end
           end
           nil
