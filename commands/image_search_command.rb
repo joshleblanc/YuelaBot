@@ -1,6 +1,5 @@
 module Commands
   class ImageSearch
-
     class << self
       include Discordrb::Webhooks
       include Discordrb::Events
@@ -31,8 +30,8 @@ module Commands
         service.key = ENV['google']
         images = service.list_cses(query, cx: engine_id, search_type: 'image').items || []
 
-        pagination_container = PaginationContainer.new("Image Search Results", images, event.user)
-        pagination_container.paginate(event) do |embed, index|
+        pagination_container = PaginationContainer.new("Image Search Results", images, 1, event)
+        pagination_container.paginate do |embed, index|
           embed.image ||= EmbedImage.new
           embed.image.url = images[index].link
         end
