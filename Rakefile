@@ -38,6 +38,38 @@ end
     puts "Migration #{path} created"
     abort # needed stop other tasks
   end
+
+  desc "Generate command"
+  task :command do
+    name = ARGV[1] || raise("Specify name: rake g:command your_command")
+    path = File.expand_path("../commands/#{name}_command.rb", __FILE__)
+    class_name = name.split("_").map(&:capitalize).join + "Command"
+    File.open(path, 'w') do |file|
+      file.write <<-EOF
+class #{class_name}
+  class << self
+    def name
+      :#{name}
+    end
+
+    def attributes
+      {
+        description: "TODO: Describe the command",
+        usage: "TODO: How to use the command",
+        aliases: []
+      }
+    end
+
+    def command(event, *args)
+      return if event.from_bot?
+    end
+  end
+end
+      EOF
+      puts "Command created"
+      abort
+    end
+  end
 end
 
 task :console do
