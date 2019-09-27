@@ -46,22 +46,24 @@ end
     class_name = name.split("_").map(&:capitalize).join + "Command"
     File.open(path, 'w') do |file|
       file.write <<-EOF
-class #{class_name}
-  class << self
-    def name
-      :#{name}
-    end
+module Commands
+  class #{class_name}
+    class << self
+      def name
+        :#{name}
+      end
 
-    def attributes
-      {
-        description: "TODO: Describe the command",
-        usage: "TODO: How to use the command",
-        aliases: []
-      }
-    end
+      def attributes
+        {
+          description: "TODO: Describe the command",
+          usage: "TODO: How to use the command",
+          aliases: []
+        }
+      end
 
-    def command(event, *args)
-      return if event.from_bot?
+      def command(event, *args)
+        return if event.from_bot?
+      end
     end
   end
 end
