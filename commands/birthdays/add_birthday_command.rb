@@ -23,14 +23,15 @@ module Commands
           if Birthday.find_by(user_id: mention.id, server: event.server.id)
             "A birthday already exists for that user"
           else
-            User.find_or_create_by(id: mention.id) do |u|
+            user = User.find_or_create_by(id: mention.id) do |u|
               u.name = mention.name
-              u.birthdays << Birthday.new(
-                  month: month.to_i,
-                  day: day.to_i,
-                  server: event.server.id
-              )
             end
+            user.birthdays << Birthday.new(
+              month: month.to_i,
+              day: day.to_i,
+              server: event.server.id
+            )
+            user.save
             "Saved #{mention.name}'s birthday"
           end
         rescue StandardError => e
