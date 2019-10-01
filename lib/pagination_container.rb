@@ -1,7 +1,7 @@
 class PaginationContainer
   include Discordrb::Webhooks
   include Discordrb::Events
-  
+
   def initialize(title, data, page_size, event)
     @index = 0
     @data = data
@@ -15,7 +15,7 @@ class PaginationContainer
     @embed.author.icon_url = @user.avatar_url
     @page_size = page_size.to_f
   end
-  
+
   def paginate(&blk)
     @update_block = -> {
       @embed.footer.text = "Page #{@index + 1}/#{num_pages} (#{@data.length} entries)"
@@ -25,7 +25,7 @@ class PaginationContainer
     send
   end
   private
-  
+
   def send
     @message = @event.respond nil, false, @embed
     add_reactions
@@ -35,11 +35,12 @@ class PaginationContainer
   def num_pages
     (@data.length / @page_size).ceil
   end
-  
+
   def add_reactions
     # this takes forever to do because of rate limiting, so
     # do it in a new thread so we can immediately add the awaits
     Thread.new do
+      Thread.current.abort_on_exception = true
       @message.create_reaction("⏮")
       @message.create_reaction("◀")
       @message.create_reaction("▶")
@@ -51,7 +52,7 @@ class PaginationContainer
     @update_block.call
     @message.edit nil, @embed
   end
-  
+
   def add_awaits
     threads = []
     emojis = {

@@ -8,11 +8,32 @@ class UrbanCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
 
   def setup
-    p "Running setup"
     @event = Object.new
+
+    user = Object.new
+    stub(user).avatar_url
+    stub(user).name
+    stub(user).id
+
+    message = Object.new
+    stub(message).create_reaction
+    stub(message).delete_all_reactions
+
+    any_instance_of(Discordrb::Commands::CommandBot) do |klass|
+      stub(klass).add_await! do
+        sleep 1
+        nil
+      end
+    end
+
     stub(@event).from_bot? { false }
     stub(@event).respond { |_, _, c| c }
     stub(@event).<< { |c| c }
+    stub(@event).user { user }
+    stub(@event).respond do |*_, embed|
+      assert_equal @urban[0]['definition'], embed.description
+      message
+    end
 
     stub(RestClient).get do |_, _|
       File.read("./test/support/fixtures/urban/urban.json")
@@ -24,27 +45,8 @@ class UrbanCommandTest < Test::Unit::TestCase
 
   def test_single_argument
     definition = @urban.first
-    result = Commands::UrbanCommand.command(@event, "test")
-
-    assert(definition['definition'].eql?(result.description), "expected #{definition['definition']} but was #{result.description}")
-  end
-
-  def test_with_index
-    definition = @urban[1]
-
-    result = Commands::UrbanCommand.command(@event, "test", "1")
-    assert(definition['definition'].eql?(result.description), "expected #{definition['definition']} but was #{result.description}")
-  end
-
-  def test_with_out_of_bounds_index
-    result = Commands::UrbanCommand.command(@event, "test", "99999")
-    assert(result.eql? "I couldn't find anything for that")
-  end
-
-  def test_negative_index
-    definition = @urban.first
-
-    result = Commands::UrbanCommand.command(@event, "test", "-1")
-    assert(result.description.eql?(definition['definition']), "expected #{definition['definition']}, but was #{result.description}")
+    assert_nothing_raised do
+      Commands::UrbanCommand.command(@event, "test")
+    end
   end
 end
