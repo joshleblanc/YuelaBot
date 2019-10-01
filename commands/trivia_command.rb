@@ -39,7 +39,6 @@ module Commands
         @answer = @question['answer'].gsub(/<i>(.+)<\/i>/, "\\1")
         @winner = nil
         question_message = send_question
-        p question_message
 
         answer_loop = start_answer_loop
         time_limit_thread = time_limit_routine(answer_loop, question_message)
