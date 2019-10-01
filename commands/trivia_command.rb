@@ -73,6 +73,7 @@ module Commands
 
     def time_limit_routine(answer_loop, question_message)
       Thread.new do
+        Thread.current.abort_on_exception = true
         step = @duration / 3
         sleep step
         hint = make_hint
