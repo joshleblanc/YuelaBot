@@ -39,7 +39,7 @@ module Commands
             return "No results found for #{term}"
           end
 
-          defs = body.filter { |w| w["text"] }
+          defs = body.select { |w| w["text"] }
           unless defs.first
             word_url = body.first["wordnikUrl"]
             return "Word found, but no definition provided. Try visiting #{word_url}."
