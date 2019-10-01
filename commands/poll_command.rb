@@ -96,7 +96,11 @@ module Commands
         embed.title = @question
 
         results = @options.sort_by { |o| o[:votes] }.reverse.map do |o|
-          percent = (o[:votes] / votes.to_f) * 100
+          if votes == 0
+            percent = 0.0
+          else
+            percent = (o[:votes] / votes.to_f) * 100
+          end
           "#{o[:key]}) #{o[:content]} **#{percent}%**"
         end.join("\n")
         embed.add_field(name: "Results", value: results)

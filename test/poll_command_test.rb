@@ -18,7 +18,7 @@ class PollCommandTest < Test::Unit::TestCase
     assert_nil result
   end
 
-  def test_success
+  def fake_poll(provide_answer = false)
     outer_step = 0
     message = stub! do
       content do
@@ -69,7 +69,11 @@ class PollCommandTest < Test::Unit::TestCase
         case inner_step
         when 0
           inner_step = 1
-          answer
+          if provide_answer
+            answer
+          else
+            sleep 1
+          end
         when 1
           sleep 1
         end
@@ -78,7 +82,16 @@ class PollCommandTest < Test::Unit::TestCase
 
     stub(@event).user { user }
     stub(@event).channel { channel }
-    result = Commands::PollCommand.command(@event)
+    Commands::PollCommand.command(@event)
+  end
+
+  def test_no_votes
+    result = fake_poll(false)
+    assert_equal "A) test **0.0%**", result.fields[0].value
+  end
+
+  def test_success
+    result = fake_poll(true)
     assert_equal "A) test **100.0%**", result.fields[0].value
   end
 end
