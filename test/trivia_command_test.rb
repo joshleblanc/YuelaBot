@@ -58,7 +58,7 @@ class TriviaCommandTest < Test::Unit::TestCase
 
       message_struct = Message.new
       message_struct.embeds = [embed]
-      message_struct
+
 
       if count == 10
         assert_nil embed.description
@@ -74,6 +74,7 @@ class TriviaCommandTest < Test::Unit::TestCase
           count += 1
         end
       end
+      message_struct
     end
   end
 
@@ -85,8 +86,9 @@ class TriviaCommandTest < Test::Unit::TestCase
 
   def test_it_ignores_punctuation
     message = Object.new
-    stub(@response).message { message }
     stub(message).content { '!@#$%^&*()-=+_[]{};":/.,?><~`\|Medici With A Space' }
+    stub(@response).message { message }
+
     stub_channel
 
     assert_nothing_raised do
