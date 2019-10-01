@@ -3,8 +3,8 @@ image:
 tasks:
   - before:
       pg_start.sh
-  - init:
+    init:
       bundle install
-  - command:
+    command:
       bundle exec rake db:create &&
       bundle exec rake db:migrate
