@@ -1,6 +1,10 @@
+require_relative '../lib/helpers/escape'
+
 module Commands
   class DefineCommand
     class << self
+      include Helpers
+
       def name
         :define
       end
@@ -20,9 +24,9 @@ module Commands
 
         wordnik_url = "https://api.wordnik.com/v4/word.json/#{term}/definitions"
         wordnik_headers = {
-            limit: 1,
+            limit: 5,
             includeRelated: true,
-            useCanonical: false,
+            useCanonical: true,
             includeTags: false,
             api_key: ENV['wordnik_key']
         }
@@ -31,15 +35,22 @@ module Commands
           body = JSON.parse RestClient.get(wordnik_url, params: wordnik_headers)
           p body
 
-          if body.first
-            if body.first['text']
-              body.first['text']
-            else
-              "Word found, but no definition provided"
-            end
-          else
-            "No results found for #{term}"
+          unless body.first
+            return "No results found for #{term}"
           end
+
+          defs = body.filter { |w| w["text"] }
+          unless defs.first
+            word_url = body.first["wordnikUrl"]
+            return "Word found, but no definition provided. Try visiting #{word_url}."
+          end
+
+          defs.map { |w|
+            text = escape_md w["text"]
+            pos = escape_md w["partOfSpeech"]
+
+            "*#{pos}*. #{text}"
+          }.join "\n"
         rescue RestClient::NotFound => e
           "Word not found"
         end
