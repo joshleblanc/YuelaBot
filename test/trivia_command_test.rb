@@ -49,13 +49,7 @@ class TriviaCommandTest < Test::Unit::TestCase
     end
   end
 
-  def test_it_ignores_bot
-    stub(@event).from_bot? { true }
-    result = Commands::TriviaCommand.command(@event)
-    assert_nil result
-  end
-
-  def test_it_gets_question
+  def stub_channel
     step = 0
     count = 0
     stub(@channel).send_embed do |*_, block|
@@ -64,7 +58,7 @@ class TriviaCommandTest < Test::Unit::TestCase
 
       message_struct = Message.new
       message_struct.embeds = [embed]
-      message_struct
+
 
       if count == 10
         assert_nil embed.description
@@ -80,8 +74,33 @@ class TriviaCommandTest < Test::Unit::TestCase
           count += 1
         end
       end
+      message_struct
     end
-    Commands::TriviaCommand.command(@event)
+  end
+
+  def test_it_ignores_bot
+    stub(@event).from_bot? { true }
+    result = Commands::TriviaCommand.command(@event)
+    assert_nil result
+  end
+
+  def test_it_ignores_punctuation
+    message = Object.new
+    stub(message).content { '!@#$%^&*()-=+_[]{};":/.,?><~`\|Medici With A Space' }
+    stub(@response).message { message }
+
+    stub_channel
+
+    assert_nothing_raised do
+      Commands::TriviaCommand.command(@event)
+    end
+  end
+
+  def test_it_gets_question
+    stub_channel
+    assert_nothing_raised do
+      Commands::TriviaCommand.command(@event)
+    end
   end
 
   def test_no_players

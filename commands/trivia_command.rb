@@ -39,6 +39,7 @@ module Commands
         @answer = @question['answer'].gsub(/<i>(.+)<\/i>/, "\\1")
         @winner = nil
         question_message = send_question
+        p question_message
 
         answer_loop = start_answer_loop
         time_limit_thread = time_limit_routine(answer_loop, question_message)
@@ -73,6 +74,7 @@ module Commands
 
     def time_limit_routine(answer_loop, question_message)
       Thread.new do
+        Thread.current.abort_on_exception = true
         step = @duration / 3
         sleep step
         hint = make_hint
@@ -157,7 +159,9 @@ module Commands
             send_stop_message
           end
 
-          if response.message.content.downcase == CGI.unescapeHTML(@answer).downcase
+          adjusted_answer = CGI.unescapeHTML(@answer).downcase.gsub(/[^a-z0-9\s]/i, '')
+          adjusted_response = response.message.content.downcase.gsub(/[^a-z0-9\s]/i, '')
+          if adjusted_response == adjusted_answer
             @winner = response.user
             break
           end
