@@ -96,7 +96,9 @@ class TriviaCommandTest < Test::Unit::TestCase
 
   def test_it_gets_question
     stub_channel
-    Commands::TriviaCommand.command(@event)
+    assert_nothing_raised do
+      Commands::TriviaCommand.command(@event)
+    end
   end
 
   def test_no_players
