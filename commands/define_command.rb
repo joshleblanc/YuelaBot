@@ -51,7 +51,7 @@ module Commands
 
             "*#{pos}*. #{text}"
           }.join "\n"
-        rescue RestClient::NotFound => e
+        rescue RestClient::NotFound
           "Word not found"
         end
       end
