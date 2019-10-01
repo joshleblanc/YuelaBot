@@ -1,10 +1,10 @@
-require_relative '../lib/escape'
+require_relative '../lib/helpers/escape'
 
 module Commands
   class DefineCommand
-    include Helpers
-
     class << self
+      include Helpers
+
       def name
         :define
       end
@@ -46,8 +46,8 @@ module Commands
           end
 
           defs.map { |w|
-            text = Helpers.escape_md w["text"]
-            pos = Helpers.escape_md w["partOfSpeech"]
+            text = escape_md w["text"]
+            pos = escape_md w["partOfSpeech"]
 
             "*#{pos}*. #{text}"
           }.join "\n"

@@ -2,7 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../lib/escape'
+require_relative '../lib/helpers/escape'
 
 class EscapeMarkdownTest < Test::Unit::TestCase
   include Helpers
@@ -11,7 +11,7 @@ class EscapeMarkdownTest < Test::Unit::TestCase
     source = 'hello * world \\* howdy'
     expected = 'hello \\* world \\* howdy'
 
-    assert_equal(expected, Helpers::escape_md(source))
+    assert_equal(expected, escape_md(source))
   end
 
   def test_it_whatever()
@@ -20,6 +20,6 @@ class EscapeMarkdownTest < Test::Unit::TestCase
     source = '`_Behold!_`\n||___~~***```js\n`use strict`;\nrequire(\'discord.js\');```***~~___||'
     expected = '\\`\\_Behold!\\_\\`\n\\|\\|\\_\\_\\_\\~\\~\\*\\*\\*\\`\\`\\`js\n\\`use strict\\`;\nrequire(\'discord.js\');\\`\\`\\`\\*\\*\\*\\~\\~\\_\\_\\_\\|\\|'
 
-    assert_equal(expected, Helpers::escape_md(source))
+    assert_equal(expected, escape_md(source))
   end
 end
