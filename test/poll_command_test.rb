@@ -87,11 +87,11 @@ class PollCommandTest < Test::Unit::TestCase
 
   def test_no_votes
     result = fake_poll(false)
-    assert_equal "A) test **0.0%**", result.fields[0].value
+    assert_equal "A) test **0%**", result.fields[0].value
   end
 
   def test_success
     result = fake_poll(true)
-    assert_equal "A) test **100.0%**", result.fields[0].value
+    assert_equal "A) test **100%**", result.fields[0].value
   end
 end

@@ -99,7 +99,7 @@ module Commands
           if votes == 0
             percent = 0.0
           else
-            percent = (o[:votes] / votes.to_f) * 100
+            percent = ((o[:votes] / votes.to_f) * 100).round
           end
           "#{o[:key]}) #{o[:content]} **#{percent}%**"
         end.join("\n")
