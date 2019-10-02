@@ -97,7 +97,7 @@ module Commands
 
         results = @options.sort_by { |o| o[:votes] }.reverse.map do |o|
           if votes == 0
-            percent = 0.0
+            percent = 0
           else
             percent = ((o[:votes] / votes.to_f) * 100).round
           end
