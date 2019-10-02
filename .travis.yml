@@ -2,6 +2,8 @@ language: ruby
 cache: bundler
 rvm:
 - 2.5.3
+env:
+  -discord=FAKE_DISCORD_TOKEN
 before_install:
 - gem install bundle
 - sudo apt-get update
