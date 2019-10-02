@@ -1,4 +1,4 @@
-class Room17Proxy 
+class Room17Proxy
     include Discordrb::Webhooks
 
     def initialize(channel_id, room_id, user, pass)
@@ -10,7 +10,7 @@ class Room17Proxy
     def listen!
         Thread.new do
             Thread.current.abort_on_exception = true
-            begin 
+            begin
                 loop do
                     p 'authenticating'
                     @so_chat.auth!
@@ -34,7 +34,7 @@ class Room17Proxy
 
     private
 
-    def handle_tweet(html) 
+    def handle_tweet(html)
         tweet_info = html.css('div.ob-tweet-info > a')
         BOT.send_message(@channel_id, tweet_info[1].attr('href'))
     end
@@ -77,6 +77,7 @@ class Room17Proxy
         process_tag!(message, 'b', '**')
         process_tag!(message, 'strike', '~~')
         process_tag!(message, 'a', '')
+        message.gsub! "&gt;", ">"
         message
     end
 
