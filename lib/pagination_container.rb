@@ -64,7 +64,7 @@ class PaginationContainer
     loop do
       response = BOT.add_await!(ReactionAddEvent, timeout: 60)
       break unless response
-      next unless response.user.id == @user.id
+      next unless response.user.id == @user.id && response.message.id == @message.id
       Thread.new do
         case response.emoji.name
         when emojis[:start]
