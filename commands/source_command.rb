@@ -1,6 +1,8 @@
 module Commands
   class SourceCommand
     class << self
+      include Discordrb::Webhooks
+
       def name
         :source
       end
@@ -25,10 +27,16 @@ module Commands
         if command
           command_class = Commands.const_get(command)
           location = command_class.method(:name).source_location.first
-          result = "```ruby\n"
-          result << File.read(location).gsub('```') { "`​`​`" } # The replacement here has zero-width spaces between the tildes
-          result << "\n```"
-          result
+          data = File.read(location).gsub('```') { "`​`​`" }.lines # The replacement here has zero-width spaces between the tildes
+          pagination_container = PaginationContainer.new(File.basename(location), data, 38, e)
+          pagination_container.paginate do |embed, index|
+            range_start = index * 38
+            range_end = range_start + 50
+            embed.description = "```ruby\n"
+            embed.description << data[range_start...range_end].join
+            embed.description << "\n```"
+          end
+          nil
         else
           "No command found for #{command_str}"
         end
