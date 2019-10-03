@@ -14,17 +14,20 @@ module Commands
         }
       end
 
-      def command(e, book, *query)
-        return if e.from_bot?
-
-        req = RestClient.get("http://bible-api.com/#{book}+#{query.join}")
-        resp = JSON.parse req.body
-        embed = Embed.new(
-            title: resp["reference"],
-            description: resp["text"],
-            color: "#FF0000"
-        )
-        e.respond nil, false, embed
+      def command(event, book, *query)
+        return if event.from_bot?
+        begin
+          resp = RestClient.get("http://bible-api.com/#{book}+#{query.join}")
+          data = JSON.parse(resp)
+          embed = Embed.new(
+              title: data["reference"],
+              description: data["text"],
+              color: "#FF0000"
+          )
+          event.respond nil, false, embed
+        rescue StandardError => e
+          event.respond "We couldn't find anything for book #{book}+#{query.join}"
+        end
       end
     end
   end
