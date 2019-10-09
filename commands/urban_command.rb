@@ -9,7 +9,6 @@ module Commands
 
       def attributes
         {
-            max_args: 1,
             usage: 'urban term',
             description: 'Return the urban dictionary definition for a term.'
         }
