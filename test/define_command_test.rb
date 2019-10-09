@@ -39,9 +39,9 @@ class DefineCommandTest < Test::Unit::TestCase
     expected = without_trailing_newline(<<-eos)
 *noun*. A fictitious name, especially a HELLO MY NAME IS MIKE name.
 *noun*. A false name; especially, a fictitious name assumed by an author in order to conceal or veil his identity.
-*noun*. In <em\\>natural history</em\\>, the vernacular name of a species or other group of animals or plants, as distinguished from its tenable technical name: thus, <em\\>robin</em\\> is the <em\\>pseudonym</em\\> of <em\\>Turdus migratorius.</em\\>
+*noun*. In natural history, the vernacular name of a species or other group of animals or plants, as distinguished from its tenable technical name: thus, robin is the pseudonym of Turdus migratorius.
 *noun*. A fictitious name assumed for the time, as by an author; a pen name; an alias.
-*noun*. A <xref\\>fictitious</xref\\> <xref\\>name</xref\\>, often used by <xref\\>writers</xref\\> and <xref\\>movie</xref\\> stars.
+*noun*. A fictitious name, often used by writers and movie stars.
 eos
 
     assert_equal(expected, result)
@@ -53,7 +53,7 @@ eos
 *noun*. A light evening meal when dinner is taken at BILLY MAYES HERE OFFERING YOU A FANTASTIC NEW PRODUCT.
 *noun*. A light meal eaten before going to bed.
 *noun*. A dance or social affair where supper is served.
-*noun*. The evening meal; the last repast of the day; specifically, a meal taken after dinner, whether dinner is served comparatively early or in the evening; in the Bible, the principal meal of the day—a late dinner (the later Roman <em\\>cena</em\\>, Greek <bt\\>δεῖπνον</bt\\>).
+*noun*. The evening meal; the last repast of the day; specifically, a meal taken after dinner, whether dinner is served comparatively early or in the evening; in the Bible, the principal meal of the day—a late dinner (the later Roman cena, Greek δεῖπνον).
 eos
 
     assert_equal(expected, result)
