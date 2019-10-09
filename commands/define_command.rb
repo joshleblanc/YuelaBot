@@ -33,7 +33,6 @@ module Commands
 
         begin
           body = JSON.parse RestClient.get(wordnik_url, params: wordnik_headers)
-          p body
 
           unless body.first
             return "No results found for #{term}"
@@ -46,10 +45,13 @@ module Commands
           end
 
           defs.map { |w|
-            text = escape_md w["text"]
-            pos = escape_md w["partOfSpeech"]
-
-            "*#{pos}*. #{text}"
+            text = escape_xml(escape_md(w["text"]))
+            pos = escape_xml(escape_md(w["partOfSpeech"]))
+            if pos.nil?
+              text
+            else
+              "*#{pos}*. #{text}"
+            end
           }.join "\n"
         rescue RestClient::NotFound
           "Word not found"
