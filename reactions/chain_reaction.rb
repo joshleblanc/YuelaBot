@@ -14,16 +14,16 @@ module Reactions
         @history[event.channel.id] ||= {
           is_new: true,
           count: 1,
-          participants: []
+          participants: [event.user.id]
         }
         history = @history[event.channel.id]
-
+        p history[:participants]
         if history[:message]
           if event.message.content == history[:message].content && !history[:participants].include?(event.user.id)
             history[:participants] << event.user.id
             history[:count] = history[:count] + 1
           else
-            history[:participants] = []
+            history[:participants] = [event.user.id]
             history[:count] = 1
             history[:is_new] = true
           end
