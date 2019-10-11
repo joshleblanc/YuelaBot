@@ -39,9 +39,9 @@ module Reactions
             if history[:count] > 3
               history[:chain_message].create_reaction "wow:490866749647093761"
             elsif history[:count] > 5
-              history[:chain_message].create_reaction "partyhat:362504920517050369"
+              history[:chain_message].create_reaction "a:partyhat:362504920517050369"
             elsif history[:count] > 7
-              history[:chain_message].create_reaction "sharkdance:446727875291381760"
+              history[:chain_message].create_reaction "a:sharkdance:446727875291381760"
             end
           end
         end
