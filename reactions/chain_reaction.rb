@@ -36,11 +36,11 @@ module Reactions
               event.message.delete
               history[:chain_message].edit "#{event.message.content} x#{history[:count]}"
             end
-            if history[:count] > 3
+            if history[:count] == 3
               history[:chain_message].create_reaction "wow:490866749647093761"
-            elsif history[:count] > 5
+            elsif history[:count] == 5
               history[:chain_message].create_reaction "a:partyhat:362504920517050369"
-            elsif history[:count] > 7
+            elsif history[:count] == 7
               history[:chain_message].create_reaction "a:sharkdance:446727875291381760"
             end
           end
