@@ -17,9 +17,11 @@ module Reactions
           participants: [event.user.id]
         }
         history = @history[event.channel.id]
-        p history[:participants]
         if history[:message]
-          if event.message.content == history[:message].content && !history[:participants].include?(event.user.id)
+          message_exists = event.message.content.length > 0
+          message_identical = event.message.content == history[:message].content
+          new_user = !history[:participants].include?(event.user.id)
+          if message_exists && message_identical && new_user
             history[:participants] << event.user.id
             history[:count] = history[:count] + 1
           else
