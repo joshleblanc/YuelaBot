@@ -9,7 +9,7 @@ module Reactions
       end
 
       def command(event)
-        return if event.from_bot?
+        return
         @history ||= {}
         @history[event.channel.id] ||= {
           is_new: true,
