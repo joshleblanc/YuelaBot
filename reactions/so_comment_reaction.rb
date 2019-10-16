@@ -3,6 +3,28 @@ module Reactions
       class << self
         include Discordrb::Webhooks
 
+        def counters
+          [
+            "upwelcomes",
+            "updoots",
+            "upmichaels",
+            "minorities oppressed",
+            "pronouns used incorrectly",
+            "mods banned without warning",
+            "attack helicopters",
+            "upset folk",
+            "boltclocks",
+            "CoC revisions",
+            "stockholders satisfied",
+            "twitter users offended",
+            "autopsies performed",
+            "networks improved",
+            "surveys performed",
+            "chatrooms killed",
+            "mods resigned"
+          ]
+        end
+
         def regex
           /https?:\/\/(?:.*\.)?stack(?:overflow|exchange)\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
         end
@@ -38,7 +60,7 @@ module Reactions
           embed.url = url
           embed.timestamp = DateTime.parse(timestamp).to_time
           embed.author = EmbedAuthor.new(name: user.text, url: "https://stackoverflow.com#{user_link}")
-          embed.footer = EmbedFooter.new(text: "#{updoots} upwelcomes")
+          embed.footer = EmbedFooter.new(text: "#{updoots} #{counters.sample}")
           event.respond nil, false, embed
         end
       end
