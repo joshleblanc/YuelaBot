@@ -29,6 +29,10 @@ module Reactions
           /https?:\/\/(?:.*\.)?stack(?:overflow|exchange)\.com\/questions\/\d+\/.+?#comment(\d+)_(\d+)/
         end
 
+        def no_inline_regex
+          /<(#{regex})>/
+        end
+
         def attributes
           {
               contains: self.regex
@@ -36,6 +40,8 @@ module Reactions
         end
 
         def command(event)
+          return if event.from_bot?
+
           match_data = event.message.content.match(self.regex)
           url = match_data[0]
           messageid = match_data.captures[0]
@@ -61,6 +67,12 @@ module Reactions
           embed.timestamp = DateTime.parse(timestamp).to_time
           embed.author = EmbedAuthor.new(name: user.text, url: "https://stackoverflow.com#{user_link}")
           embed.footer = EmbedFooter.new(text: "#{updoots} #{counters.sample}")
+
+          escaped = event.message.content.match no_inline_regex
+          if escaped.nil?
+            event.message.delete
+          end
+
           event.respond nil, false, embed
         end
       end
