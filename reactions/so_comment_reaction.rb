@@ -29,7 +29,7 @@ module Reactions
           user_link = message.at_css('a.comment-user').attr('href')
           comment = message.at_css('span.comment-copy').text
           timestamp = comments.at_css('span.comment-date span').attr('title')
-          updoots = message.at_css('span.cool')
+          updoots = message.at_css('.comment-score span')
           updoots = updoots ? updoots.text.to_i : 0
 
           embed = Embed.new(title: question.text)
