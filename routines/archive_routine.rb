@@ -6,6 +6,9 @@ module Routines
       embed.description = last_pin.content
       embed.footer = EmbedFooter.new(text: event.channel.name)
       embed.timestamp = last_pin.timestamp
+      embed.image = EmbedImage.new(
+        url: last_pin.attachments[0].url
+      ) unless last_pin.attachments.empty?
     end
   end
 
@@ -57,6 +60,7 @@ module Routines
 
     archive = ArchiveConfig.find_by(server: event.server.id)
     return unless archive
+
     last_pin = event.channel.pins.last
     last_pin.unpin
     archive_channel = BOT.channel(archive.channel, event.server)

@@ -17,6 +17,11 @@ class ArchiveTest < Test::Unit::TestCase
     stub(@pin).content { "Test" }
     stub(@pin).timestamp { "0000-00-00" }
     stub(@pin).author { author }
+    stub(@pin).attachments do
+      attachment = Object.new
+      stub(attachment).url { "test" }
+      [attachment]
+    end
 
     pins = Object.new
     stub(pins).length { 50 }
@@ -72,6 +77,18 @@ class ArchiveTest < Test::Unit::TestCase
     assert_equal result.author.icon_url, "test"
     assert_equal result.footer.text, "Test"
     assert_equal result.timestamp, "0000-00-00"
+  end
+
+  def test_it_archives_an_image
+    embeds = Object.new
+    stub(embeds).empty? { true }
+    message = Object.new
+    stub(message).pinned? { true }
+    stub(message).channel { channel }
+    stub(@pin).embeds { embeds }
+    result = Routines.archive_routine(@event)
+    p result
+    assert_equal result.image.url, "test"
   end
 
   def test_it_archives_an_embed
