@@ -4,7 +4,7 @@ module Reactions
       include Discordrb::Webhooks
 
       def regex
-        /https:\/\/chat\.stackoverflow\.com\/transcript\/message\/(\d+)/
+        /https:\/\/chat(\.meta)?\.stack(overflow|exchange)\.com\/transcript\/message\/(\d+)/
       end
 
       def attributes
