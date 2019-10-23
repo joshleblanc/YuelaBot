@@ -21,7 +21,13 @@ module Reactions
             "networks improved",
             "surveys performed",
             "chatrooms killed",
-            "mods resigned"
+            "mods resigned",
+            "ragequits",
+            "REEEEEEEE",
+            "accounts deleted",
+            "faqs deleted",
+            "users gone full retard",
+            "shall not pass"
           ]
         end
 
