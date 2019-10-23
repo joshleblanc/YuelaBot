@@ -21,7 +21,8 @@ module Reactions
             "networks improved",
             "surveys performed",
             "chatrooms killed",
-            "mods resigned"
+            "mods resigned",
+             "users no longer allowed to talk to Yvette"
           ]
         end
 
