@@ -17,7 +17,7 @@ module Reactions
         match_data = event.message.content.match(self.regex)
         url = match_data[0]
 
-        transcript = Nokogiri::HTML(open(url))
+        transcript = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
         message = transcript.at_css('div.highlight')
         container = message.parent.parent
         user = container.at_css('div.username').children[0]

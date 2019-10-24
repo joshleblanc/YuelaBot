@@ -54,8 +54,8 @@ module Reactions
 
           p url, messageid, match_data.captures[1], match_data.captures
           uri = URI.parse(url)
-          body = Nokogiri::HTML(open(url))
-          comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"))
+          body = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
+          comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"), nil, Encoding::UTF_8.to_s)
 
           message = comments.at_css("#comment-#{messageid}")
           question = body.at_css('#question-header .question-hyperlink')
