@@ -61,7 +61,12 @@ module Reactions
           question = body.at_css('#question-header .question-hyperlink')
           user = message.at_css('a.comment-user')
           user_link = message.at_css('a.comment-user').attr('href')
-          comment = message.at_css('span.comment-copy').text
+          markdowns = {
+            '<i>' => '*', '</i>' => '*',
+            '<b>' => '**', '</b>' => '**',
+            '<strike>' => '~~', '</strike>' => '~~'
+          }
+          comment = message.at_css('span.comment-copy').inner_html.gsub(/\<\/?([ib]|strike)\>/, markdowns)
           timestamp = comments.at_css('span.comment-date span').attr('title')
           updoots = message.at_css('.comment-score span')
           updoots = updoots ? updoots.text.to_i : 0
