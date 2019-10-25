@@ -25,6 +25,7 @@ module Reactions
             "surveys performed",
             "chatrooms killed",
             "mods resigned",
+            "users no longer allowed to talk to Yvette",
             "ragequits",
             "REEEEEEEE",
             "accounts deleted",
