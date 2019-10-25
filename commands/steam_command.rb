@@ -31,29 +31,55 @@ module Commands
           return e.respond "No user found matching #{user}"
         end
 
+        fields = []
+
         begin
           userdata = Steam::User.summary(user)
-          friends = Steam::User.friends(user)
-          games = Steam::Player.owned_games(user)
-          recentgames = Steam::Player.recently_played_games(user)
-          level = Steam::Player.steam_level(user)
+          fields << EmbedField.new(name: 'Account Created', value: Time.at(userdata['timecreated']).strftime("%B %-d, %Y"), inline: true)
         rescue
           return e.respond "No user found matching #{user}"
         end
 
-        fields = []
-        fields << EmbedField.new(name: 'Account Created', value: Time.at(userdata['timecreated']).strftime("%B %-d, %Y"), inline: true)
+        begin
+          level = Steam::Player.steam_level(user)
+        rescue
+          level = "Private"
+        end
         fields << EmbedField.new(name: "Level", value: level.to_s, inline: true)
-        fields << EmbedField.new(name: "Friends", value: friends.count.to_s, inline: true)
-        fields << EmbedField.new(name: "Games", value: games['game_count'].to_s, inline: true)
-        unless recentgames['games'].nil?
+
+        begin
+          friends = Steam::User.friends(user).count
+        rescue
+          friends = "Private"
+        end
+        fields << EmbedField.new(name: "Friends", value: friends.to_s, inline: true)
+
+        begin
+          games = Steam::Player.owned_games(user)['game_count']
+          if games.nil?
+            games = 0
+          end
+        rescue
+          games = "Private"
+        end
+        fields << EmbedField.new(name: "Games", value: games.to_s, inline: true)
+
+        begin
+          recentgames = Steam::Player.recently_played_games(user)
+          if recentgames['games'].nil?
+            raise
+          end
           top3games = recentgames['games']
             .to_a
             .sort_by{ |k, v| -k['playtime_2weeks'] }
             .first(3)
             .map{ |k| "#{k['name']} - #{k['playtime_2weeks']} minutes"}
-          fields << EmbedField.new(name: "Recent Games (2 weeks)", value: top3games.join("\n"), inline: false)
+            .join("\n")
+        rescue
+          top3games = "No Activity"
         end
+        fields << EmbedField.new(name: "Recent Games (2 weeks)", value: top3games.to_s, inline: false)
+
         embed = Embed.new(
           title: userdata['personaname'],
           thumbnail: EmbedThumbnail.new(url: userdata['avatar']),
