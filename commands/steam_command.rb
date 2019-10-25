@@ -25,13 +25,21 @@ module Commands
         end
 
         user = args[0]
-        user = Steam::User.vanity_to_steamid(user) if user =~ /\D/
+        begin
+          user = Steam::User.vanity_to_steamid(user) if user =~ /\D/
+        rescue
+          return e.respond "No user found matching #{user}"
+        end
 
-        userdata = Steam::User.summary(user)
-        friends = Steam::User.friends(user)
-        games = Steam::Player.owned_games(user)
-        recentgames = Steam::Player.recently_played_games(user)
-        level = Steam::Player.steam_level(user)
+        begin
+          userdata = Steam::User.summary(user)
+          friends = Steam::User.friends(user)
+          games = Steam::Player.owned_games(user)
+          recentgames = Steam::Player.recently_played_games(user)
+          level = Steam::Player.steam_level(user)
+        rescue
+          return e.respond "No user found matching #{user}"
+        end
 
         fields = []
         fields << EmbedField.new(name: 'Account Created', value: Time.at(userdata['timecreated']).strftime("%B %-d, %Y"), inline: true)
