@@ -8,6 +8,8 @@ module Commands
 
       def attributes
         {
+            min_args: 1,
+            max_args: 1,
             description: "Search a steam user",
             usage: "steam [username or id]"
         }
