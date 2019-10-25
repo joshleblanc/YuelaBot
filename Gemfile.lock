@@ -198,6 +198,10 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    steam-api (1.1.0)
+      faraday (~> 0.9)
+      json (~> 1.7, >= 1.7.7)
+      multi_json (~> 1.7, >= 1.7.7)
     test-unit (3.3.2)
       power_assert
     test-unit-rr (1.0.5)
@@ -254,8 +258,9 @@ DEPENDENCIES
   ruby-debug-ide
   rufus-scheduler
   simplecov
+  steam-api
   test-unit-rr
   tzinfo-data
 
 BUNDLED WITH
-   2.0.1
+   2.0.2

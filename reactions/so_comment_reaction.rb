@@ -1,7 +1,10 @@
+require_relative '../lib/helpers/markdown'
+
 module Reactions
     class SoCommentReaction
       class << self
         include Discordrb::Webhooks
+        include Helpers
 
         def counters
           [
@@ -54,14 +57,14 @@ module Reactions
 
           p url, messageid, match_data.captures[1], match_data.captures
           uri = URI.parse(url)
-          body = Nokogiri::HTML(open(url))
-          comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"))
+          body = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
+          comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"), nil, Encoding::UTF_8.to_s)
 
           message = comments.at_css("#comment-#{messageid}")
           question = body.at_css('#question-header .question-hyperlink')
           user = message.at_css('a.comment-user')
           user_link = message.at_css('a.comment-user').attr('href')
-          comment = message.at_css('span.comment-copy').text
+          comment = html_to_md(message.at_css('span.comment-copy').inner_html)
           timestamp = comments.at_css('span.comment-date span').attr('title')
           updoots = message.at_css('.comment-score span')
           updoots = updoots ? updoots.text.to_i : 0
