@@ -1,7 +1,10 @@
+require_relative '../lib/helpers/markdown'
+
 module Reactions
   class SoChatReaction
     class << self
       include Discordrb::Webhooks
+      include Helpers
 
       def regex
         /https:\/\/chat(\.meta)?\.stack(overflow|exchange)\.com\/transcript\/(message\/|\d+\?m=)(\d+)/
@@ -26,12 +29,7 @@ module Reactions
         room = transcript.at_css('span.room-name a')
         embed = Embed.new(title: room.text)
         embed.image = EmbedImage.new(url: image.attr('src')) unless image.empty?
-        markdowns = {
-          '<i>' => '*', '</i>' => '*',
-          '<b>' => '**', '</b>' => '**',
-          '<strike>' => '~~', '</strike>' => '~~'
-        }
-        embed.description = message.css('.content').inner_html.gsub(/\<\/?([ib]|strike)\>/, markdowns)
+        embed.description = html_to_md(message.css('.content').inner_html)
         embed.color = '123123'.to_i(16)
         embed.url = "https://chat.stackoverflow.com/#{room.attr('href')}"
         embed.author = EmbedAuthor.new(name: user.text, icon_url: avatar, url: "https://chat.stackoverflow.com#{user.attr('href')}")
