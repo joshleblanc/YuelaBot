@@ -29,7 +29,7 @@ module Reactions
         room = transcript.at_css('span.room-name a')
         embed = Embed.new(title: room.text)
         embed.image = EmbedImage.new(url: image.attr('src')) unless image.empty?
-        embed.description = html_to_md(message.css('.content').inner_html)
+        embed.description = Nokogiri::HTML(html_to_md(message.css('.content').inner_html), nil, Encoding::UTF_8.to_s).text
         embed.color = '123123'.to_i(16)
         embed.url = "https://chat.stackoverflow.com/#{room.attr('href')}"
         embed.author = EmbedAuthor.new(name: user.text, icon_url: avatar, url: "https://chat.stackoverflow.com#{user.attr('href')}")
