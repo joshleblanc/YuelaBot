@@ -16,7 +16,7 @@ module Commands
         return if event.from_bot?
 
         message = args.join(' ')
-        message.downcase.chars.map {|c| rand > 0.5 ? c.upcase : c}.join
+        message.downcase.chars.each_with_index.map {|c,i| (i % 2 === 0) ? c.upcase : c.downcase}.join
       end
     end
   end

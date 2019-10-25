@@ -1,7 +1,10 @@
+require_relative '../lib/helpers/markdown'
+
 module Reactions
   class SoChatReaction
     class << self
       include Discordrb::Webhooks
+      include Helpers
 
       def regex
         /https:\/\/chat(\.meta)?\.stack(overflow|exchange)\.com\/transcript\/(message\/|\d+\?m=)(\d+)/
@@ -17,7 +20,7 @@ module Reactions
         match_data = event.message.content.match(self.regex)
         url = match_data[0]
 
-        transcript = Nokogiri::HTML(open(url))
+        transcript = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
         message = transcript.at_css('div.highlight')
         container = message.parent.parent
         user = container.at_css('div.username').children[0]
@@ -26,7 +29,7 @@ module Reactions
         room = transcript.at_css('span.room-name a')
         embed = Embed.new(title: room.text)
         embed.image = EmbedImage.new(url: image.attr('src')) unless image.empty?
-        embed.description = message.css('.content').text
+        embed.description = Nokogiri::HTML(html_to_md(message.css('.content').inner_html), nil, Encoding::UTF_8.to_s).text
         embed.color = '123123'.to_i(16)
         embed.url = "https://chat.stackoverflow.com/#{room.attr('href')}"
         embed.author = EmbedAuthor.new(name: user.text, icon_url: avatar, url: "https://chat.stackoverflow.com#{user.attr('href')}")
