@@ -11,7 +11,7 @@ module Reactions
         return if event.from_bot?
         messages = event.channel.history(100)
         message = event.message.content
-        parts = message.split('/', -1)
+        parts = message.split(/(?<!\\)\//, -1)
         options = 0
         options += Regexp::IGNORECASE if parts[3].include? 'i'
         options += REGEXP::MULTILINE if parts[3].include? 'm'
