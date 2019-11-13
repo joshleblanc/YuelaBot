@@ -27,11 +27,15 @@ module Reactions
                 matches = event.message.content.scan(self.regex)
                 matches = matches.flatten.uniq
                 matches.each do |m|
-                    cards = MTG::Card.where(name: %Q{#{m}}).all
-                    card = cards.find(&:multiverse_id)
+                    begin
+                        cards = MTG::Card.where(name: %Q{#{m}}).all
+                        card = cards.find(&:multiverse_id)
 
-                    if card
-                        event.respond nil, false, build_embed(card)
+                        if card
+                            event.respond nil, false, build_embed(card)
+                        end
+                    rescue NoMethodError
+                        event << "Query failed for #{m}. Please try again later."
                     end
                 end
             end
