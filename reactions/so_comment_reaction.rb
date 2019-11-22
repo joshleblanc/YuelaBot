@@ -81,9 +81,8 @@ module Reactions
           escaped = event.message.content.match no_inline_regex
           if escaped.nil?
             event.message.delete
+            event.respond nil, false, embed
           end
-
-          event.respond nil, false, embed
         end
       end
     end
