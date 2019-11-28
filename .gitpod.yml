@@ -2,7 +2,7 @@ image:
   file: Dockerfile.gitpod
 tasks:
   - before:
-      pg_start.sh && createuser -s postgres
+      pg_start.sh
     init:
       bundle install
     command:
