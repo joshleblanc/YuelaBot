@@ -25,7 +25,6 @@ test:
   adapter: postgresql
   host: localhost
   database: yuela_test
-  user: postgres
-  password: postgres
+  user: gitpod
   pool: 5
   timeout: 5000
