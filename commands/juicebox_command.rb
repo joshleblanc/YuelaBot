@@ -28,7 +28,6 @@ module Commands
         image_message = nil
         event.channel.history(100).each do |message|
           message.embeds.each do |embed|
-            p embed.type
             if embed.type == :image
               image_url = message.content
               image_message = message
