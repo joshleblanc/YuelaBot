@@ -17,7 +17,6 @@ pg_ctl -D ~/pg/data/ -l ~/pg/logs/log -o "-k ~/pg/sockets" start' > ~/pg/scripts
 RUN echo '#!/bin/bash\n\
 pg_ctl -D ~/pg/data/ -l ~/pg/logs/log -o "-k ~/pg/sockets" stop' > ~/pg/scripts/pg_stop.sh
 RUN chmod +x ~/pg/scripts/*
-RUN createuser -s postgres
 ENV PATH="$HOME/pg/scripts:$PATH"
 ENV RACK_ENV=gitpod
 
