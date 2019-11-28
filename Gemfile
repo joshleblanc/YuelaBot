@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'discordrb', '>= 3.3'
+gem 'discordrb', git: 'https://github.com/discordrb/discordrb.git'
 gem 'google-api-client'
 gem 'fourchan-kit'
 gem 'require_all'
