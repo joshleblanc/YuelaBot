@@ -56,7 +56,6 @@ module Commands
         if spoiler && spoiler.is_a?(String)
           image_url = spoiler[1]
         end
-        byebug
         response = RestClient::Request.execute(method: :get, url: "https://juiceboxify.me/api?url=#{CGI.escape(image_url)}", timeout: -1)
         
         # api returns an error as json if there's na error, otherwise just throws the file at you
