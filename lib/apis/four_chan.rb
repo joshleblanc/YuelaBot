@@ -1,9 +1,9 @@
 module Apis
   module FourChan
-    BASE_URL = "a.4cdn.org"
+    BASE_URL = "https://a.4cdn.org"
 
     def self.boards
-      @boards ||= get("/boards")['boards']
+      @boards ||= get("/boards.json")['boards']
     end
 
     def self.threads(board)
@@ -27,8 +27,8 @@ module Apis
     end
 
     private
-    def get(url)
-      JSON.parse("#{BASE_URL}#{url}")
+    def self.get(url)
+      JSON.parse(open("#{BASE_URL}#{url}").read)
     end
   end
 end

@@ -19,14 +19,21 @@ module Commands
       def command(event, id)
         return if event.from_bot?
 
-        board = Fourchan::Kit::Board.new id
-        res = board.posts.sample
-        text, quotes = parse_response(res.com)
+        @boards ||= Apis::FourChan.boards
+        board = @boards.find { |b| b['board'] == id }
+        return "No board found" unless board
+        threads = Apis::FourChan.threads(id)
+        page = threads.sample
+        thread = page['threads'].sample
+        posts = Apis::FourChan.thread(id, thread['no'])['posts']
+        post = posts.sample
+        text, quotes = parse_response(post['com'])
         event.channel.send_embed do |embed|
           embed.color = '#cc0066'
-          embed.author = EmbedAuthor.new(name: res.name)
-          embed.image = EmbedImage.new(url: res.image_link) unless res.image_link.nil?
-          embed.footer = EmbedFooter.new(text: res.now)
+          embed.title = board['title']
+          embed.author = EmbedAuthor.new(name: post['name'])
+          embed.image = EmbedImage.new(url: "http://i.4cdn.org/#{id}/#{post['tim']}#{post['ext']}") unless post['tim'].nil?
+          embed.footer = EmbedFooter.new(text: post['now'])
           embed.description = text unless text.strip.empty?
           embed.fields = quotes.map do |q|
             EmbedField.new(**q)
