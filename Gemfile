@@ -18,6 +18,7 @@ gem 'net-scp'
 gem 'rake'
 gem "octokit", "~> 4.0"
 gem 'steam-api'
+gem 'nokogiri'
 
 group :development do
     gem 'byebug'

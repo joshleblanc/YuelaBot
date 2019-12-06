@@ -15,6 +15,7 @@ require 'octokit'
 require 'dotenv/load'
 require 'timeout'
 require 'steam-api'
+require 'nokogiri'
 
 require_relative 'models/application_record'
 require_all './models'
