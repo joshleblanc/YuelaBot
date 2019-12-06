@@ -16,15 +16,13 @@ module Commands
       def command(e)
         return if e.from_bot?
 
-        service = Google::Apis::TranslateV2::TranslateService.new
-        service.key = ENV['google']
-        languages = service.list_languages(target: 'en').languages
-
+        languages = Apis::Azure::Translator.languages
+        
         response = StringIO.new
         response.puts '```'
-        response.printf "%-5s %s\n", "ID", "Name"
-        languages.each do |l|
-          response.printf "%-5s %s\n", l.language, l.name
+        response.printf "%-7s %s\n", "ID", "Name"
+        languages['translation'].each do |k, v|
+          response.printf "%-7s %s\n", k, v['name']
         end
         response.puts '```'
         response.string

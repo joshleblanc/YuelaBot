@@ -15,19 +15,13 @@ module Commands
         }
       end
 
-      def init
-
-      end
-
       def command(e, source, target, *args)
         return if e.from_bot?
 
-        service = Google::Apis::TranslateV2::TranslateService.new
-        service.key = ENV['google']
         query = args.join(' ')
-        translation = service.list_translations(query, target, source: source).translations.first
-        if translation
-          translation.translated_text
+        translation = Apis::Azure::Translator.translate(query, to: target, from: source)
+        if translation.any?
+          translation[0]['translations'][0]['text']
         else
           "No translations found"
         end
