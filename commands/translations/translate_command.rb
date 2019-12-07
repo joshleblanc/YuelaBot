@@ -15,8 +15,11 @@ module Commands
         }
       end
 
-      def command(e, source, target, *args)
+      def command(e, *input)
         return if e.from_bot?
+
+        input_string = input.join(' ')
+        
 
         query = args.join(' ')
         translation = Apis::Azure::Translator.translate(query, to: target, from: source)
