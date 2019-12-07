@@ -30,7 +30,12 @@ module Reactions
           else
             original_embed = message.embeds[0]
             embed = Embed.new(title: original_embed.title)
-            embed.image = EmbedImage.new(url: original_embed.image.url) unless original_embed.image.nil?
+            
+            if original_embed.thumbnail
+              embed.image = EmbedImage.new(url: original_embed.url)
+            elsif original_embed.image
+              embed.image = EmbedImage.new(url: original_embed.image.url)
+            end
             embed.description = original_embed.description
             embed.color = original_embed.color
             embed.url = original_embed.url
