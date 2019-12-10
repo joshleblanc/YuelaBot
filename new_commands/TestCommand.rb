@@ -4,9 +4,11 @@ module NewCommands
       description "This is a test commmand"
 
       command test: one do
-          p one, event
+        p event.message.content
       end
 
-
+      command blah: two do
+        p two
+      end
   end
 end
