@@ -22,25 +22,33 @@ class NewCommand
 
     def run(str)
         parse(str)
+        byebug
         instance_eval(&block)
     end
 
     class << self
 
+        def process(event)
+          message = event.message.content
+          @commands.each do |command|
+            command.run(message)
+          end
+        end
+
         def command(*args, &blk)
-            @@arguments = args[0]
-            define_method(:block) { blk }
-            args[0].keys do |k|
-                attr_reader k
-            end
+            @commands ||= []
+            @commands.push({
+              arguments: args[0],
+              block: blk
+            })
+        end
+
+        def description(str)
+          define_method(:description) { str }
         end
 
         def method_missing(*args)
             args[0]
-        end
-
-        def name
-          @@arguments.keys[0]
         end
     end
 end

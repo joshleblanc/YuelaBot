@@ -79,20 +79,12 @@ BOT.message_edit(&method(:archive_routine))
 
 BOT.message do |event|
   next if event.from_bot?
-
-  message = event.message.content
-  name = message.match(/!!(.+?) /)[1]
-
   command = NewCommands.constants.map do |c|
     command = NewCommands.const_get(c)
     command.is_a?(Class) ? command : nil
-  end.compact.select do |command|
-    p command.name, name
-    command.name.to_s == name
+  end.compact.each do |command|
+    command.process(event)
   end.first
-  p command
-  command.new(event).run(message) if command
-
   urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
