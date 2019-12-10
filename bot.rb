@@ -57,6 +57,10 @@ UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.method(:run))
 end
 
+BOT.command("colon:") do |event|
+  p "colon"
+end
+
 BOT.command(:ping) do |event|
   event.respond "pong"
 end

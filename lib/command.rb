@@ -31,7 +31,9 @@ class NewCommand
 
   def run(message)
     return unless message.start_with? "!!"
-    command_name = message.match(/!!(.+?):? /)[1]
+    command_match = message.match(/!!(.+?):? /)
+    return unless command_match
+    command_name = command_match[1]
     return unless command_name == name
     can_run = parse(message)
     instance_eval(&@blk) if can_run
