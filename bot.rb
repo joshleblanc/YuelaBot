@@ -57,10 +57,6 @@ UserCommand.all.each do |command|
   BOT.command(command.name.to_sym, &command.method(:run))
 end
 
-BOT.command("colon:") do |event|
-  p "colon"
-end
-
 BOT.command(:ping) do |event|
   event.respond "pong"
 end
@@ -83,12 +79,9 @@ BOT.message_edit(&method(:archive_routine))
 
 BOT.message do |event|
   next if event.from_bot?
-  command = NewCommands.constants.map do |c|
-    command = NewCommands.const_get(c)
-    command.is_a?(Class) ? command : nil
-  end.compact.each do |command|
-    command.process(event)
-  end.first
+
+  NewCommand.commands.each { |c| c.process(event) }
+
   urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end

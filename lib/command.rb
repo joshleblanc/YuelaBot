@@ -1,21 +1,17 @@
 class NewCommand
     class << self
-        def process(event)
-          message = event.message.content
-          @commands.each do |command|
-            command_copy = command.clone
-            command_copy.event = event
-            command_copy.run(message)
-          end
+        def commands
+          @@commands
         end
 
         def command(*args, &blk)
-            @commands ||= []
-            @commands.push(NewCommand.new(args[0], blk))
+            @@commands ||= []
+            @@commands.push(NewCommand.new(self.class, args[0], blk))
         end
 
         def description(str)
-          define_method(:description) { str }
+          @@descriptions ||= {}
+          @@descriptions[self.class] = str
         end
 
         def method_missing(*args)
@@ -24,9 +20,21 @@ class NewCommand
     end
 
   attr_writer :event
-  def initialize(args, blk)
+  def initialize(klass, args, blk)
+    @klass = klass
     @args = args
     @blk = blk
+  end
+
+  def description
+    @@descriptions[@klass]
+  end
+
+  def process(event)
+    message = event.message.content
+    copy = self.clone
+    copy.event = event
+    copy.run(message)
   end
 
   def run(message)
@@ -40,7 +48,11 @@ class NewCommand
   end
 
   def name
-    @args.keys[0].to_s
+    if @args.is_a? Hash
+      @args.keys[0].to_s
+    else
+      @args
+    end
   end
 
   def event
