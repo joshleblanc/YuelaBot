@@ -1,0 +1,6 @@
+name: "test"
+usage: "usage example"
+description: "description example"
+input:
+  - 
+entry: "test.rb"
