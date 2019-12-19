@@ -13,7 +13,7 @@ module Commands
         }
       end
 
-      def command(event, book, *query)
+      def command(event)
         return if event.from_bot?
         event << "This is where I would put the URL"
 
