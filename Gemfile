@@ -30,3 +30,5 @@ group :test do
   gem 'test-unit-rr', require: false
   gem 'simplecov', require: false
 end
+
+gem "sinatra", "~> 2.0"

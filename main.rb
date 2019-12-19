@@ -5,4 +5,8 @@ if ENV['so_user'] && ENV['so_pass']
   room17.listen!
 end
 
+Thread.new do
+  require_relative './api/entry.rb'
+end
+
 BOT.run

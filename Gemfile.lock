@@ -124,6 +124,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    mustermann (1.0.3)
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
@@ -142,6 +143,9 @@ GEM
     power_assert (1.1.4)
     public_suffix (3.0.3)
     raabro (1.1.6)
+    rack (2.0.8)
+    rack-protection (2.0.7)
+      rack
     rake (12.3.2)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -180,6 +184,11 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    sinatra (2.0.7)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.7)
+      tilt (~> 2.0)
     steam-api (1.1.0)
       faraday (~> 0.9)
       json (~> 1.7, >= 1.7.7)
@@ -190,6 +199,7 @@ GEM
       rr (>= 1.1.1)
       test-unit (>= 2.5.2)
     thread_safe (0.3.6)
+    tilt (2.0.10)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     tzinfo-data (1.2019.1)
@@ -238,6 +248,7 @@ DEPENDENCIES
   ruby-debug-ide
   rufus-scheduler
   simplecov
+  sinatra (~> 2.0)
   steam-api
   test-unit-rr
   tzinfo-data
