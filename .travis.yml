@@ -5,7 +5,7 @@ rvm:
 env:
   - discord=FAKE_DISCORD_TOKEN
 before_install:
-- gem install bundle
+- gem install bundler -v '2.0.2'
 - sudo apt-get update
 - sudo apt-get -y install libsodium-dev
 before_script:
