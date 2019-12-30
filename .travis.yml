@@ -8,6 +8,12 @@ before_install:
 - gem install bundler -v '2.0.2'
 - sudo apt-get update
 - sudo apt-get -y install libsodium-dev
+- "curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl"
+- "chmod +x ./kubectl"
+- "sudo mv ./kubectl /usr/local/bin/kubectl"
+- "sudo snap install doctl"
+- "sudo snap connect doctl:kube-config"
+- "doctl kubernetes cluster kubeconfig save $KUBERNETES_CLUSTER"
 before_script:
 - psql -c 'create database yuela_test;' -U postgres
 - RACK_ENV=test bundle exec rake db:migrate
@@ -15,14 +21,17 @@ before_script:
   > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 - "./cc-test-reporter before-build"
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker build -t horizonshadow/yuelabot .
 after_script:
 - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 dist: xenial
 services:
 - postgresql
+- docker
 deploy:
   provider: script
-  script: openssl aes-256-cbc -K $encrypted_6fd7155e1d69_key -iv $encrypted_6fd7155e1d69_iv -in .travis/deploy_key.enc -out .travis/deploy_key -d && rvm use 2.5.3 do bundle exec rake deploy
+  script: docker push horizonshadow/yuelabot && kubectl rollout restart deployment/yuelabot
   skip_cleanup: true
   on:
     branch: master
