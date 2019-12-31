@@ -28,3 +28,11 @@ test:
   user: postgres
   pool: 5
   timeout: 5000
+
+docker-compose:
+  adapter: postgresql
+  host: db
+  database: yuela_dev
+  user: postgres
+  pool: 5
+  timeout: 5000
