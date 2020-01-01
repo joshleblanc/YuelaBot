@@ -4,13 +4,14 @@ require 'google/apis/customsearch_v1'
 require 'google/apis/youtube_v3'
 require 'google/apis/translate_v2'
 require 'redd'
+require 'rbconfig'
 require 'require_all'
 require 'csv'
 require 'rufus-scheduler'
 require 'faye/websocket'
 require 'byebug'
 require 'mtg_sdk'
-require 'mini_racer'
+require 'mini_racer' unless (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
 require 'octokit'
 require 'dotenv/load'
 require 'timeout'
@@ -23,7 +24,6 @@ require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './lib'
-require_all './room-17-proxy'
 
 include Routines
 
@@ -98,6 +98,8 @@ BOT.message do |event|
     end
   end
 end
+
+SoChatProxy.all.each(&:listen!)
 
 scheduler = Rufus::Scheduler.new
 scheduler.every '1d', first: :now do

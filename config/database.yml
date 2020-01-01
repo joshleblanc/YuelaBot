@@ -26,6 +26,7 @@ test:
   host: localhost
   database: yuela_test
   user: postgres
+  password: postgres
   pool: 5
   timeout: 5000
 
