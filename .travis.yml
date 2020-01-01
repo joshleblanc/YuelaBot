@@ -5,7 +5,7 @@ rvm:
 env:
   - discord=FAKE_DISCORD_TOKEN
 before_install:
-- gem install bundler -v '2.0.2'
+- gem install bundler -v '2.1.2'
 - sudo apt-get update
 - sudo apt-get -y install libsodium-dev
 - "curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl"
