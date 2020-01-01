@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_01_104323) do
+ActiveRecord::Schema.define(version: 2020_01_01_161652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_01_01_104323) do
     t.integer "room_id"
     t.string "server_id"
     t.string "channel_id"
+    t.string "base_url", default: "https://chat.stackoverflow.com"
   end
 
   create_table "so_chat_proxy_configs", force: :cascade do |t|

@@ -21,12 +21,12 @@ class SoChat
         end
     end
 
-    def initialize(channel_id, room_id, user, pass)
+    def initialize(channel_id, room_id, user, pass, base_url = "https://chat.stackoverflow.com")
         @room_id = room_id
         @channel_id = channel_id
         @user = user
         @pass = pass
-        @base_url = "https://chat.stackoverflow.com"
+        @base_url = base_url
         @listeners = {}
         @history = []
     end

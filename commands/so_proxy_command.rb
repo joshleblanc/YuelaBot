@@ -8,7 +8,7 @@ module Commands
       def attributes
         {
           description: "Connects to a stackoverflow chatroom, and proxies it to a channel",
-          usage: "so_chat <room_number>",
+          usage: "so_chat <room_number> <url?>",
           aliases: []
         }
       end
@@ -35,6 +35,7 @@ module Commands
         else
           channel = server.create_channel("room#{room_id}", 0, parent: config.channel_id)
           so_chat_proxy.update(channel_id: channel.id)
+          so_chat_proxy.update(base_url: args[1]) if args.length > 1
           so_chat_proxy.listen!
           event.respond "Proxy created"
         end
