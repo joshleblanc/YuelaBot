@@ -4,11 +4,6 @@ class SoChat
     attr_reader :room_id, :channel_id, :meta
 
     class << self
-        def cookies=(url, cookies)
-            @cookies ||= {}
-            @cookies[url] = cookies
-        end
-
         def cookies
             @cookies ||= {}
             @cookies
