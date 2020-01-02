@@ -37,7 +37,7 @@ module Commands
           channel = server.create_channel("room#{room_id}#{meta ? "-meta" : ""}", 0, parent: config.channel_id, topic: so_chat_proxy.url)
           so_chat_proxy.update(channel_id: channel.id)
           so_chat_proxy.listen!
-          event.respond "Proxy created"
+          event.respond "Proxy created <##{channel.id}>"
         end
         nil
       end
