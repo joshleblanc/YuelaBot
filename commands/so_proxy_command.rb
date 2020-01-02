@@ -30,7 +30,7 @@ module Commands
           if response.message.content.downcase == 'y'
             channel = server.channels.find { |c| c.id == so_chat_proxy.channel_id.to_i }
             channel.delete rescue p "Tried to delete a channel that didn't exist"
-            SoChat.stop!(room_id, so_chat_proxy.channel_id)
+            SoChat.stop!(room_id, so_chat_proxy.channel_id, meta)
             so_chat_proxy.destroy
           end
         else

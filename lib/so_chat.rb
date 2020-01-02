@@ -1,7 +1,7 @@
 class SoChat
     include Discordrb::Webhooks
 
-    attr_reader :room_id, :channel_id
+    attr_reader :room_id, :channel_id, :meta
 
     class << self
         def cookies=(url, cookies)
@@ -18,8 +18,8 @@ class SoChat
             ObjectSpace.each_object(self).to_a
         end
 
-        def stop!(room_id, channel_id)
-            all.select { |sc| sc.room_id == room_id && sc.channel_id == channel_id }.each(&:stop!)
+        def stop!(room_id, channel_id, meta)
+            all.select { |sc| sc.room_id == room_id && sc.channel_id == channel_id && sc.meta == meta }.each(&:stop!)
         end
     end
 
