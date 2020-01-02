@@ -6,7 +6,6 @@ class SoChat
     class << self
         def cookies
             @cookies ||= {}
-            @cookies
         end
 
         def all
