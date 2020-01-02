@@ -157,7 +157,8 @@ class SoChat
             @ws_url = get_ws_url(cookies)
         rescue RestClient::NotFound
             p "SO Chat authorization failed"
-            sleep 30
+            BOT.send_message(@channel_id, "Connection lost. Reconnecting in 30 minutes.")
+            sleep 60 * 30 # 30 minutes
             auth!
         end
     end
