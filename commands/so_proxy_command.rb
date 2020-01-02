@@ -8,7 +8,7 @@ module Commands
       def attributes
         {
           description: "Connects to a stackoverflow chatroom, and proxies it to a channel",
-          usage: "so_chat <room_number> <url?>",
+          usage: "so_chat <room_number> <meta?>",
           aliases: []
         }
       end
@@ -17,12 +17,13 @@ module Commands
         return if event.from_bot?
         room_id = args[0].to_i
         server = event.server
+        meta = args.length > 1
         config = SoChatProxyConfig.find_or_create_by(server_id: server.id)
         unless config.channel_id
           category_channel = server.create_channel("Stack Overflow Chats", 4)
           config.update(channel_id: category_channel.id)
         end
-        so_chat_proxy = SoChatProxy.find_or_create_by(server_id: server.id, room_id: room_id)
+        so_chat_proxy = SoChatProxy.find_or_create_by(server_id: server.id, room_id: room_id, meta: meta)
         if so_chat_proxy.channel_id
           event.respond "Channel is already proxied. Do you want to delete it? (y/n)"
           response = event.user.await!
@@ -33,9 +34,8 @@ module Commands
             so_chat_proxy.destroy
           end
         else
-          channel = server.create_channel("room#{room_id}", 0, parent: config.channel_id)
+          channel = server.create_channel("room#{room_id}#{meta ? "-meta" : ""}", 0, parent: config.channel_id)
           so_chat_proxy.update(channel_id: channel.id)
-          so_chat_proxy.update(base_url: args[1]) if args.length > 1
           so_chat_proxy.listen!
           event.respond "Proxy created"
         end

@@ -4,11 +4,13 @@ class SoChat
     attr_reader :room_id, :channel_id
 
     class << self
-        def cookies=(cookies)
-            @cookies = cookies
+        def cookies=(url, cookies)
+            @cookies ||= {}
+            @cookies[url] = cookies
         end
 
         def cookies
+            @cookies ||= {}
             @cookies
         end
 
@@ -21,14 +23,30 @@ class SoChat
         end
     end
 
-    def initialize(channel_id, room_id, user, pass, base_url = "https://chat.stackoverflow.com")
+    def initialize(channel_id, room_id, user, pass, meta = false)
         @room_id = room_id
         @channel_id = channel_id
         @user = user
         @pass = pass
-        @base_url = base_url
+        @meta = meta
         @listeners = {}
         @history = []
+    end
+
+    def login_url
+        if @meta
+            "https://meta.stackexchange.com/users/login"
+        else
+            "https://stackoverflow.com/users/login"
+        end
+    end
+
+    def base_url
+        if @meta
+            "https://chat.meta.stackexchange.com"
+        else
+            "https://chat.stackoverflow.com"
+        end
     end
 
     def stop!
@@ -159,7 +177,7 @@ class SoChat
     def inner_run
         ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, { 
             headers: {
-                "origin" => @base_url
+                "origin" => base_url
             }   
         })
         
@@ -198,14 +216,14 @@ class SoChat
     end
 
     def get_ws_url(cookies)
-        fkey = get_fkey(@base_url, cookies)
+        fkey = get_fkey(base_url, cookies)
         data = "roomid=#{@room_id}&fkey=#{fkey}"
-        resp = RestClient.post("#{@base_url}/ws-auth", {
+        resp = RestClient.post("#{base_url}/ws-auth", {
             roomid: @room_id,
             fkey: fkey
         }, {
-            Origin: @base_url,
-            Referer: "#{@base_url}/rooms/#{@room_id}",
+            Origin: base_url,
+            Referer: "#{base_url}/rooms/#{@room_id}",
             content_type: 'application/x-www-form-urlencoded',
             user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
             "X-Requested-With" => "XMLHttpRequest",
@@ -222,10 +240,9 @@ class SoChat
     end
 
     def login
-        return SoChat.cookies if SoChat.cookies
-        url = 'https://stackoverflow.com/users/login'
-        fkey = get_fkey(url)
-        resp = RestClient.post(url, {
+        return SoChat.cookies[base_url] if SoChat.cookies[base_url]
+        fkey = get_fkey(login_url)
+        resp = RestClient.post(login_url, {
             fkey: fkey,
             email: @user,
             password: @pass
@@ -237,8 +254,8 @@ class SoChat
                 resp.follow_redirection
             else
                 resp.return!
-            end 
-        end       
-        SoChat.cookies = resp.cookie_jar
+            end
+        end
+        SoChat.cookies[base_url] = resp.cookie_jar
     end
 end

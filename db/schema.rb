@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2020_01_01_161652) do
     t.integer "room_id"
     t.string "server_id"
     t.string "channel_id"
-    t.string "base_url", default: "https://chat.stackoverflow.com"
+    t.boolean "meta", default: false
   end
 
   create_table "so_chat_proxy_configs", force: :cascade do |t|
