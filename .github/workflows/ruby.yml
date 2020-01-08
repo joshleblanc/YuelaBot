@@ -33,3 +33,16 @@ jobs:
         bundle exec rake db:create
         bundle exec rake db:migrate
         bundle exec rake
+    - name: Send code coverage report
+      uses: aktions/codeclimate-test-reporter@v1
+      with:
+        codeclimate-test-reporter-id: ${{ secrets.testid }}
+    - name: Setup kubectl
+      uses: matootie/dokube@v1.2.0
+      with:
+        # DigitalOcean Personal Access Token; Used to fetch latest Kubernetes Config.
+        personalAccessToken: ${{ secrets.doToken }}
+        # The name of the DigitalOcean Kubernetes cluster that you plan to work with.
+        clusterName: k8s-1-16-2-do-0-tor1-1573756517886
+    - name: Rollout
+      run: kubectl rollout restart deployment/yuelabot
