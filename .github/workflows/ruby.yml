@@ -13,9 +13,9 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6.x
+    - name: Build and test with Rake
       env:
         discord: 123
-    - name: Build and test with Rake
       run: |
         sudo apt-get install libpq-dev
         gem install bundler
