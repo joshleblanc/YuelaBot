@@ -4,7 +4,17 @@ on: [push]
 
 jobs:
   build:
-
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     runs-on: ubuntu-latest
 
     steps:
@@ -20,4 +30,5 @@ jobs:
         sudo apt-get install libpq-dev
         gem install bundler
         bundle install --jobs 4 --retry 3
+        bundle exec rake db:setup
         bundle exec rake
