@@ -236,7 +236,16 @@ class SoChat
     end
 
     def login
-        return SoChat.cookies[base_url] if SoChat.cookies[base_url]
+        p "Logging in..."
+        so_chat_cookie = SoChatCookie.find_by(email: @user, url: base_url)
+        if so_chat_cookie
+            p "Found cached cookie"
+            io = StringIO.new
+            io.write so_chat_cookie.cookie
+            io.rewind
+            return Http::CookieJar.new.load(io)
+        end
+        p "No cached cookie found, creating..."
         fkey = get_fkey(login_url)
         resp = RestClient.post(login_url, {
             fkey: fkey,
@@ -252,6 +261,13 @@ class SoChat
                 resp.return!
             end
         end
-        SoChat.cookies[base_url] = resp.cookie_jar
+        io = StringIO.new
+        resp.cookie_jar.each do |c|
+            c.expires = c.expires + 60 * 60 * 24 * 365 * 100
+        end
+        resp.cookie_jar.save(io)
+        io.rewind
+        SoChatCookie.create(email: @user, url: base_url, cookie: io.read)
+        resp.cookie_jar
     end
 end

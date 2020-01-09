@@ -1,0 +1,3 @@
+class SoChatCookie < ApplicationRecord
+
+end
