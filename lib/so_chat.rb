@@ -53,6 +53,7 @@ class SoChat
             Thread.current.abort_on_exception = true
             p 'authenticating'
             auth!
+            BOT.send_message(@channel_id, "Connected!")
             on :message do |e|
                 next unless e['content']
                 if is_onebox?(e['content'])
