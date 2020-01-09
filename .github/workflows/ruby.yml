@@ -1,0 +1,54 @@
+name: Ruby
+
+on: [push]
+
+jobs:
+  build:
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Build and test with Rake
+      env:
+        discord: 123
+      run: |
+        sudo apt-get install libpq-dev
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        bundle exec rake db:create
+        bundle exec rake db:migrate
+        bundle exec rake
+    - name: Send code coverage report
+      uses: aktions/codeclimate-test-reporter@v1
+      with:
+        codeclimate-test-reporter-id: ${{ secrets.testid }}
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/joshleblanc/yuelabot/bot:$(date +%s) --tag docker.pkg.github.com/joshleblanc/yuelabot/bot:latest
+    - name: Login to registry
+      run: docker login docker.pkg.github.com --username joshleblanc --password ${{ secrets.githubToken }}
+    - name: Publish
+      run: docker push docker.pkg.github.com/joshleblanc/yuelabot/bot
+    - name: Setup kubectl
+      uses: matootie/dokube@v1.2.0
+      with:
+        # DigitalOcean Personal Access Token; Used to fetch latest Kubernetes Config.
+        personalAccessToken: ${{ secrets.doToken }}
+        # The name of the DigitalOcean Kubernetes cluster that you plan to work with.
+        clusterName: k8s-1-16-2-do-0-tor1-1573756517886
+    - name: Rollout
+      run: kubectl rollout restart deployment/yuelabot
