@@ -213,7 +213,6 @@ class SoChat
 
     def get_ws_url(cookies)
         fkey = get_fkey(base_url, cookies)
-        data = "roomid=#{@room_id}&fkey=#{fkey}"
         resp = RestClient.post("#{base_url}/ws-auth", {
             roomid: @room_id,
             fkey: fkey
