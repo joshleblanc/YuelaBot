@@ -47,6 +47,10 @@ class SoChat
         @thread.terminate if @thread
     end
 
+    def send_disconnection_alert
+        BOT.send_message(@channel_id, "Connection lost. Reconnecting in 30 minutes.")
+    end
+
     def listen!
         stop!
         @thread = Thread.new do
@@ -153,7 +157,7 @@ class SoChat
         rescue RestClient::NotFound => e
             p "SO Chat authorization failed"
             p e.message
-            BOT.send_message(@channel_id, "Connection lost. Reconnecting in 30 minutes.")
+            send_disconnection_alert
             sleep 60 * 30 # 30 minutes
             auth!
         end
@@ -204,6 +208,7 @@ class SoChat
 
         ws.on(:close) do |e| 
             p 'ws closed', e
+            send_disconnection_alert
         end
     end
 
