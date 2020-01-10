@@ -74,25 +74,33 @@ class SoChat
 
     private
 
-    def handle_tweet(html)
-        tweet_info = html.css('div.ob-tweet-info > a')
-        BOT.send_message(@channel_id, tweet_info[1].attr('href'))
-    end
-
-    def handle_image(html)
-        img_url = html.at_css('img').attr('src')
-        BOT.send_message(@channel_id, "http:#{img_url}")
+    def send_embed(embed)
+        begin
+            BOT.send_message(@channel_id, nil, nil, embed)
+        rescue
+            p "Failed to send message", embed
+        end
     end
 
     def handle_onebox(e)
         onebox = Nokogiri::HTML(e['content'])
         type = onebox.at_css('div.onebox').attributes['class'].value.split(' ')[1]
+        embed = create_embed(e)
         case type
         when 'ob-tweet'
-            handle_tweet(onebox)
+            tweet_info = onebox.css('div.ob-tweet-info > a')
+            href = tweet_info[1].attr('href')
+            embed.description = href
         when 'ob-image'
-            handle_image(onebox)
+            img_url = onebox.at_css('img').attr('src')
+            embed.image = EmbedImage.new(url: img_url)
+        when 'ob-message'
+            href = onebox.css('div.ob-message > a').attr('href').value
+            embed.description = "#{base_url}#{href}"
+        else
+            embed.description = "A onebox was sent, but I don't know how to handle it. (#{type})"
         end
+        send_embed(embed)
     end
 
     def is_onebox?(message)
@@ -121,33 +129,58 @@ class SoChat
         message
     end
 
+    def create_embed(e)
+        embed = Embed.new
+        embed.author = EmbedAuthor.new(
+            name: e['user_name'],
+            url: "https://chat.stackoverflow.com/users/#{e['user_id']}/cereal"
+        )
+        embed.timestamp = Time.at(e['time_stamp'])
+        embed.url = "#{base_url}/transcript/message/#{e['message_id']}"
+        embed.title = e['room_name']
+        embed
+    end
+
     def handle_message(e)
         message = process_content(e['content'])
-        last = @history.last
-        unless last && last[:so_message]['user_id'] == e['user_id']
-            BOT.send_message(@channel_id, "**#{e['user_name']}**:")
-        end
-        sent_message = BOT.send_message(@channel_id, message)
+
+        embed = create_embed(e)
+        embed.description = message
+        sent_message = send_embed(embed)
         @history << {
             so_message: e,
-            discord_message: sent_message
+            discord_message: sent_message,
+            embed: embed
         }
         @history.shift if @history.length >= 100
+
+    end
+
+    def edit_embed(message, embed)
+        begin
+            message.edit(nil, embed)
+        rescue
+            p "Failed to edit embed"
+        end
     end
 
     def handle_edit(e)
         edited_message = @history.find { |h| h[:so_message]['message_id'] == e['message_id'] }
         return unless edited_message
         message = process_content(e['content'])
-        edited_message[:discord_message] = edited_message[:discord_message].edit(message)
+        embed = edited_message[:embed]
+        embed.description = message
+        embed.footer = EmbedFooter.new(text: "[edited]")
+        edited_message[:discord_message] = edit_embed(edited_message[:discord_message], embed)
     end
 
     def handle_delete(e)
         deleted_message = @history.find { |h| h[:so_message]['message_id'] == e['message_id']}
         return unless deleted_message
         discord_message = deleted_message[:discord_message]
-        content = discord_message.content
-        deleted_message[:discord_message] = discord_message.edit("#{content} [deleted]")
+        embed = deleted_message[:embed]
+        embed.footer = EmbedFooter.new(text: "[deleted]")
+        deleted_message[:discord_message] = edit_embed(discord_message, embed)
     end
 
     def auth!
