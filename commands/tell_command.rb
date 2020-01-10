@@ -2,14 +2,15 @@ module Commands
     class TellCommand
       class << self
         def name
-          [:tell, :t]
+          :tell
         end
   
         def attributes
           {
             min_args: 2,
             description: 'Pings a user with the specified command',
-            usage: 'tell <user> <command> <...args?>'
+            usage: 'tell <user> <command> <...args?>',
+            aliases: [:t]
           }
         end
   
