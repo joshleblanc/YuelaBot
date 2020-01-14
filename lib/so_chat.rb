@@ -133,7 +133,7 @@ class SoChat
   end
 
   def send_disconnection_alert
-    BOT.send_message(@channel_id, "Connection lost. Reconnecting in 30 minutes.")
+    BOT.send_message(@channel_id, "Connection lost. Trying to reconnect...")
   end
 
   def listen!
@@ -276,7 +276,6 @@ class SoChat
       p "SO Chat authorization failed"
       p e.message
       send_disconnection_alert
-      sleep 60 * 30 # 30 minutes
       auth!
     end
   end
