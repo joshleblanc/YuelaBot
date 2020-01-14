@@ -181,7 +181,7 @@ class SoChat
       embed.image = EmbedImage.new(url: img_url)
     when 'ob-message'
       href = onebox.css('div.ob-message > a').attr('href').value
-      embed.description = "#{base_url}#{href}"
+      embed.description = "#{SoChat.base_url(@meta)}#{href}"
     else
       embed.description = "A onebox was sent, but I don't know how to handle it. (#{type})"
     end
