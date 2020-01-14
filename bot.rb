@@ -83,7 +83,8 @@ BOT.message do |event|
   user = User.find_or_create_by(id: author_id)
   proxies = SoChatProxy.where(channel_id: event.channel.id)
   proxies.each do |p|
-    if p.send_message(event.message.content, user.so_chat_cookie)
+    cookie = user.so_chat_cookies.find_by(url: SoChat.base_url(p.meta))
+    if p.send_message(event.message.content, cookie)
       event.message.delete
     else
       event << "#{event.author.mention}, please sign in using !!so_login or !!so_login meta to send messages"
