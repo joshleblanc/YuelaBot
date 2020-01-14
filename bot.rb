@@ -76,7 +76,6 @@ end
 
 BOT.message_edit(&method(:archive_routine))
 
-
 BOT.message do |event|
   next if event.from_bot?
   author_id = event.author.id
