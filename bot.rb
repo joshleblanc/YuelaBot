@@ -76,8 +76,18 @@ end
 
 BOT.message_edit(&method(:archive_routine))
 
+
 BOT.message do |event|
   next if event.from_bot?
+  author_id = event.author.id
+  user = User.find_or_create_by(id: author_id)
+  proxies = SoChatProxy.where(channel_id: event.channel.id)
+  proxies.each do |p|
+    unless p.send_message(event.message.content, user.so_chat_cookie)
+      event << "#{event.author.mention}, please sign in using !!so_login or !!so_login meta to send messages"
+    end
+  end
+
   urs = UserReaction.all.select do |ur|
     Regexp.new(ur.regex).match event.message.content
   end
