@@ -111,6 +111,11 @@ BOT.message do |event|
   end
 end
 
+BOT.mention do |event|
+  crg = CannedResponseGenerator.new
+  event << crg.generate(event.author.mention)
+end
+
 SoChatProxy.all.each(&:listen!)
 
 scheduler = Rufus::Scheduler.new
