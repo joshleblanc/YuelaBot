@@ -29,7 +29,11 @@ class AddColorCommandTest < Test::Unit::TestCase
     stub(@event).respond { |m| p m }
     stub(@event).bot do
       tmp = Object.new
-      stub(tmp).on { |_| @user }
+      stub(tmp).profile do
+        tmp2 = Object.new
+        stub(tmp2).on { |_| @user }
+        tmp2
+      end
       tmp
     end
   end
