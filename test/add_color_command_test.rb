@@ -27,6 +27,11 @@ class AddColorCommandTest < Test::Unit::TestCase
     stub(@event).user { @user }
     stub(@event).server { @server }
     stub(@event).respond { |m| p m }
+    stub(@event).bot do
+      tmp = Object.new
+      stub(tmp).on { |_| @user }
+      tmp
+    end
   end
 
   def teardown
