@@ -178,6 +178,7 @@ class SoChat
       embed.description = href
     when 'ob-image'
       img_url = onebox.at_css('img').attr('src')
+      img_url = "https:#{img_url}" if img_url.start_with? "//"
       embed.image = EmbedImage.new(url: img_url)
     when 'ob-message'
       href = onebox.css('div.ob-message > a').attr('href').value

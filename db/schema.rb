@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_173804) do
+ActiveRecord::Schema.define(version: 2020_02_03_164309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,18 @@ ActiveRecord::Schema.define(version: 2020_01_13_173804) do
     t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "launch_alert_configs", force: :cascade do |t|
+    t.string "server_id"
+    t.string "channel_id"
+  end
+
+  create_table "launch_alerts", force: :cascade do |t|
+    t.bigint "launch_alert_config_id"
+    t.bigint "user_id"
+    t.index ["launch_alert_config_id"], name: "index_launch_alerts_on_launch_alert_config_id"
+    t.index ["user_id"], name: "index_launch_alerts_on_user_id"
   end
 
   create_table "role_colors", force: :cascade do |t|
