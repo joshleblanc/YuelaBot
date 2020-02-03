@@ -29,7 +29,7 @@ class LaunchManager
   def unschedule_all
     jobs.each do |job|
       job.unschedule
-      job.terminate
+      job.kill
     end
   end
 
