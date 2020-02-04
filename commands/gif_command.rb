@@ -17,8 +17,7 @@ module Commands
         return if event.from_bot?
 
         response = RestClient.post("https://rightgif.com/search/web",  "text=#{args.join(' ')}")
-        url = JSON.parse(response.body)["url"]
-        url
+        JSON.parse(response.body)["url"]
       end
     end
   end
