@@ -9,25 +9,29 @@ class LaunchManager
     unschedule_all
     launches.each do |launch|
       start = Time.parse(launch['windowstart']) - (30 * 60) # T-30
-      jobs << Rufus::Scheduler.s.at(start) do
-        embed = Embed.new
-        embed.title = launch['name']
-        embed.url = launch['vidUrls'].first || launch['vidUrl']
-
-        configs = LaunchAlertConfig.all
-
-        configs.each do |config|
-          mentions = config.users.map { |u| "<@#{u.id}>"}
-          BOT.send_message(config.channel_id, mentions, false, embed)
-        end
+      @jobs << Rufus::Scheduler.s.at(start) do
+        alert_users launch
       end
     end
   end
 
   private
 
+  def alert_users(launch)
+    embed = Embed.new
+    embed.title = launch['name']
+    embed.url = launch['vidUrls'].first || launch['vidUrl']
+
+    configs = LaunchAlertConfig.all
+
+    configs.each do |config|
+      mentions = config.users.map { |u| "<@#{u.id}>"}
+      BOT.send_message(config.channel_id, mentions, false, embed)
+    end
+  end
+
   def unschedule_all
-    jobs.each do |job|
+    @jobs.each do |job|
       job.unschedule
       job.kill
     end
