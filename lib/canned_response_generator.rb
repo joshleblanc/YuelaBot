@@ -17,7 +17,7 @@ class CannedResponseGenerator
       "Don't ping random people like that. You've been told that before in the JavaScript room.",
       "<> I'm sorry you have felt attacked by me. I won't mention those things again. I sincerely hope you get this resolved one way or another. Take care. It must be a hard time.",
       "Stop following me",
-      "Stop bulling me"
+      "Stop bullying me"
     ]
   end
 end
