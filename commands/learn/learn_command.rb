@@ -14,6 +14,7 @@ module Commands
       end
 
       def command(event, *args)
+        return "Learn command is disabled until further notice"
         return if event.from_bot?
 
         name, output, *rest = CSV.parse_line(args.join(' '), col_sep: ' ')
