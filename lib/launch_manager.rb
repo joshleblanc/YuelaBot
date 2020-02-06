@@ -20,7 +20,11 @@ class LaunchManager
   def alert_users(launch)
     embed = Embed.new
     embed.title = launch['name']
-    embed.url = launch['vidUrls'].first || launch['vidUrl']
+    if launch['vidUrls']
+      embed.url = launch['vidUrls'].first
+    else
+      embed.url = launch['vidUrl']
+    end
 
     configs = LaunchAlertConfig.all
 
