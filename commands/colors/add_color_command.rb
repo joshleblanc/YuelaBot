@@ -35,7 +35,7 @@ module Commands
             roles = e.server.roles.select {|r| r.name == name}
             if roles.empty?
               role = e.server.create_role(name: name, colour: Discordrb::ColourRGB.new(color), hoist: false, mentionable: false)
-              role.sort_above(e.bot.profile.on(e.server).highest_role)
+              role.sort_above(e.user.highest_role)
             else
               roles.each {|r| r.color = Discordrb::ColourRGB.new(color)}
             end
