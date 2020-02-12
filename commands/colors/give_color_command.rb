@@ -38,6 +38,9 @@ module Commands
             "Adding this role will remove #{role.name}, are you sure you want to continue? (Y/N)"
           end
         else
+          if role.position < e.user.highest_role
+            role.sort_above(e.user.highest_role)
+          end
           e.user.add_role(new_role)
           "Role added!"
         end
