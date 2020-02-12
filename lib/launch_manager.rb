@@ -35,7 +35,8 @@ class LaunchManager
   end
 
   def unschedule_all
-    @jobs.each do |job|
+    @jobs.each do |job_id|
+      job = Rufus::Scheduler.s.job(job_id)
       job.unschedule
       job.kill
     end
