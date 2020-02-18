@@ -1,12 +1,17 @@
 class LaunchManager
   include Discordrb::Webhooks
-
+  include Singleton
   def initialize
     @jobs = []
   end
 
+  def launches
+    @launches ||= fetch_launches
+  end
+
   def schedule
     unschedule_all
+    fetch_launches
     launches.each do |launch|
       start = Time.parse(launch['windowstart']) - (30 * 60) # T-30
       @jobs << Rufus::Scheduler.s.at(start) do
@@ -44,7 +49,7 @@ class LaunchManager
     end
   end
 
-  def launches
+  def fetch_launches
     response = RestClient.get("https://launchlibrary.net/1.4/launch")
     JSON.parse(response.body)["launches"]
   end

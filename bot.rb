@@ -118,10 +118,8 @@ end
 
 SoChatProxy.all.each(&:listen!)
 
-launch_manager = LaunchManager.new
-
 scheduler = Rufus::Scheduler.new
 scheduler.every '1d', first: :now do
   birthday_routine(BOT)
-  launch_manager.schedule
+  LaunchManager.instance.schedule
 end
