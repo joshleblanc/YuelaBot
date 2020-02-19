@@ -35,6 +35,7 @@ class LaunchManager
 
     configs.each do |config|
       mentions = config.users.map { |u| "<@#{u.id}>"}
+      p mentions, embed
       BOT.send_message(config.channel_id, mentions, false, embed)
     end
   end
