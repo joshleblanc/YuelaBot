@@ -55,3 +55,4 @@ class LaunchManager
     JSON.parse(response.body)["launches"]
   end
 end
+
