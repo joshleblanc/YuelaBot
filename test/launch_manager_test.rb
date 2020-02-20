@@ -9,8 +9,7 @@ class LaunchManagerTest < Test::Unit::TestCase
     stub(BOT).send_message do |channel_id, content, tts, embed|
       assert_equal "Test", embed.title
     end
-    launch_manager = LaunchManager.new
-    launch_manager.send(:alert_users, {
+    LaunchManager.instance.send(:alert_users, {
         "name" => "Test",
         "vidUrls" => ["123"]
     })
