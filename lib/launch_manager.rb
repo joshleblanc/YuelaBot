@@ -35,8 +35,8 @@ class LaunchManager
     configs = LaunchAlertConfig.all
 
     configs.each do |config|
-      mentions = config.users.map { |u| "<@#{u.id}>"}
-      p mentions, embed
+      mentions = config.users.map { |u| "<@#{u.id}>"}.join(" ")
+      p mentions, embed, launch
       BOT.send_message(config.channel_id, mentions, false, embed)
     end
   end
