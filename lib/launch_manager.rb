@@ -19,7 +19,8 @@ class LaunchManager
 
   def alert_users(launch)
     embed = Embed.new
-    embed.title = launch['name']
+    embed.title = "Upcoming Launch!"
+    embed.description = launch['name']
     if launch['vidUrls']
       embed.url = launch['vidUrls'].first
     else
