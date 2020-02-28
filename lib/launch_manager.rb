@@ -26,8 +26,8 @@ class LaunchManager
     embed = Embed.new
     embed.title = "Upcoming Launch!"
     embed.description = launch['name']
-    if launch['vidUrls']
-      embed.url = launch['vidUrls'].first
+    if launch['vidURLs']
+      embed.url = launch['vidURLs'].first
     else
       embed.url = launch['vidUrl']
     end
