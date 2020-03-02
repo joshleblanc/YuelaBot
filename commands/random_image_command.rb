@@ -27,6 +27,8 @@ module Commands
           response = RestClient.get(image.proxy_url)
           File.write(tempfile.path, response.body, mode: "wb")
           event.channel.send_file(tempfile, caption: image.message.content)
+        else
+          "Couldn't find an image"
         end
       end
     end
