@@ -41,11 +41,6 @@ jobs:
       run: docker build . --file Dockerfile --tag docker.pkg.github.com/joshleblanc/yuelabot/bot:$(date +%s) --tag docker.pkg.github.com/joshleblanc/yuelabot/bot:latest
     - name: Login to registry
       run: docker login docker.pkg.github.com --username joshleblanc --password ${{ secrets.githubToken }}
-    - name: Delete Package Versions
-      uses: actions/delete-package-versions@v1.0.1
-      with:
-        package-name: bot
-        num-old-versions-to-delete: 1
     - name: Publish
       run: docker push docker.pkg.github.com/joshleblanc/yuelabot/bot
     - name: Setup kubectl
