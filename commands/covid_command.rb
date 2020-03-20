@@ -27,11 +27,6 @@ module Commands
             embed.description << countries[left...right].join("\n")
             embed.description << "\n```"
           end
-          <<~RESPONSE
-          ```
-          #{json.keys.join "\n"}
-          ```
-          RESPONSE
         else
           country = args.join(' ').downcase
           country = countries.find { |c| c.downcase.start_with? country }
