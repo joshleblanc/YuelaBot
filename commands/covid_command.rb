@@ -15,7 +15,7 @@ module Commands
 
       def command(event, *args)
         return if event.from_bot?
-        country = args.join(' ').capitalize
+        country = args.join(' ').titleize
 
         resp = RestClient.get("https://pomber.github.io/covid19/timeseries.json")
         json = JSON.parse(resp.body)
