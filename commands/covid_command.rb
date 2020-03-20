@@ -9,18 +9,18 @@ module Commands
         {
           description: "Get the status of a country",
           usage: "covid <country>",
-          aliases: [],
-          min_args: 1
+          aliases: []
         }
       end
 
       def command(event, *args)
         return if event.from_bot?
-        country = args[0].capitalize
+        country = args.join(' ').capitalize
 
         resp = RestClient.get("https://pomber.github.io/covid19/timeseries.json")
         json = JSON.parse(resp.body)
-        data = json[country].last
+        data = json[country]&.last
+        return "Not found" unless data
         <<~RESPONSE
           ```
           confirmed: #{data['confirmed']}
