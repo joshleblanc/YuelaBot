@@ -29,12 +29,6 @@ module Commands
             #{stderr}
             ```
           OUTPUT
-          stdout, _, _ = Open3.capture3("kovid --help")
-          <<~OUTPUT
-            ```
-            #{stdout}
-            ```
-          OUTPUT
         end
       end
     end
