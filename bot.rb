@@ -17,6 +17,7 @@ require 'dotenv/load'
 require 'timeout'
 require 'steam-api'
 require 'nokogiri'
+require 'open3'
 
 require_relative 'models/application_record'
 require_all './models'
