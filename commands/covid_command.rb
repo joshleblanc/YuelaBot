@@ -24,7 +24,11 @@ module Commands
             ```
           OUTPUT
         else
-          event.respond stderr
+          event.respond <<~OUTPUT
+            ```
+            #{stderr}
+            ```
+          OUTPUT
           stdout, _, _ = Open3.capture3("kovid --help")
           <<~OUTPUT
             ```
