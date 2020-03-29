@@ -19,7 +19,7 @@ gem 'rake'
 gem "octokit", "~> 4.0"
 gem 'steam-api'
 gem 'nokogiri'
-gem 'kovid', github: "joshleblanc/kovid"
+gem 'kovid', github: "siaw23/kovid"
 
 group :development do
     gem 'byebug'
