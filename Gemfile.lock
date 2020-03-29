@@ -21,8 +21,7 @@ GIT
 
 GIT
   remote: https://github.com/joshleblanc/kovid.git
-  revision: 0ce074af90c807460a1edfbcf25551e1a4f4c7e6
-  branch: patch-1
+  revision: 29047f0a8124941896216085fa1e847b1a2fa12b
   specs:
     kovid (0.4.8)
       ascii_charts (~> 0.9.1)
