@@ -16,7 +16,10 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
         event.channel.start_typing
-        stdout, stderr, status = Open3.capture3("kovid #{args.join(" ")}")
+        match = args.join(" ").match(/^([\w\s]+)/)[0]
+        return "Only alphanumeric input, please" unless match
+        command = match[0]
+        stdout, stderr, status = Open3.capture3("kovid #{command}")
         if status.success?
           <<~OUTPUT
             ```
