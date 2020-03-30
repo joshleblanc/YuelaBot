@@ -16,7 +16,8 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
         event.channel.start_typing
-        stdout, stderr, status = Open3.capture3("kovid", *args)
+        fixed_args = CSV.parse_line(args.join(' '), col_sep: ' ')
+        stdout, stderr, status = Open3.capture3("kovid", *fixed_args)
         if status.success?
           <<~OUTPUT
             ```
