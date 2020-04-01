@@ -106,7 +106,7 @@ GEM
     ice_nine (0.11.2)
     json (1.8.6)
     jwt (2.2.1)
-    kovid (0.4.8)
+    kovid (0.5.3)
       ascii_charts (~> 0.9.1)
       rainbow (~> 3.0)
       terminal-table (~> 1.8)
@@ -148,7 +148,7 @@ GEM
       sawyer (~> 0.8.0, >= 0.5.3)
     opus-ruby (1.0.1)
       ffi
-    os (1.0.1)
+    os (1.1.0)
     pg (1.2.3)
     pg (1.2.3-x64-mingw32)
     power_assert (1.1.7)
@@ -226,7 +226,6 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    unf_ext (0.0.7.7-x64-mingw32)
     unicode-display_width (1.7.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
