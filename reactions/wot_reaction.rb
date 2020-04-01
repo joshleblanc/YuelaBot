@@ -38,7 +38,7 @@ module Reactions
 
       def command(event)
         if Random.rand < 1
-          event.respond obtain_random_image()
+          event.respond obtain_random_image
         end
       end
     end
