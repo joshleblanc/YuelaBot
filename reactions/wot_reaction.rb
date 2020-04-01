@@ -7,7 +7,7 @@ module Reactions
         }
       end
 
-      def obtain_random_image()
+      def obtain_random_image
         images = [
           "https://i.pinimg.com/564x/61/c1/3f/61c13f4a64f31f0bf27774f25c6d009e.jpg",
           "https://i.pinimg.com/originals/e0/62/49/e06249cc5236d3465a80c42c83eb8b8c.jpg",
