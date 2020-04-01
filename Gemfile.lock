@@ -19,8 +19,9 @@ GIT
     discordrb-webhooks (3.3.0)
       rest-client (>= 2.1.0.rc1)
 
-PATH
-  remote: /mnt/c/Users/horiz/Documents/dev/kovid
+GIT
+  remote: https://github.com/joshleblanc/kovid.git
+  revision: b113117b75aac3fe89a8cf7012987f06984fc58f
   specs:
     kovid (0.5.2)
       ascii_charts (~> 0.9.1)
