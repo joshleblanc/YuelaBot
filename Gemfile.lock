@@ -19,17 +19,6 @@ GIT
     discordrb-webhooks (3.3.0)
       rest-client (>= 2.1.0.rc1)
 
-GIT
-  remote: https://github.com/joshleblanc/kovid.git
-  revision: b113117b75aac3fe89a8cf7012987f06984fc58f
-  specs:
-    kovid (0.5.2)
-      ascii_charts (~> 0.9.1)
-      rainbow (~> 3.0)
-      terminal-table (~> 1.8)
-      thor (~> 1.0)
-      typhoeus (~> 1.3)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -117,6 +106,12 @@ GEM
     ice_nine (0.11.2)
     json (1.8.6)
     jwt (2.2.1)
+    kovid (0.4.8)
+      ascii_charts (~> 0.9.1)
+      rainbow (~> 3.0)
+      terminal-table (~> 1.8)
+      thor (~> 1.0)
+      typhoeus (~> 1.3)
     lazy_lazer (0.8.1)
     libv8 (7.3.492.27.1)
     memoist (0.16.2)
@@ -260,7 +255,7 @@ DEPENDENCIES
   dotenv
   faye-websocket
   google-api-client
-  kovid!
+  kovid
   mini_racer
   mtg_sdk
   net-scp
