@@ -126,6 +126,7 @@ class SoChat
     @meta = meta
     @listeners = {}
     @history = []
+    @sleep_counter = 0
   end
 
   def stop!
@@ -277,6 +278,7 @@ class SoChat
       p "SO Chat authorization failed"
       p e.message
       send_disconnection_alert
+      wait
       auth!
     end
   end
@@ -292,6 +294,11 @@ class SoChat
   end
 
   private
+
+  def wait
+    @sleep_counter += 1
+    sleep(10 ** @sleep_counter)
+  end
 
   def inner_run
     ws = Faye::WebSocket::Client.new("#{@ws_url}?l=99999999999", nil, {
