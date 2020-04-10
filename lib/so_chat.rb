@@ -275,6 +275,7 @@ class SoChat
       cookies = login
       @ws_url = get_ws_url(cookies)
     rescue RestClient::NotFound => e
+      invalidate_cookie
       p "SO Chat authorization failed"
       p e.message
       send_disconnection_alert
@@ -294,6 +295,11 @@ class SoChat
   end
 
   private
+
+  def invalidate_cookie
+    cookie = SoChatCookie.find_by(email: @email, url: SoChat.base_url(@meta))
+    cookie.destroy if cookie
+  end
 
   def wait
     @sleep_counter += 1
