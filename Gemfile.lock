@@ -20,12 +20,11 @@ GIT
       rest-client (>= 2.1.0.rc1)
 
 GIT
-  remote: https://github.com/joshleblanc/kovid.git
-  revision: 67d85f4ff7fa89c25f50757bad3d7042b3c0f1fc
-  branch: fix-states
+  remote: https://github.com/siaw23/kovid.git
+  revision: a1611bfe1935f2a04a67bf5c08885872a2d1c944
   specs:
-    kovid (0.6.4)
-      ascii_charts (~> 0.9.1)
+    kovid (0.6.8)
+      carmen (~> 1.1.3)
       rainbow (~> 3.0)
       terminal-table (~> 1.8)
       thor (~> 1.0)
@@ -47,12 +46,13 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ascii_charts (0.9.1)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     byebug (11.1.1)
+    carmen (1.1.3)
+      activesupport (>= 3.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.1.6)
