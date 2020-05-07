@@ -24,7 +24,8 @@ module Commands
           command = Commands.const_get(c)
           command.is_a?(Class) && [command.name, *command.attributes[:aliases]].include?(name.to_sym)
         end
-        return "Built-in command #{name} already exists." if existing_command
+        blacklisted_commands = ['help']
+        return "Built-in command #{name} already exists." if existing_command || blacklisted_commands.include?(name)
 
         command = UserCommand.find_by(name: name)
         if command
