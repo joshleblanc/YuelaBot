@@ -5,7 +5,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 end
 
 Thread.new do
-  require_relative './api/entry.rb'
+  require_relative './site/entry.rb'
 end
 
 BOT.run
