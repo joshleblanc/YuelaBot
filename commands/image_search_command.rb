@@ -28,7 +28,7 @@ module Commands
         engine_id = ENV['search_id']
         service = Google::Apis::CustomsearchV1::CustomsearchService.new
         service.key = ENV['google']
-        images = service.list_cses(query, cx: engine_id, search_type: 'image').items || []
+        images = service.list_cses(q: query, cx: engine_id, search_type: 'image').items || []
 
         pagination_container = PaginationContainer.new("Image Search Results", images, 1, event)
         pagination_container.paginate do |embed, index|
