@@ -96,7 +96,8 @@ BOT.message do |event|
   end
   urs.each do |ur|
     if rand <= ur.chance
-      event.respond(event.message.content.sub(/#{ur.regex}/, ur.output))
+      output = ur.output.sub(":user", event.author.mention)
+      event.respond(event.message.content.sub(/#{ur.regex}/, output))
     end
   end
 
