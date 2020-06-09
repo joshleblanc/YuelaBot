@@ -35,8 +35,8 @@ ID   | Regex                | Output               | Chance
 -----|----------------------|----------------------| ------
 HEADER
             embed.description += user_reactions[left...right].map do |ur|
-              "#{ur.id.to_s.rjust(4, '0')} | #{ur.regex.rjust(20, ' ')[0...20]} | #{ur.output.rjust(20, ' ')[0...20]} | #{(ur.chance * 100).to_s.rjust(5, ' ')}%"
-            end.join("\n") 
+              "#{ur.id.to_s.rjust(4, '0')} | #{ur.regex.to_s.rjust(20, ' ')[0...20]} | #{ur.output.to_s.rjust(20, ' ')[0...20]} | #{(ur.chance * 100).to_s.rjust(5, ' ')}%"
+            end.join("\n")
             embed.description += "```"
           end
           nil
