@@ -4,5 +4,6 @@ tasks:
   - init:
       bundle install
     command:
+      RACK_ENV=gitpod &&
       bundle exec rake db:create &&
       bundle exec rake db:migrate
