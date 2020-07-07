@@ -62,4 +62,4 @@ You can pause executation at any line by calling `byebug`.
 
 You can read byebug's documentation here: https://github.com/deivid-rodriguez/byebug
 
-Basically it pauses executation and drops you in a console in the executation context for you to fuck around in
+Basically it pauses executation and drops you in a console in the execution context for you to play around in
