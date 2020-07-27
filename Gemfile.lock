@@ -87,7 +87,7 @@ GEM
     fugit (1.3.6)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.3)
-    google-api-client (0.41.2)
+    google-api-client (0.39.5)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 0.9)
       httpclient (>= 2.8.1, < 3.0)
@@ -264,7 +264,7 @@ DEPENDENCIES
   discordrb!
   dotenv
   faye-websocket
-  google-api-client
+  google-api-client (= 0.39.5)
   haml (~> 5.1)
   kovid!
   mini_racer
