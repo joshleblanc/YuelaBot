@@ -25,6 +25,7 @@ require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './lib'
+require_all './middleware'
 
 include Routines
 
@@ -65,7 +66,17 @@ Commands.constants.map do |c|
   command = Commands.const_get(c)
   command.is_a?(Class) ? command : nil
 end.compact.each do |command|
-  BOT.command(command.name, command.attributes, &command.method(:command))
+  method = command.method(:command).to_proc
+  middleware = [
+    method(:CheckAbove)
+  ]
+  method.define_singleton_method(:call) do |event, *args|
+    middleware.each do |m|
+      *args = m.call(event, *args)
+    end
+    super(event, *args)
+  end
+  BOT.command(command.name, command.attributes, &method)
 end
 
 Reactions.constants.map do |r|
