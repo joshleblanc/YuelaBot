@@ -25,6 +25,7 @@ require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './lib'
+require_all './middleware'
 
 include Routines
 include Middleware
