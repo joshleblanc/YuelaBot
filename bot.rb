@@ -25,9 +25,9 @@ require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './lib'
-require_all './middleware'
 
 include Routines
+include Middleware
 
 ActiveRecord::Base.configurations = YAML::load(ERB.new(File.read('config/database.yml')).result)
 ActiveRecord::Base.establish_connection(ENV['RACK_ENV']&.to_sym || :development)
@@ -68,13 +68,14 @@ Commands.constants.map do |c|
 end.compact.each do |command|
   method = command.method(:command).to_proc
   middleware = [
-    method(:CheckAbove)
+    method(:check_above)
   ]
   method.define_singleton_method(:call) do |event, *args|
+    transformed_args = args.dup
     middleware.each do |m|
-      *args = m.call(event, *args)
+      transformed_args = m.call(event, *transformed_args)
     end
-    super(event, *args)
+    super(event, *transformed_args)
   end
   BOT.command(command.name, command.attributes, &method)
 end
