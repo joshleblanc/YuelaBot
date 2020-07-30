@@ -63,3 +63,7 @@ You can pause executation at any line by calling `byebug`.
 You can read byebug's documentation here: https://github.com/deivid-rodriguez/byebug
 
 Basically it pauses executation and drops you in a console in the execution context for you to play around in
+
+# Support me
+
+<a href="https://www.buymeacoffee.com/jleblanc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="40"></a>
