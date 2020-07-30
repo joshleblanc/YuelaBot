@@ -69,12 +69,12 @@ Commands.constants.map do |c|
 end.compact.each do |command|
   method = command.method(:command).to_proc
   middleware = [
-    method(:check_above)
+    :check_above, :self_promotion
   ]
   method.define_singleton_method(:call) do |event, *args|
     transformed_args = args.dup
     middleware.each do |m|
-      transformed_args = m.call(event, *transformed_args)
+      transformed_args = method(m).call(event, *transformed_args)
     end
     super(event, *transformed_args)
   end
