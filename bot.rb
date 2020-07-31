@@ -90,6 +90,22 @@ end
 
 BOT.message_edit(&method(:archive_routine))
 
+typing = {}
+BOT.typing do |event|
+  now = Time.now
+  typing[event.channel.id] ||= {}
+  typing[event.channel.id][event.user.id] = event.timestamp
+
+  typing[event.channel.id].reject! do |k, v|
+    now - v > 5
+  end
+
+  if typing[event.channel.id].count > 2
+    event.respond "https://cdn.discordapp.com/attachments/550684271220752406/552906458421919771/unknown.png"
+    typing[event.channel.id] = {}
+  end
+end
+
 BOT.message do |event|
   next if event.from_bot?
   author_id = event.author.id
