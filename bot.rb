@@ -101,7 +101,7 @@ BOT.typing do |event|
     now - v > 5
   end
   last_typing_event = last_typing_message[event.channel.id]
-  if typing[event.channel.id].count == 1
+  if typing[event.channel.id].count > 3
     if last_typing_event.nil? || now - last_typing_event > 60
       event.respond "https://cdn.discordapp.com/attachments/550684271220752406/552906458421919771/unknown.png"
     end
