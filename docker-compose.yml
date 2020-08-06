@@ -13,8 +13,6 @@ services:
     tty: true
     volumes:
       - .:/app
-    env_file:
-      - .env
     depends_on:
       - db
     environment:
