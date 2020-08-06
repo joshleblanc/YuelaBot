@@ -17,5 +17,7 @@ services:
       - .env
     depends_on:
       - db
+    environment:
+      - RACK_ENV=docker-compose
 volumes:
   postgres:
