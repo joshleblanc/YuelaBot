@@ -35,5 +35,6 @@ docker-compose:
   host: db
   database: yuela_dev
   user: postgres
+  password: postgres
   pool: 5
   timeout: 5000
