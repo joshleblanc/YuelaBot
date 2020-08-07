@@ -16,7 +16,7 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
 
-        args.join(' ').split.join(' ')
+        args.join(' ').chars.join(' ')
       end
     end
   end
