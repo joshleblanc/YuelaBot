@@ -56,6 +56,7 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.1.6)
+    cowsay (0.3.0)
     debase (0.2.4.1)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.9)
@@ -260,6 +261,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   byebug
+  cowsay (~> 0.3.0)
   debase
   discordrb!
   dotenv

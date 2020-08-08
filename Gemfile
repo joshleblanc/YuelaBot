@@ -36,3 +36,5 @@ gem "sinatra", "~> 2.0"
 
 
 gem "haml", "~> 5.1"
+
+gem "cowsay", "~> 0.3.0"
