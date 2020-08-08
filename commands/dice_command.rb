@@ -5,6 +5,10 @@ module Commands
         :dice
       end
 
+      def middleware
+        [:test]
+      end
+
       def attributes
         {
             min_args: 1,

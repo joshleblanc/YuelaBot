@@ -73,6 +73,9 @@ Commands.constants.map do |c|
 end.compact.each do |command|
   method = command.method(:command).to_proc
   middleware = GLOBAL_MIDDLEWARE
+  if command.respond_to?(:middleware)
+    middleware.push *command.middleware
+  end
   method.define_singleton_method(:call) do |event, *args|
     transformed_args = args.dup
     middleware.each do |m|
