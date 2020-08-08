@@ -37,6 +37,10 @@ unless ENV['discord']
     abort "You're missing your discord API token! put discord=<your token here> in a .env file"
 end
 
+GLOBAL_MIDDLEWARE = [
+  :check_above, :self_promotion
+]
+
 BOT = Discordrb::Commands::CommandBot.new({
     token: ENV['discord'],
     prefix: '!!',
@@ -68,9 +72,7 @@ Commands.constants.map do |c|
   command.is_a?(Class) ? command : nil
 end.compact.each do |command|
   method = command.method(:command).to_proc
-  middleware = [
-    :check_above, :self_promotion
-  ]
+  middleware = GLOBAL_MIDDLEWARE
   method.define_singleton_method(:call) do |event, *args|
     transformed_args = args.dup
     middleware.each do |m|
