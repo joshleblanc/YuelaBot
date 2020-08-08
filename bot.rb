@@ -20,12 +20,14 @@ require 'nokogiri'
 require 'open3'
 
 require_relative 'models/application_record'
+require_relative './middleware/base'
+
+require_all './middleware'
 require_all './models'
 require_all './commands'
 require_all './reactions'
 require_all './routines'
 require_all './lib'
-require_all './middleware'
 
 include Routines
 include Middleware
@@ -38,7 +40,7 @@ unless ENV['discord']
 end
 
 GLOBAL_MIDDLEWARE = [
-  :check_above, :self_promotion
+  CheckAbove, SelfPromotion
 ]
 
 BOT = Discordrb::Commands::CommandBot.new({
@@ -76,12 +78,17 @@ end.compact.each do |command|
   if command.respond_to?(:middleware)
     middleware.push *command.middleware
   end
+  middleware = middleware.uniq.map(&:new)
   method.define_singleton_method(:call) do |event, *args|
     transformed_args = args.dup
     middleware.each do |m|
-      transformed_args = method(m).call(event, *transformed_args)
+      transformed_args = m.before(event, *transformed_args)
     end
-    super(event, *transformed_args)
+    transformed_output = super(event, *transformed_args)
+    middleware.each do |m|
+      transformed_output = m.after(event, transformed_output, *transformed_args)
+    end
+    transformed_output
   end
   BOT.command(command.name, command.attributes, &method)
 end

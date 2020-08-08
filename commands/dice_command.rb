@@ -1,12 +1,10 @@
 module Commands
   class DiceCommand
     class << self
+      include Middleware
+
       def name
         :dice
-      end
-
-      def middleware
-        [:test]
       end
 
       def attributes
