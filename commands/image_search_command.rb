@@ -21,9 +21,6 @@ module Commands
         return if event.from_bot?
 
         query = args.join(' ')
-        if query == '^'
-          query = event.channel.history(2).last.content
-        end
 
         engine_id = ENV['search_id']
         service = Google::Apis::CustomsearchV1::CustomsearchService.new
