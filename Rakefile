@@ -68,7 +68,7 @@ module Commands
   end
 end
       EOF
-      puts "Command created"
+      puts "#{class_name} created: #{path}"
       abort
     end
   end
