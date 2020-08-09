@@ -41,7 +41,8 @@ unless ENV['discord']
 end
 
 GLOBAL_MIDDLEWARE = [
-  CheckAbove, SelfPromotion
+  CheckAbove.new, 
+  SelfPromotion.new
 ]
 
 BOT = Discordrb::Commands::CommandBot.new({
@@ -79,7 +80,6 @@ end.compact.each do |command|
   if command.respond_to?(:middleware)
     middleware.push *command.middleware
   end
-  middleware = middleware.uniq.map(&:new)
   method.define_singleton_method(:call) do |event, *args|
     transformed_args = args.dup
     middleware.each do |m|
