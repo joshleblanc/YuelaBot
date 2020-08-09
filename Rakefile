@@ -72,6 +72,41 @@ end
       abort
     end
   end
+
+  desc "Generate middleware"
+  task :middleware do
+    name = ARGV[1] || raise("Specify name: rake g:middleware your_middleware")
+    path = File.expand_path("../middleware/#{name}_middleware.rb", __FILE__)
+    class_name = name.split("_").map(&:capitalize).join + "Middleware"
+    File.open(path, 'w') do |file|
+      file.write <<-EOF
+module Middleware
+  class #{class_name} < ApplicationMiddleware
+    ###
+    # The before and after method stubs are defined in ApplicationMiddleware
+    # They can safely be deleted if you're not using that particular method.
+
+    ###
+    # Called before running the command. The output will be passed into the command
+    # as the arguments
+    def before(event, *args)
+      args
+    end
+
+    ###
+    # Called after running the command. The output will be used as the output of the command.
+    # Note: If the command uses event.respond or any other methods of writing to discord, this value will
+    # not be intercepted.
+    def after(event, output, *args)
+      output
+    end
+  end
+end
+      EOF
+      puts "#{class_name} created: #{path}"
+      abort
+    end
+  end
 end
 
 task :console do
