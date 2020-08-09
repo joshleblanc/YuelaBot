@@ -21,7 +21,7 @@ require 'open3'
 require 'cowsay'
 
 require_relative 'models/application_record'
-require_relative './middleware/base'
+require_relative './middleware/application_middleware'
 
 require_all './middleware'
 require_all './models'
@@ -41,8 +41,8 @@ unless ENV['discord']
 end
 
 GLOBAL_MIDDLEWARE = [
-  CheckAbove.new, 
-  SelfPromotion.new
+  CheckAboveMiddleware.new, 
+  SelfPromotionMiddleware.new
 ]
 
 BOT = Discordrb::Commands::CommandBot.new({

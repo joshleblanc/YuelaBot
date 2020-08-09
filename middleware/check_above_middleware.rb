@@ -1,5 +1,5 @@
 module Middleware
-  class CheckAbove < Base
+  class CheckAboveMiddleware < ApplicationMiddleware
     def before(event, *args)
       check = args.join(' ')
       if check == '^'

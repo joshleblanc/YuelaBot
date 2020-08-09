@@ -1,5 +1,5 @@
 module Middleware
-  class SelfPromotion < Base
+  class SelfPromotionMiddleware < ApplicationMiddleware
     def before(event, *args)
       @count ||= 0
       @count += 1

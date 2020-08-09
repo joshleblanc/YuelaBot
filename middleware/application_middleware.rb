@@ -1,5 +1,5 @@
 module Middleware
-  class Base
+  class ApplicationMiddleware
     def before(event, *args)
       args
     end
