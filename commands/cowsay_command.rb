@@ -7,28 +7,36 @@ module Commands
         :cowsay
       end
 
+      def options_parser
+        @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
+          options[:c] = "Cow"
+
+          option_parser.banner = "Usage: cowsay [options] text"
+
+          option_parser.on("-l", "--list", "List available \"cows\"") do
+            options[:l] = true
+          end
+
+          option_parser.on("-c", "--cow COW", "Specify a \"cow\"") do |cow|
+            options[:c] = cow.capitalize
+          end
+        end
+      end
+
       def middleware
         [
-          OptionsParserMiddleware.new do |option_parser, options|
-            options[:c] = "Cow"
-
-            option_parser.banner = "Usage: cowsay [options] text"
-
-            option_parser.on("-l", "--list", "List available \"cows\"") do
-              options[:l] = true
-            end
-
-            option_parser.on("-c", "--cow COW", "Specify a \"cow\"") do |cow|
-              options[:c] = cow.capitalize
-            end
-          end
+          options_parser
         ]
       end
 
       def attributes
         {
-          description: "cowsay",
-          usage: "cowsay",
+          description: <<~USAGE,
+            cowsay, need I say more?
+            ```
+              #{options_parser.to_s}
+            ```
+          USAGE
           aliases: []
         }
       end
@@ -41,7 +49,7 @@ module Commands
         
         options, *input = args
 
-
+        p options, input
         if options[:l]
           output = "```"
           output << Cowsay.character_classes.join("\n") 
