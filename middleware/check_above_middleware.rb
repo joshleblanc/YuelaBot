@@ -1,11 +1,14 @@
 module Middleware
   class CheckAboveMiddleware < ApplicationMiddleware
     def before(event, *args)
-      check = args.join(' ')
-      if check == '^'
-        args = event.channel.history(1, event.message.id).first.content.split(' ')
+      args.each_with_index do |a, i|
+        match = a.match /^\^+$/
+        next if match.nil?
+
+        history_index = match[0].size
+        args[i] = event.channel.history(history_index + 1).last.content.split(' ')
       end
-      args
+      args.flatten
     end
   end
 end
