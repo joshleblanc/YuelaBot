@@ -10,7 +10,7 @@ module Commands
       def middleware
         [
           OptionsParserMiddleware.new do |option_parser, options|
-            options[:c] = "cow"
+            options[:c] = "Cow"
 
             option_parser.banner = "Usage: cowsay [options] text"
 
