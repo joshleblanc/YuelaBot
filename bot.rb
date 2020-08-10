@@ -76,7 +76,7 @@ Commands.constants.map do |c|
   command.is_a?(Class) ? command : nil
 end.compact.each do |command|
   method = command.method(:command).to_proc
-  middleware = GLOBAL_MIDDLEWARE
+  middleware = GLOBAL_MIDDLEWARE.dup
   if command.respond_to?(:middleware)
     middleware.push *command.middleware
   end
