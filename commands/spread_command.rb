@@ -8,11 +8,16 @@ module Commands
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
           options[:s] = " "
+          options[:a] = 1
 
           option_parser.banner = "Usage: spread [options] text"
 
           option_parser.on("-s", "--separator SEPARATOR", "Specify the character to spread with") do |s|
             options[:s] = s
+          end
+
+          option_parser.on("-a", "--amount AMOUNT", Integer, "Specify how much to spread the message") do |a|
+            options[:a] = a
           end
         end
       end
@@ -38,7 +43,7 @@ module Commands
 
         options, *input = args
 
-        input.join(' ').chars.join(options[:s])
+        input.join(' ').chars.join(options[:s] * options[:a])
       end
     end
   end
