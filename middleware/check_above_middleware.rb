@@ -7,7 +7,7 @@ module Middleware
         next if match.nil?
 
         history_index = match[0].size
-        next_message = event.channel.history(history_index + 1, message).last
+        next_message = event.channel.history(history_index, message).last
         next_args = next_message.content.split(' ')
         do_replacements(event, next_args, next_message.id)
         args[i] = next_args
