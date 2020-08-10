@@ -81,15 +81,19 @@ end.compact.each do |command|
     middleware.push *command.middleware
   end
   method.define_singleton_method(:call) do |event, *args|
-    transformed_args = args.dup
-    middleware.each do |m|
-      transformed_args = m.before(event, *transformed_args)
+    begin
+      transformed_args = args.dup
+      middleware.each do |m|
+        transformed_args = m.before(event, *transformed_args)
+      end
+      transformed_output = super(event, *transformed_args)
+      middleware.each do |m|
+        transformed_output = m.after(event, transformed_output, *transformed_args)
+      end
+      transformed_output
+    rescue StandardError => e
+      e.message
     end
-    transformed_output = super(event, *transformed_args)
-    middleware.each do |m|
-      transformed_output = m.after(event, transformed_output, *transformed_args)
-    end
-    transformed_output
   end
   BOT.command(command.name, command.attributes, &method)
 end
