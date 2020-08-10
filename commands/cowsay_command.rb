@@ -33,9 +33,7 @@ module Commands
         {
           description: <<~USAGE,
             cowsay, need I say more?
-            ```
-              #{options_parser.to_s}
-            ```
+            #{options_parser.usage}
           USAGE
           aliases: []
         }

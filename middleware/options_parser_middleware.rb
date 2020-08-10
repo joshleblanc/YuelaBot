@@ -6,8 +6,12 @@ module Middleware
       @blk = blk
     end
 
-    def to_s
-      parser.to_s
+    def usage
+      <<~USAGE
+        ```
+          #{parser.to_s}
+        ```
+      USAGE
     end
 
     # this is intentionally not memoized
@@ -15,8 +19,8 @@ module Middleware
       OptionParser.new do |option_parser|
         # OptionParser appears to implicitly run `exit` if `-h` is passed,
         # so we need to override that by default.
-        option_parser.on('-h') do
-          raise OptionParser::InvalidOption.new
+        option_parser.on('-h', '--help', 'Print this message') do
+          options[:h] = true
         end
         @blk.call(option_parser, options)
       end
@@ -33,6 +37,15 @@ module Middleware
       options = {}
       parser(options).parse!(args)      
       [options, *args]
+    end
+
+    def after(event, output, *args)
+      options, *input = args
+      if options[:h]
+        usage
+      else
+        output
+      end
     end
   end
 end
