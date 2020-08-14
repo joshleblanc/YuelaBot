@@ -32,6 +32,7 @@ require_all './lib'
 
 include Routines
 include Middleware
+include Helpers
 
 ActiveRecord::Base.configurations = YAML::load(ERB.new(File.read('config/database.yml')).result)
 ActiveRecord::Base.establish_connection(ENV['RACK_ENV']&.to_sym || :development)
@@ -75,27 +76,7 @@ Commands.constants.map do |c|
   command = Commands.const_get(c)
   command.is_a?(Class) ? command : nil
 end.compact.each do |command|
-  method = command.method(:command).to_proc
-  middleware = GLOBAL_MIDDLEWARE.dup
-  if command.respond_to?(:middleware)
-    middleware.push *command.middleware
-  end
-  method.define_singleton_method(:call) do |event, *args|
-    begin
-      transformed_args = args.dup
-      middleware.each do |m|
-        transformed_args = m.before(event, *transformed_args)
-      end
-      transformed_output = super(event, *transformed_args)
-      middleware.each do |m|
-        transformed_output = m.after(event, transformed_output, *transformed_args)
-      end
-      transformed_output
-    rescue StandardError => e
-      e.message
-    end
-  end
-  BOT.command(command.name, command.attributes, &method)
+  BOT.command(command.name, command.attributes, &inject_middleware(command))
 end
 
 Reactions.constants.map do |r|

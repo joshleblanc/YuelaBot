@@ -42,7 +42,6 @@ module Commands
         return if event.from_bot?
 
         options, *input = args
-
         input.join(' ').chars.join(options[:s] * options[:a])
       end
     end
