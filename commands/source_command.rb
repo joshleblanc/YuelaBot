@@ -12,7 +12,8 @@ module Commands
           max_args: 1,
           min_args: 1,
           description: "Show the source for a command",
-          usage: "source <command>"
+          usage: "source <command>",
+          aliases: [:code]
         }
       end
 
