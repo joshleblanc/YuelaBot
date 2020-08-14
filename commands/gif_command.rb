@@ -7,8 +7,8 @@ module Commands
 
       def attributes
         {
-          description: "TODO: Describe the command",
-          usage: "TODO: How to use the command",
+          description: "Searches the web for a gif, and posts it",
+          usage: "gif <query>",
           aliases: [:giphy, :tenor, :g]
         }
       end
