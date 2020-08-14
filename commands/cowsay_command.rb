@@ -20,6 +20,10 @@ module Commands
           option_parser.on("-c", "--cow COW", "Specify a \"cow\"") do |cow|
             options[:c] = cow.capitalize
           end
+
+          option_parser.on("-r", "--random", "Use a random  \"cow\"") do
+            options[:r] = true
+          end
         end
       end
 
@@ -47,12 +51,15 @@ module Commands
         
         options, *input = args
 
-        p options, input
         if options[:l]
           output = "```"
           output << Cowsay.character_classes.join("\n") 
           output << "```"
-        elsif Cowsay.character_classes.include? options[:c].to_sym
+        elsif options[:r]
+          output = "```"
+          output << Cowsay.say(input.join(" "), 'random')
+          output << "```"
+        elsif Cowsay.character_classes.include?(options[:c].to_sym)
           output = "```"
           output << Cowsay.say(input.join(" "), options[:c])
           output << "```"
