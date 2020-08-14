@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_03_164309) do
+ActiveRecord::Schema.define(version: 2020_08_14_103456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 2020_02_03_164309) do
     t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "last_used_reactions", force: :cascade do |t|
+    t.bigint "user_reaction_id"
+    t.bigint "channel"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_reaction_id"], name: "index_last_used_reactions_on_user_reaction_id"
   end
 
   create_table "launch_alert_configs", force: :cascade do |t|
