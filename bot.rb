@@ -151,8 +151,6 @@ BOT.mention do |event|
   event << crg.generate(event.author.mention)
 end
 
-SoChatProxy.all.each(&:listen!)
-
 scheduler = Rufus::Scheduler.new
 scheduler.every '1d', first: :now do
   birthday_routine(BOT)
