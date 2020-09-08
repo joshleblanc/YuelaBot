@@ -16,7 +16,6 @@ module Commands
       def command(event, *args)
         return if event.from_bot?
         return "Please pass a timezone" if args.empty?
-        return args.length
         timezone = args.join(' ')
         timezone_identifier = (timezone.length == 2) ? TZInfo::Country.get(timezone).zone_info.first.identifier : TZInfo::Timezone.get(timezone)
         # Use block so we don't break anything else
