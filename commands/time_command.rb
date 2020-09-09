@@ -17,7 +17,11 @@ module Commands
         return if event.from_bot?
         return "Please pass a timezone" if args.empty?
         timezone = args.join(' ')
-        timezone_identifier = (timezone.length == 2) ? TZInfo::Country.get(timezone).zone_info.first.identifier : TZInfo::Timezone.get(timezone)
+        begin
+          timezone_identifier = (timezone.length == 2) ? TZInfo::Country.get(timezone).zone_info.first.identifier : TZInfo::Timezone.get(timezone)
+        rescue
+          return "Timezone #{timezone} not found"
+        end
         # Use block so we don't break anything else
         Time.use_zone(timezone_identifier) { Time.zone.now }
       end
