@@ -19,6 +19,7 @@ require 'steam-api'
 require 'nokogiri'
 require 'open3'
 require 'cowsay'
+require 'tzinfo'
 
 require_relative 'models/application_record'
 require_relative './middleware/application_middleware'
