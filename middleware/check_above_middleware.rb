@@ -3,7 +3,7 @@ module Middleware
 
     def do_replacements(event, args, message = nil)
       args.each_with_index do |a, i|
-        match = a.match /^\^+$/
+        match = a.to_s.match /^\^+$/
         next if match.nil?
 
         history_index = match[0].size
