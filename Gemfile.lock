@@ -286,6 +286,7 @@ DEPENDENCIES
   sinatra (~> 2.0)
   steam-api
   test-unit-rr
+  tzinfo (~> 1.2)
   tzinfo-data
 
 BUNDLED WITH
