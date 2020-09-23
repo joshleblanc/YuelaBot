@@ -50,6 +50,7 @@ module Commands
 
         if time_in_seconds < 3600 && repeat
           event.respond "Since this reminder is less than 1 hour, it cannot repeat."
+          repeat = false
         end
       
 
