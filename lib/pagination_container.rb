@@ -82,6 +82,10 @@ class PaginationContainer
         end
       end
     end
-    @message.delete_all_reactions
+    begin
+      @message.delete_all_reactions
+    rescue StandardError => e
+      p "Failed to remove reaction from pagination container"
+    end
   end
 end

@@ -23,7 +23,7 @@ module Commands
         query = args.join(' ')
 
         engine_id = ENV['search_id']
-        service = Google::Apis::CustomsearchV1::CustomsearchService.new
+        service = Google::Apis::CustomsearchV1::CustomSearchAPIService.new
         service.key = ENV['google']
         images = service.list_cses(q: query, cx: engine_id, search_type: 'image').items || []
 

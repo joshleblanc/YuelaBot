@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'discordrb', git: 'https://github.com/discordrb/discordrb.git'
-gem 'google-api-client', '0.42.0'
+gem 'google-api-client'
 gem 'require_all'
 gem 'redd', git: 'https://github.com/avinashbot/redd.git'
 gem 'rufus-scheduler'
