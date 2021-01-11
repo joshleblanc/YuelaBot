@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'discordrb', git: 'https://github.com/discordrb/discordrb.git'
+gem 'discordrb', git: 'https://github.com/shardlab/discordrb.git', branch: "main"
 gem 'google-api-client'
 gem 'require_all'
 gem 'redd', git: 'https://github.com/avinashbot/redd.git'
