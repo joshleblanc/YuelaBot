@@ -7,7 +7,7 @@ gem 'redd', git: 'https://github.com/avinashbot/redd.git'
 gem 'rufus-scheduler'
 gem 'faye-websocket'
 gem 'rest-client'
-gem 'mini_racer', platform: [:ruby]
+gem 'mini_racer'
 gem 'mtg_sdk'
 gem 'dotenv'
 gem 'activerecord'
