@@ -44,7 +44,7 @@ jobs:
     - name: Publish
       run: docker push docker.pkg.github.com/joshleblanc/yuelabot/bot
     - name: Setup kubectl
-      uses: matootie/dokube@v1.2.0
+      uses: matootie/dokube@v1.3.4
       with:
         # DigitalOcean Personal Access Token; Used to fetch latest Kubernetes Config.
         personalAccessToken: ${{ secrets.doToken }}
