@@ -8,6 +8,7 @@ ADD Gemfile ./Gemfile
 ADD Gemfile.lock ./Gemfile.lock
 RUN gem update --system
 RUN gem install bundler
+RUN gem install libv8
 RUN bundle install
 
 ADD . .
