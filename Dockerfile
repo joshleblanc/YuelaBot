@@ -11,5 +11,7 @@ RUN gem install bundler
 RUN bundle install
 
 ADD . .
+RUN chmod +x entrypoint.sh	
+ENTRYPOINT ["/app/entrypoint.sh"]	
 
 CMD ["bundle", "exec", "ruby", "main.rb"]
