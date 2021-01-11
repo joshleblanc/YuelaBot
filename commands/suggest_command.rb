@@ -16,7 +16,7 @@ module Commands
         return if e.from_bot?
 
         suggestion = terms.join(' ')
-        client = Octokit::Client.new(login: ENV['github_login'], password: ENV['github_password'])
+        client = Octokit::Client.new(access_token: ENV['github_token'])
         body = <<~BODY
           Added by #{e.user.name} from #{e.server.name}##{e.channel.name}
           Context: https://discordapp.com/channels/#{e.server.id}/#{e.channel.id}/#{e.message.id}
