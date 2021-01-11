@@ -29,6 +29,7 @@ module Commands
           response.puts "The key is: #{game_key.key}"
           game_key.destroy
           event.user.pm response.string
+          event.respond "#{game_key.name} claimed!"
         else
           event.respond "No such key exists"
         end
