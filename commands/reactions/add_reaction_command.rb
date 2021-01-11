@@ -31,7 +31,8 @@ module Commands
                 output: output,
                 created_at: Time.now,
                 creator: event.author.username,
-                chance: chance.to_f
+                chance: chance.to_f,
+                server: event.server.id
             )
             "Reaction #{ur.id} created"
           end

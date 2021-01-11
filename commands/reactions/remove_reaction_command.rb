@@ -19,8 +19,13 @@ module Commands
       def command(e, id)
         return if e.from_bot?
         begin
-          UserReaction.find(id).destroy
-          "Reaction #{id} deleted"
+          ur = UserReaction.find_by(id: id, server: e.server.id)
+          if ur 
+            ur.destroy
+            "Reaction #{id} deleted"
+          else
+            "No reaction found with id #{id}"
+          end
         rescue StandardError => e
           e.message
         end

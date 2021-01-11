@@ -124,7 +124,7 @@ BOT.message do |event|
   end
 
   urs = UserReaction.all.select do |ur|
-    Regexp.new(ur.regex).match event.message.content
+    Regexp.new(ur.regex).match(event.message.content) && event.server.id == ur.server
   end
   urs.each do |ur|
     if rand <= ur.chance
