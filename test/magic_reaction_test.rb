@@ -13,6 +13,7 @@ class MagicReactionTest < Test::Unit::TestCase
     stub(@event).respond do |_, _, embed|
       assert_equal embed.title, "Turn to Frog"
     end
+    stub(@event).<< { |*args| true }
   end
 
   def test_it_finds_something
