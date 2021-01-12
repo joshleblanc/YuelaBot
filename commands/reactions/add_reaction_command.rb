@@ -22,7 +22,7 @@ module Commands
             return "You need to provide a regex to match"
           end
           chance = 1 if chance.nil?
-          reaction = UserReaction.find_by(regex: regex)
+          reaction = UserReaction.find_by(regex: regex, server: event.server.id)
           if reaction
             'Reaction already exists'
           else
