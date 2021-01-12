@@ -7,7 +7,7 @@ module Commands
 
       def attributes
         {
-            usage: 'add_reaction [regex] [message] [chance]',
+            usage: 'add_reaction [regex] [chance] [message]',
             description: 'Create a reaction for Yuela',
             aliases: [:ar]
         }
@@ -17,7 +17,7 @@ module Commands
         return if event.from_bot?
 
         begin
-          regex, output, chance = CSV.parse_line(args.join(' '), col_sep: ' ')
+          regex, chance, *output = args
           if regex.nil?
             return "You need to provide a regex to match"
           end
