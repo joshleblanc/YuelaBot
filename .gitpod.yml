@@ -2,7 +2,7 @@ image:
   file: Dockerfile.gitpod
 tasks:
   - init:
-      bundle install
+      bundle install --path vendor/bundle
     command:
       RACK_ENV=gitpod &&
       bundle exec rake db:create &&
