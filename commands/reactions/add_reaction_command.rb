@@ -28,7 +28,7 @@ module Commands
           else
             ur = UserReaction.create(
                 regex: regex,
-                output: output,
+                output: output.join(" "),
                 created_at: Time.now,
                 creator: event.author.username,
                 chance: chance.to_f,
