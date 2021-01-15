@@ -128,10 +128,7 @@ BOT.message do |event|
   end
   urs.each do |ur|
     if rand <= ur.chance
-      output = ur.output.sub(":user", event.author.mention)
-      event.respond(event.message.content.sub(/#{ur.regex}/, output))
-      lur = LastUsedReaction.where(channel: event.channel.id).first_or_initialize
-      lur.update(user_reaction: ur)
+      ur.trigger event
     end
   end
 

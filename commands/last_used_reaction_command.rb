@@ -24,8 +24,9 @@ module Commands
             output: #{lur.user_reaction.output}
             creator: #{lur.user_reaction.creator}
             chance: #{(lur.user_reaction.chance * 100).to_i}%
-            first used: #{lur.user_reaction.created_at}
-            last used: #{lur.user_reaction.updated_at}
+            times used: #{lur.user_reaction.times_used}
+            first used: #{lur.user_reaction.first_used_at}
+            last used: #{lur.user_reaction.last_used_at}
             ```
           OUTPUT
         else
