@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_15_134357) do
+ActiveRecord::Schema.define(version: 2021_01_19_204306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,17 @@ ActiveRecord::Schema.define(version: 2021_01_15_134357) do
   create_table "so_chat_proxy_configs", force: :cascade do |t|
     t.string "server_id"
     t.string "channel_id"
+  end
+
+  create_table "twitch_configs", force: :cascade do |t|
+    t.bigint "server"
+    t.bigint "channel"
+  end
+
+  create_table "twitch_streams", force: :cascade do |t|
+    t.datetime "expires_at"
+    t.bigint "server"
+    t.integer "twitch_login"
   end
 
   create_table "user_commands", force: :cascade do |t|

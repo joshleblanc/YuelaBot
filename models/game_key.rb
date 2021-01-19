@@ -1,3 +1,2 @@
 class GameKey < ApplicationRecord
-
 end
