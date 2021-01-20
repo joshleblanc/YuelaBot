@@ -27,21 +27,36 @@ module Apis
           :params => {
             login: user_name
           },
-          "Authorization" => "Bearer #{access_token}",
-          "Client-Id" => id
+          **authentication_headers
         })
         json = JSON.parse(response.body)
+        p json
         json["data"].first
       end
 
+      def authentication_headers
+        {
+          "Authorization" => "Bearer #{access_token}",
+          "Client-Id" => id
+        }
+      end
+
       def subscribe(user_id, server)
-        RestClient.post("https://api.twitch.tv/helix/webhooks/hub", JSON.generate({
-          "hub.callback": "https://yuela.moe/webhooks/twitch",
+        lease_seconds = 3600
+
+        body = JSON.generate({
+          "hub.callback": "https://yuela.moe/webhooks/twitch?user_id=#{user_id}&server=#{server}",
           "hub.mode": "subscribe",
-          "hub.topic": "https://api.twitch.tv/helix/streams?user_id=#{user_id}&server=#{server}",
-          "hub.lease_seconds": "864000"
-        }))
-        return 864000
+          "hub.topic": "https://api.twitch.tv/helix/streams?user_id=#{user_id}",
+          "hub.lease_seconds": lease_seconds
+        })
+
+        headers = {
+          "Content-Type" => "application/json",
+        }.merge(authentication_headers)
+
+        RestClient.post("https://api.twitch.tv/helix/webhooks/hub", body, headers)
+        return lease_seconds
       end
 
       def authenticate
