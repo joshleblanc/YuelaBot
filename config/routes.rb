@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  post 'webhooks/twitch'
+  namespace :webhooks do
+    get :twitch, to: "webhooks/twitch#verify"
+    post :twitch, to: "webhooks/twitch#receive"
+  end 
 end
