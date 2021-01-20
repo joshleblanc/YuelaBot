@@ -57,7 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
 gem 'discordrb', git: 'https://github.com/shardlab/discordrb.git', branch: "main"
-gem 'google-api-client'
+gem 'google-api-client', require: ['google/apis/customsearch_v1', 'google/apis/youtube_v3', 'google/apis/translate_v2']
 gem 'require_all'
 gem 'redd', git: 'https://github.com/avinashbot/redd.git'
 gem 'rufus-scheduler'
