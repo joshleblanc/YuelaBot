@@ -5,7 +5,7 @@ module Apis
 
     class << self
       def lease_time
-
+        3600
       end
 
       def id
@@ -50,7 +50,7 @@ module Apis
           "hub.callback": "https://yuela.moe/webhooks/twitch?user_id=#{user_id}&server=#{server}",
           "hub.mode": "subscribe",
           "hub.topic": "https://api.twitch.tv/helix/streams?user_id=#{user_id}",
-          "hub.lease_seconds": lease_time
+            "hub.lease_seconds": lease_time
         })
 
         headers = {
