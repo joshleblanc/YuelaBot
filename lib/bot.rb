@@ -3,7 +3,7 @@ include Routines::BirthdayRoutine
 include Middleware
 include Helpers::InjectMiddleware
 
-p Helpers.methods
+p ENV
 
 unless ENV['discord']
     abort "You're missing your discord API token! put discord=<your token here> in a .env file"
