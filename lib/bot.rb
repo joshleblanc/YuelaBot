@@ -123,7 +123,7 @@ scheduler.every '1d', first: :now do
 end
 
 scheduler.every '1m' do
-  TwitchStreamEvent.each do |event|
+  TwitchStreamEvent.all.each do |event|
     twitch_configs = TwitchConfig.where(server: event.server)
     event.data.each do |datum|
       embed = Discordrb::Webhooks::Embed.new
@@ -135,6 +135,7 @@ scheduler.every '1m' do
         BOT.send_message(config.channel, nil, nil, embed)
       end
     end
+    event.destroy
   end
 end
 
