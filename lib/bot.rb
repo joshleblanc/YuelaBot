@@ -123,6 +123,8 @@ scheduler.every '1d', first: :now do
 end
 
 scheduler.every '1m' do
+  TwitchStream.all.each(&:renew)
+  
   TwitchStreamEvent.all.each do |event|
     twitch_configs = TwitchConfig.where(server: event.server)
     event.data.each do |datum|

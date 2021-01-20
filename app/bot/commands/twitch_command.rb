@@ -52,8 +52,8 @@ module Commands
 
         if options[:name] 
           user = Apis::Twitch.user(options[:name])
-          lease_expires = Apis::Twitch.subscribe(user["id"], event.server.id)
-          TwitchStream.where(server: event.server.id, twitch_login: options[:name], expires_at: Time.now + lease_expires).first_or_create
+          Apis::Twitch.subscribe(user["id"], event.server.id)
+          TwitchStream.where(server: event.server.id, twitch_login: options[:name], twitch_user_id: user["id"], expires_at: Time.now + Apis::Twitch.lease_time).first_or_create
           event << "Twitch stream added"
         end
       end

@@ -4,6 +4,10 @@ module Apis
     # POST https://id.twitch.tv/oauth2/token?client_id=uo6dggojyb8d6soh92zknwmi5ej1q2&client_secret=nyo51xcdrerl8z9m56w9w6wg&grant_type=client_credentials
 
     class << self
+      def lease_time
+
+      end
+
       def id
         ENV['TWITCH_CLIENT_ID']
       end
@@ -42,13 +46,11 @@ module Apis
       end
 
       def subscribe(user_id, server)
-        lease_seconds = 3600
-
         body = JSON.generate({
           "hub.callback": "https://yuela.moe/webhooks/twitch?user_id=#{user_id}&server=#{server}",
           "hub.mode": "subscribe",
           "hub.topic": "https://api.twitch.tv/helix/streams?user_id=#{user_id}",
-          "hub.lease_seconds": lease_seconds
+          "hub.lease_seconds": least_time
         })
 
         headers = {
@@ -56,7 +58,6 @@ module Apis
         }.merge(authentication_headers)
 
         RestClient.post("https://api.twitch.tv/helix/webhooks/hub", body, headers)
-        return lease_seconds
       end
 
       def authenticate
