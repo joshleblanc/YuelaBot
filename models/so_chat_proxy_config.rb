@@ -1,3 +1,0 @@
-class SoChatProxyConfig < ApplicationRecord
-
-end
