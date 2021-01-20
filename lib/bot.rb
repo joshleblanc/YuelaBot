@@ -130,7 +130,7 @@ scheduler.every '1m' do
       embed = Discordrb::Webhooks::Embed.new
       case datum["type"]
       when "live"
-        embed.title "#{datum["user_name"]} is now live on Twitch!"
+        embed.title = "#{datum["user_name"]} is now live on Twitch!"
         embed.url = "https://twitch.tv/#{datum["user_name"]}"
         embed.image = Discordrb::Webhooks::EmbedImage.new(url: datum["thumbnail_url"])
         embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: datum["user_name"], url: user["profile_image_url"])
