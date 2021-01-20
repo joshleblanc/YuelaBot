@@ -122,17 +122,35 @@ scheduler.every '1d', first: :now do
   LaunchManager.instance.schedule
 end
 
+#    {
+      "id": "0123456789",
+      "user_id": "5678",
+      "user_name": "wjdtkdqhs",
+      "game_id": "21779",
+      "community_ids": [],
+      "type": "live",
+      "title": "Best Stream Ever",
+      "viewer_count": 417,
+      "started_at": "2017-12-01T10:09:45Z",
+      "language": "en",
+      "thumbnail_url": "https://link/to/thumbnail.jpg"
+}
+
 scheduler.every '1m' do
   TwitchStreamEvent.all.each do |event|
     twitch_configs = TwitchConfig.where(server: event.server)
     event.data.each do |datum|
+      user = Apis::Twitch.user(datum["user_name"])
       embed = Discordrb::Webhooks::Embed.new
       case datum["type"]
       when "live"
         embed.title "#{datum["user_name"]} is now live on Twitch!"
-      end
-      twitch_configs.each do |config|
-        BOT.send_message(config.channel, nil, nil, embed)
+        embed.url = "https://twitch.tv/#{datum["user_name"]}"
+        embed.image = Discordrb::Webhooks::EmbedImage.new(url: datum["thumbnail_url"])
+        embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: datum["user_name"], url: user["profile_image_url"])
+        twitch_configs.each do |config|
+          BOT.send_message(config.channel, nil, nil, embed)
+        end
       end
     end
     event.destroy
