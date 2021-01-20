@@ -3,8 +3,6 @@ include Routines::BirthdayRoutine
 include Middleware
 include Helpers::InjectMiddleware
 
-p ENV
-
 unless ENV['DISCORD']
     abort "You're missing your discord API token! put discord=<your token here> in a .env file"
 end
@@ -40,10 +38,21 @@ BOT.command(:ping) do |event|
   event.respond "pong"
 end
 
-Commands.constants.map do |c|
-  command = Commands.const_get(c)
-  command.is_a?(Class) ? command : nil
-end.compact.each do |command|
+def find_commands(mod)
+  mod.constants.map do |c|
+    command = mod.const_get(c)
+    case command
+    when Class
+      command
+    when Module
+      find_commands(command)
+    else
+      nil
+    end
+  end
+end
+
+find_commands(Commands).flatten.compact.each do |command|
   BOT.command(command.name, command.attributes, &inject_middleware(command))
 end
 
