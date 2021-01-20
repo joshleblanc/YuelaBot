@@ -1,19 +1,11 @@
-require 'sinatra/base'
-
-class SinatraServer < Sinatra::Application
-  get '/reactions' do
-    @reactions = UserReaction.all
-    haml :"reactions/index"
-  end
-  
-  post "/webhooks/twitch" do
+class WebhooksController < ApplicationController
+  def twitch
     user_id = params[:user_id]
     server = params[:server]
-    body = JSON.parse(request.body)
   
     twitch_configs = TwitchConfig.where(server: server)
     
-    body["data"].each do |datum|
+    params[:data].each do |datum|
       embed = Discordrb::Webhooks::Embed.new
       case datum["type"]
       when "live"
