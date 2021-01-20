@@ -18,8 +18,8 @@ module Commands
       def command(e, *args)
         return if e.from_bot?
 
-        if ENV['steam_key']
-          Steam.apikey = ENV['steam_key']
+        if ENV['STEAM_KEY']
+          Steam.apikey = ENV['STEAM_KEY']
         else
           return
         end

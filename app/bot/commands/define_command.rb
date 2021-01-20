@@ -26,7 +26,7 @@ module Commands
             includeRelated: true,
             useCanonical: true,
             includeTags: false,
-            api_key: ENV['wordnik_key']
+            api_key: ENV['WORDNIK_KEY']
         }
 
         begin

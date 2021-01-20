@@ -5,7 +5,7 @@ include Helpers::InjectMiddleware
 
 p ENV
 
-unless ENV['discord']
+unless ENV['DISCORD']
     abort "You're missing your discord API token! put discord=<your token here> in a .env file"
 end
 
@@ -15,7 +15,7 @@ GLOBAL_MIDDLEWARE = [
 ]
 
 BOT = Discordrb::Commands::CommandBot.new({
-    token: ENV['discord'],
+    token: ENV['DISCORD'],
     prefix: '!!',
     log_level: :debug,
     parse_self: true
@@ -25,8 +25,8 @@ User.where(banned: true).each do |user|
   BOT.ignore_user user.id
 end
 
-if ENV['admins']
-    ENV['admins'].split(',').each do |admin|
+if ENV['ADMINS']
+    ENV['ADMINS'].split(',').each do |admin|
         BOT.set_user_permission(admin.to_i, 1)
     end
 end

@@ -16,7 +16,7 @@ module Apis
             { "Text": text }
           ])
           headers = {
-            'Ocp-Apim-Subscription-Key': ENV['translator_key'],
+            'Ocp-Apim-Subscription-Key': ENV['TRANSLATOR_KEY'],
             'Content-type': 'application/json',
             'Content-length': body.length,
             params: {

@@ -22,9 +22,9 @@ module Commands
 
         query = args.join(' ')
 
-        engine_id = ENV['search_id']
+        engine_id = ENV['SEARCH_ID']
         service = Google::Apis::CustomsearchV1::CustomSearchAPIService.new
-        service.key = ENV['google']
+        service.key = ENV['GOOGLE']
         images = service.list_cses(q: query, cx: engine_id, search_type: 'image').items || []
 
         pagination_container = PaginationContainer.new("Image Search Results", images, 1, event)

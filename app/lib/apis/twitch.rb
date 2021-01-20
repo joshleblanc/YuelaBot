@@ -5,11 +5,11 @@ module Apis
 
     class << self
       def id
-        ENV['twitch_client_id']
+        ENV['TWITCH_CLIENT_ID']
       end
 
       def secret
-        ENV['twitch_secret']
+        ENV['TWITCH_SECRET']
       end
 
       def token_expired?
