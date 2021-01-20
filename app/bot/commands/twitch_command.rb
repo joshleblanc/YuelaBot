@@ -45,7 +45,7 @@ module Commands
           channel = options[:channel].match(/<#(\d+)>/)[1]
           if channel
             config = TwitchConfig.where(server: event.server.id).first_or_create
-            config.update(channel: options[:channel])
+            config.update(channel: channel)
             event << "Twitch config updated"
           end
         end
