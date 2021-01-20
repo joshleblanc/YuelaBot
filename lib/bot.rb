@@ -113,4 +113,20 @@ scheduler.every '1d', first: :now do
   LaunchManager.instance.schedule
 end
 
+scheduler.every '1m' do
+  TwitchStreamEvent.each do |event|
+    twitch_configs = TwitchConfig.where(server: event.server)
+    event.data.each do |datum|
+      embed = Discordrb::Webhooks::Embed.new
+      case datum["type"]
+      when "live"
+        embed.title "#{datum["user_name"]} is now live on Twitch!"
+      end
+      twitch_configs.each do |config|
+        BOT.send_message(config.channel, nil, nil, embed)
+      end
+    end
+  end
+end
+
 BOT.run

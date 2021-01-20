@@ -1,0 +1,2 @@
+class TwitchStreamEvent < ApplicationRecord
+end
