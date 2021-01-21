@@ -46,7 +46,7 @@ module Commands
         response = RestClient.get("https://www.sc2ladder.com/api/player?query=#{input[0]}&limit=200")
   
         data = JSON.parse(response.body)
-        data.select! { |d| d["username"].downcase == input[0].downcase }
+        data.select! { |d| d["username"].downcase == input[0].downcase || d["bnet_id"].split("#").last.downcase == input[0].downcase }
         data.select! { |d| d["race"][0].downcase == race } if race
         data.select! { |d| d["region"][0].downcase == server } if server
         if data.any?
