@@ -50,7 +50,6 @@ module Commands
         data.select! { |d| d["region"][0].downcase == server } if server
         if data.any?
           player = data.first
-          p player
           e.channel.send_embed do |embed|
             embed.title = "SC2Ladder Result"
             embed.fields = [
