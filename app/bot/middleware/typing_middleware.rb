@@ -3,7 +3,6 @@ module Middleware
     def before(event, *args)
       @thread = Thread.new do
         loop do
-          p "start typing"
           event.channel.start_typing
           sleep 5
         end
