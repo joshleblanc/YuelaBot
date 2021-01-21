@@ -18,10 +18,9 @@ module Helpers
           end
           transformed_output
         rescue StandardError => e
-          middleware.each do |m|
-            m.after(event, "", *transformed_args)
-          end
           raise e
+        ensure
+          middleware.each(&:cleanup)
         end
       end
       method

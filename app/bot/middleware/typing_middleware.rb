@@ -11,10 +11,8 @@ module Middleware
       super
     end
 
-    def after(event, *args)
-      p "stop typing"
+    def cleanup
       @thread.terminate
-      super
     end
   end
 end
