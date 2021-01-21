@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_224602) do
+ActiveRecord::Schema.define(version: 2021_01_21_192929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,13 @@ ActiveRecord::Schema.define(version: 2021_01_20_224602) do
     t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "server_prefixes", force: :cascade do |t|
+    t.bigint "server"
+    t.string "prefix"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "twitch_configs", force: :cascade do |t|
