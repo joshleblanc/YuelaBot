@@ -1,3 +1,5 @@
+require 'csv'
+
 module Commands
   class CovidCommand
     class << self
@@ -15,7 +17,6 @@ module Commands
 
       def command(event, *args)
         return if event.from_bot?
-        event.channel.start_typing
         fixed_args = CSV.parse_line(args.join(' '), col_sep: ' ')
         stdout, stderr, status = Open3.capture3("kovid", *fixed_args)
 

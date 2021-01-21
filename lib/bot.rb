@@ -8,8 +8,9 @@ unless ENV['DISCORD']
 end
 
 GLOBAL_MIDDLEWARE = [
-  CheckAboveMiddleware.new, 
-  SelfPromotionMiddleware.new
+  CheckAboveMiddleware, 
+  SelfPromotionMiddleware,
+  TypingMiddleware
 ]
 
 BOT = Discordrb::Commands::CommandBot.new({

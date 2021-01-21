@@ -2,7 +2,7 @@ module Helpers
   module InjectMiddleware
     def inject_middleware(command)
       method = command.method(:command).to_proc
-      middleware = GLOBAL_MIDDLEWARE.dup
+      middleware = GLOBAL_MIDDLEWARE.dup.map(&:new)
       if command.respond_to?(:middleware)
         middleware.push *command.middleware
       end
@@ -18,7 +18,10 @@ module Helpers
           end
           transformed_output
         rescue StandardError => e
-          e.message
+          middleware.each do |m|
+            m.after(event, "", *transformed_args)
+          end
+          raise e
         end
       end
       method
