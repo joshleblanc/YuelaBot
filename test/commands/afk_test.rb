@@ -2,7 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../bot'
 
 class AfkTest < Test::Unit::TestCase
   def setup

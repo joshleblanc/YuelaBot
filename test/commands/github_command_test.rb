@@ -2,7 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../bot'
 
 class GithubTest < Test::Unit::TestCase
     def setup

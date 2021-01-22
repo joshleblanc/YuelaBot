@@ -2,8 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require 'discordrb'
-require_relative '../bot'
+
 
 Message = Struct.new(:embeds) do
   def edit(_, _)

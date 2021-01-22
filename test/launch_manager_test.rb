@@ -2,7 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../bot'
 
 class LaunchManagerTest < Test::Unit::TestCase
   def test_it_sends_embed

@@ -2,10 +2,9 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../lib/helpers/escape'
 
 class EscapeMarkdownTest < Test::Unit::TestCase
-  include Helpers
+  include Helpers::Escape
 
   def test_it_escapes_asterisks()
     source = 'hello * world \\* howdy'

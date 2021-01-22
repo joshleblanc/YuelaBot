@@ -2,11 +2,11 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require 'discordrb'
-require_relative '../bot'
+
 
 class ArchiveTest < Test::Unit::TestCase
   include Discordrb::Webhooks
+  include Routines::ArchiveRoutine
   def setup
 
     author = Object.new
@@ -70,7 +70,7 @@ class ArchiveTest < Test::Unit::TestCase
     stub(embeds).empty? { true }
 
     stub(@pin).embeds { embeds }
-    result = Routines.archive_routine(@event)
+    result = archive_routine(@event)
 
     assert_equal result.description, "Test"
     assert_equal result.author.name, "test"
@@ -86,7 +86,7 @@ class ArchiveTest < Test::Unit::TestCase
     stub(message).pinned? { true }
     stub(message).channel { channel }
     stub(@pin).embeds { embeds }
-    result = Routines.archive_routine(@event)
+    result = archive_routine(@event)
     p result
     assert_equal result.image.url, "test"
   end
@@ -122,7 +122,7 @@ class ArchiveTest < Test::Unit::TestCase
         url: "test"
     )
     stub(@pin).embeds { [embed] }
-    result = Routines.archive_routine(@event)
+    result = archive_routine(@event)
 
 
     assert_equal(result.description, "test")

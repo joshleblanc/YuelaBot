@@ -1,6 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative "../config/environment"
 require "rails/test_help"
+require_relative "../lib/bot/bot.rb"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

@@ -1,5 +1,7 @@
 module Routines
   module ArchiveRoutine
+    include Discordrb::Webhooks
+
     def archive_text(event, archive_channel, last_pin)
       archive_channel.send_embed do |embed|
         embed.author = EmbedAuthor.new(name: last_pin.author.name, icon_url: last_pin.author.avatar_url)
@@ -54,7 +56,6 @@ module Routines
     end
 
     def archive_routine(event)
-      include Discordrb::Webhooks
       return unless event.message.pinned?
       return unless event.channel.pins.length == 50
 

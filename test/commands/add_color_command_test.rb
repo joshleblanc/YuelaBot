@@ -2,8 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require 'discordrb'
-require_relative '../bot'
+
 
 class AddColorCommandTest < Test::Unit::TestCase
 
@@ -44,7 +43,7 @@ class AddColorCommandTest < Test::Unit::TestCase
 
   def test_it_ignores_bot
     stub(@event).from_bot? { true }
-    result = Commands::AddColorCommand.command(@event, "test", "123123")
+    result = Commands::Colors::AddColorCommand.command(@event, "test", "123123")
     assert_nil result
   end
 
@@ -61,7 +60,7 @@ class AddColorCommandTest < Test::Unit::TestCase
       role
     end
 
-    result = Commands::AddColorCommand.command(@event, 'test', '123123123')
+    result = Commands::Colors::AddColorCommand.command(@event, 'test', '123123123')
     assert_equal "Color role created", result
   end
 
@@ -74,7 +73,7 @@ class AddColorCommandTest < Test::Unit::TestCase
       [role]
     end
 
-    result = Commands::AddColorCommand.command(@event, 'test', '123123')
+    result = Commands::Colors::AddColorCommand.command(@event, 'test', '123123')
     assert_equal "Color role created", result
   end
 
@@ -87,12 +86,12 @@ class AddColorCommandTest < Test::Unit::TestCase
       stub(role, "color=")
       [role]
     end
-    result = Commands::AddColorCommand.command(@event, 'test2', '123123')
+    result = Commands::Colors::AddColorCommand.command(@event, 'test2', '123123')
     assert_equal "Role updated!", result
   end
 
   def test_it_fails
-    result = Commands::AddColorCommand.command(@event, 'test3', '123123')
+    result = Commands::Colors::AddColorCommand.command(@event, 'test3', '123123')
     assert_not_nil result
     assert_not_equal "Role updated!", result
     assert_not_equal "Color role created", result

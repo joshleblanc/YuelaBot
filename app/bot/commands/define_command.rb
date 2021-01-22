@@ -1,7 +1,7 @@
 module Commands
   class DefineCommand
     class << self
-      include Helpers
+      include Helpers::Escape
 
       def name
         :define

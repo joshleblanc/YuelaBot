@@ -151,5 +151,3 @@ scheduler.every '1m' do
     event.destroy
   end
 end
-
-BOT.run

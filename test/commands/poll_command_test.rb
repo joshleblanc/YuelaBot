@@ -2,8 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require 'discordrb'
-require_relative '../bot'
+
 
 class PollCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks

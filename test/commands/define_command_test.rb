@@ -2,7 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require_relative '../bot'
 
 def without_trailing_newline(s)
   s.sub(/\n$/, '')

@@ -2,10 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require 'test/unit/rr'
-require 'discordrb'
-require_relative '../lib/apis/four_chan'
-require_relative '../commands/4chan_command'
-
 class FourChanCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
 
@@ -43,15 +39,15 @@ class FourChanCommandTest < Test::Unit::TestCase
   end
 
   def test_parse_response
-    text, quotes = Commands::Random4ChanCommand.parse_response(Apis::FourChan.thread('1', '1')['posts'].first['com'])
+    text, quotes = Commands::Random4chanCommand.parse_response(Apis::FourChan.thread('1', '1')['posts'].first['com'])
     expected_text = open("./test/support/fixtures/4chan/parsed_post.json").read
     assert quotes.length == 7, "Expected 7 quotes, found #{quotes.length}"
     assert text == expected_text, "Expected: #{expected_text}\ngot: #{text}"
   end
 
   def test_it_gets_a_random_post
-    result = Commands::Random4ChanCommand.command(@event, "wg")
-    text, _ = Commands::Random4ChanCommand.parse_response(Apis::FourChan.thread('1', '1')['posts'].first['com'])
+    result = Commands::Random4chanCommand.command(@event, "wg")
+    text, _ = Commands::Random4chanCommand.parse_response(Apis::FourChan.thread('1', '1')['posts'].first['com'])
     assert result.description == text
   end
 end
