@@ -43,18 +43,10 @@ wordnik_key=<API key for wordnik>
 github_access_token=<Access token for github, for submitting issues>
 ```
 
-The following keys are optional, and are only used for proxying chat.stackoverflow.com to a discord channel:
-
-```
-room_id=<The so chat room id>
-channel_id=<The discord channel ID you want to proxy the SO chat to>
-so_user=<A SO chat user>
-so_pass=<The password for the SO chat user>
-```
 
 Once the file is there, you can run the bot with:
 
-`bundle exec ruby main.rb`
+`bundle exec foreman start`
 
 # Generating command
 
