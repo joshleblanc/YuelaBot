@@ -19,6 +19,10 @@ module Commands
             options[:remove] = name
           end
 
+          option_parser.on("-l", "--list", "List all added streams") do
+            options[:list] = true
+          end
+
           option_parser.banner = "Usage: twitch [options]"
         end
       end
@@ -52,6 +56,15 @@ module Commands
             config.update(channel: channel)
             event << "Twitch config updated"
           end
+        end
+
+        if options[:list]
+          event << "The following streams are being tracked:"
+          event << "```"
+          TwitchStream.where(server: event.server.id).each do |twitch_stream|
+            event << twitch_stream.twitch_login
+          end
+          event << "```"
         end
 
         if options[:remove]
