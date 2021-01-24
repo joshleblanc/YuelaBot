@@ -25,16 +25,12 @@ module Apis
         @access_token
       end
 
-      def user(user_name)
-        p user_name
+      def user(params = {})
         response = RestClient.get("https://api.twitch.tv/helix/users", {
-          :params => {
-            login: user_name
-          },
+          :params => params,
           **authentication_headers
         })
         json = JSON.parse(response.body)
-        p json
         json["data"].first
       end
 
@@ -45,10 +41,10 @@ module Apis
         }
       end
 
-      def subscribe(user_id, server)
+      def webhook_call(user_id, server, mode)
         body = JSON.generate({
           "hub.callback": "https://yuela.moe/webhooks/twitch?user_id=#{user_id}&server=#{server}",
-          "hub.mode": "subscribe",
+          "hub.mode": mode,
           "hub.topic": "https://api.twitch.tv/helix/streams?user_id=#{user_id}",
             "hub.lease_seconds": lease_time
         })
@@ -60,7 +56,16 @@ module Apis
         RestClient.post("https://api.twitch.tv/helix/webhooks/hub", body, headers)
       end
 
+      def unsubscribe(user_id, server)
+        webhook_call(user_id, server, "unsubscribe")
+      end
+          
+      def subscribe(user_id, server)
+        webhook_call(user_id, server, "subscribe")
+      end
+
       def authenticate
+        p id, secret
         response = RestClient.post("https://id.twitch.tv/oauth2/token", {
           client_id: id,
           client_secret: secret,

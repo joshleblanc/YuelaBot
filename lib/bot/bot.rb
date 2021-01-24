@@ -135,7 +135,7 @@ scheduler.every '1m' do
   TwitchStreamEvent.all.each do |event|
     twitch_configs = TwitchConfig.where(server: event.server)
     event.data.each do |datum|
-      user = Apis::Twitch.user(datum["user_name"])
+      user = Apis::Twitch.user(login: datum["user_name"])
       embed = Discordrb::Webhooks::Embed.new
       case datum["type"]
       when "live"

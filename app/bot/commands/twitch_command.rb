@@ -15,6 +15,10 @@ module Commands
             options[:name] = name
           end
 
+          option_parser.on("-r", "--remove NAME", "Remove an added stream") do |name|
+            options[:remove] = name
+          end
+
           option_parser.banner = "Usage: twitch [options]"
         end
       end
@@ -50,8 +54,20 @@ module Commands
           end
         end
 
+        if options[:remove]
+          twitch_stream = TwitchStream.find_by(server: event.server.id, twitch_login: options[:remove])
+          if twitch_stream
+            user = Apis::Twitch.user(login: options[:remove])
+            Apis::Twitch.unsubscribe(user["id"], event.server.id)
+            twitch_stream.destroy
+            event.respond "Stream #{options[:remove]} removed"
+          else
+            event.respond "No stream found for #{options[:remove]}"
+          end
+        end
+
         if options[:name] 
-          user = Apis::Twitch.user(options[:name])
+          user = Apis::Twitch.user(login: options[:name])
           Apis::Twitch.subscribe(user["id"], event.server.id)
           TwitchStream.where(server: event.server.id, twitch_login: options[:name], twitch_user_id: user["id"], expires_at: Time.now + Apis::Twitch.lease_time).first_or_create
           event << "Twitch stream added"

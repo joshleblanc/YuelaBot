@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_21_192929) do
+ActiveRecord::Schema.define(version: 2021_01_24_181908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 2021_01_21_192929) do
   create_table "twitch_streams", force: :cascade do |t|
     t.datetime "expires_at"
     t.bigint "server"
-    t.integer "twitch_login"
+    t.string "twitch_login"
     t.integer "twitch_user_id"
   end
 
