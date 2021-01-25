@@ -19,8 +19,6 @@ module Helpers
           transformed_output
         rescue StandardError => e
           raise e
-        ensure
-          middleware.each(&:cleanup)
         end
       end
       method
