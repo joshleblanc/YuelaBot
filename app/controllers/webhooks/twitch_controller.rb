@@ -3,6 +3,7 @@ class Webhooks::TwitchController < ApplicationController
 
   def receive
     TwitchStreamEvent.create(server: params[:server], twitch_user_id: params[:user_id], data: params[:data])
+    render plain: "Ok"
   end
 
   def verify
