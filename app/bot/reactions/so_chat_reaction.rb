@@ -2,7 +2,7 @@ module Reactions
   class SoChatReaction
     class << self
       include Discordrb::Webhooks
-      include Helpers
+      include Helpers::Markdown
 
       def regex
         /https:\/\/chat(\.meta)?\.stack(overflow|exchange)\.com\/transcript\/(message\/|\d+\?m=)(\d+)/
