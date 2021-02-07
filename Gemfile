@@ -85,3 +85,12 @@ end
 gem "foreman", "~> 0.87.2"
 
 gem "dotenv-rails", "~> 2.7", require: 'dotenv/rails-now'
+
+gem "view_component", require: "view_component/engine"
+
+gem "omniauth", "~> 2.0"
+gem "omniauth-discord", "~> 1.0"
+
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem 'bootstrap', '~> 5.0.0.beta1'
+gem "tailwindcss-rails", "~> 0.3.3"
