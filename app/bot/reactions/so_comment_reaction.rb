@@ -2,7 +2,7 @@ module Reactions
     class SoCommentReaction
       class << self
         include Discordrb::Webhooks
-        include Helpers
+        include Helpers::Markdown
 
         def counters
           [
@@ -54,7 +54,6 @@ module Reactions
           url = match_data[0]
           messageid = match_data.captures[0]
 
-          p url, messageid, match_data.captures[1], match_data.captures
           uri = URI.parse(url)
           body = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
           comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"), nil, Encoding::UTF_8.to_s)
