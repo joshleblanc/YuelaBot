@@ -24,4 +24,12 @@ class AfkButtonComponent < ApplicationComponent
   def render?
     current_user
   end
+
+  def tippy_data
+    return unless afk?
+    {
+      controller: "tippy",
+      "tippy-content": "You're already AFK"
+    }
+  end
 end

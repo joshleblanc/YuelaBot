@@ -1,6 +1,6 @@
 <div class="container mx-auto">
-  <div class="row py-2">
-    <div class="col">
+  <div class="grid grid-cols-4 gap-4">
+    <div class="col-span-3">
       <%= render DataListComponent.new(
           header: "Quick Stats",
           subtitle: "little itty bitty numbers",
@@ -13,11 +13,9 @@
           ]
       ) %>
     </div>
-  </div>
-  <div class="row py-2">
-    <div class="col">
+    <div class="col-span-1">
       <%= render PaperComponent.new do %>
-        <%= render AfkButtonComponent.new %>
+        <%= render "afks/form", afk: current_user.afk %>
       <% end %>
     </div>
   </div>

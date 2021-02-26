@@ -29,7 +29,7 @@ class User < ApplicationRecord
   end
 
   def afk?
-    afk.present?
+    afk.present? && afk.persisted?
   end
 
   def afk!(message = "I'll be back")

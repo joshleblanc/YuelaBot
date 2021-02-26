@@ -2,6 +2,7 @@
   "name": "myapp2",
   "private": true,
   "dependencies": {
+    "@hotwired/turbo-rails": "^7.0.0-beta.5",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
@@ -13,6 +14,7 @@
     "stimulus": "^2.0.0",
     "stimulus_reflex": "3.4.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "tippy.js": "^6.3.1",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
