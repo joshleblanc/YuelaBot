@@ -1,4 +1,10 @@
-<%= component_controller do %>
+<%= component_controller class: "p-3" do %>
+  <label for="company_website" class="block text-sm font-medium text-gray-700">
+    Need to step away from the keyboard?
+  </label>
+  <div class="mt-1 flex rounded-md p-2 m-2">
+    <input type="text" <%= afk? && "disabled" %> name="company_website" id="company_website" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300" placeholder="I'm late for a very important date">
+  </div>
   <%= render ButtonComponent.new(type: "button", data: { reflex: "click->AfkButtonComponent#toggle", key: key  }) do %>
     <%= text %>
   <% end %>
