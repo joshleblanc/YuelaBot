@@ -20,4 +20,8 @@ class AfkButtonComponent < ApplicationComponent
   def afk?
     current_user.afk?
   end
+
+  def render?
+    current_user
+  end
 end

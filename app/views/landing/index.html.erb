@@ -1,14 +1,17 @@
-<div class="container py-4">
+<div class="container mx-auto">
   <div class="row py-2">
     <div class="col">
-      <%= render PaperComponent.new do %>
-        <h1 class="h1">Yuela</h1>
-        <%= UserCommand.count %> user commands
-        <%= GameKey.count %> game keys
-        <%= UserReaction.count %> reactions
-        <%= Birthday.count %> birthdays
-        <%= Afk.count %> people AFK
-      <% end %>
+      <%= render DataListComponent.new(
+          header: "Quick Stats",
+          subtitle: "little itty bitty numbers",
+          data: [
+              ["User Commands", UserCommand.count],
+              ["Game Keys", GameKey.count],
+              ["User Reactions", UserReaction.count],
+              ["Birthday", Birthday.count],
+              ["Afk", Afk.count]
+          ]
+      ) %>
     </div>
   </div>
   <div class="row py-2">

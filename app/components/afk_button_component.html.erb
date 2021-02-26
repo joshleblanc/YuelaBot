@@ -1,1 +1,6 @@
-<button type="button" class="btn btn-primary" data-reflex="click->AfkButtonComponent#toggle"><%= text %></button>
+<%= component_controller do %>
+  <%= render ButtonComponent.new(type: "button", data: { reflex: "click->AfkButtonComponent#toggle", key: key  }) do %>
+    <%= text %>
+  <% end %>
+<% end %>
+

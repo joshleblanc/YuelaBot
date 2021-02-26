@@ -25,6 +25,10 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+group :production do
+  gem 'mini_racer'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -62,9 +66,7 @@ gem 'google-api-client', require: ['google/apis/customsearch_v1', 'google/apis/y
 gem 'require_all'
 gem 'redd', git: 'https://github.com/avinashbot/redd.git'
 gem 'rufus-scheduler'
-gem 'faye-websocket'
 gem 'rest-client'
-gem 'mini_racer'
 gem 'mtg_sdk'
 gem 'dotenv'
 gem 'pg'
@@ -93,8 +95,7 @@ gem "omniauth", "~> 2.0"
 gem "omniauth-discord", "~> 1.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
-gem 'bootstrap', '~> 5.0.0.beta1'
 gem "tailwindcss-rails", "~> 0.3.3"
 gem "stimulus_reflex", "~> 3.4"
 
-gem "view_component_reflex", "~> 3.1"
+gem "view_component_reflex", path: "../view_component_reflex"
