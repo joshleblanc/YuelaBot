@@ -93,6 +93,9 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    annotate (3.1.1)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 14.0)
     autoprefixer-rails (10.2.4.0)
       execjs
     axiom-types (0.1.1)
@@ -108,6 +111,9 @@ GEM
       sassc-rails (>= 2.0.0)
     builder (3.2.4)
     byebug (11.1.3)
+    cable_ready (4.5.0)
+      rails (>= 5.2)
+      thread-local (>= 1.1.0)
     capybara (3.34.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -343,6 +349,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.2.5)
     regexp_parser (1.8.2)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -415,6 +422,12 @@ GEM
       sprockets (>= 3.0.0)
     steam-api (1.2.0)
       faraday (~> 1.0)
+    stimulus_reflex (3.4.1)
+      cable_ready (>= 4.5)
+      nokogiri
+      rack
+      rails (>= 5.2)
+      redis
     tailwindcss-rails (0.3.3)
       rails (>= 6.0.0)
     temple (0.8.2)
@@ -426,6 +439,7 @@ GEM
       rr (>= 1.1.1)
       test-unit (>= 2.5.2)
     thor (1.0.1)
+    thread-local (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
     turbolinks (5.2.1)
@@ -445,6 +459,10 @@ GEM
     unicode-display_width (1.7.0)
     view_component (2.25.1)
       activesupport (>= 5.0.0, < 7.0)
+    view_component_reflex (3.1.7)
+      rails (>= 5.2, < 7.0)
+      stimulus_reflex (>= 3.4.1)
+      view_component
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -481,6 +499,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  annotate
   bootsnap (>= 1.4.4)
   bootstrap (~> 5.0.0.beta1)
   byebug
@@ -522,11 +541,13 @@ DEPENDENCIES
   sinatra (~> 2.0)
   spring
   steam-api
+  stimulus_reflex (~> 3.4)
   tailwindcss-rails (~> 0.3.3)
   test-unit-rr
   turbolinks (~> 5)
   tzinfo-data
   view_component
+  view_component_reflex (~> 3.1)
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)

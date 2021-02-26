@@ -41,6 +41,7 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'annotate'
 
 end
 
@@ -94,3 +95,6 @@ gem "omniauth-discord", "~> 1.0"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem 'bootstrap', '~> 5.0.0.beta1'
 gem "tailwindcss-rails", "~> 0.3.3"
+gem "stimulus_reflex", "~> 3.4"
+
+gem "view_component_reflex", "~> 3.1"

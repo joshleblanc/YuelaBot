@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: user_reactions
+#
+#  id            :bigint           not null, primary key
+#  chance        :float            default(1.0)
+#  creator       :string
+#  first_used_at :datetime
+#  last_used_at  :datetime
+#  output        :text
+#  regex         :string
+#  server        :bigint
+#  times_used    :integer          default(0)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
 class UserReaction < ApplicationRecord
     has_many :last_used_reactions
 

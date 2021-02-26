@@ -1,4 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# == Schema Information
+#
+# Table name: server_prefixes
+#
+#  id         :bigint           not null, primary key
+#  prefix     :string
+#  server     :bigint
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
 one:
   server: 1

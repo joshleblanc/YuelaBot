@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: user_commands
+#
+#  id         :bigint           not null, primary key
+#  alias      :boolean          default(FALSE)
+#  creator    :string
+#  input      :text
+#  name       :string
+#  output     :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class UserCommand < ApplicationRecord
 
   def self.existing_command(name)
