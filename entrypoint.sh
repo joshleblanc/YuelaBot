@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # https://stackoverflow.com/a/38732187/1935918
 set -e
