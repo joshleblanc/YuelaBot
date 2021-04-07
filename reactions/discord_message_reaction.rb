@@ -4,7 +4,7 @@ module Reactions
       include Discordrb::Webhooks
 
       def regex
-        /https:\/\/discordapp\.com\/channels\/\d+\/(\d+)\/(\d+)/
+        /https:\/\/discord\.com\/channels\/\d+\/(\d+)\/(\d+)/
       end
 
       def attributes
