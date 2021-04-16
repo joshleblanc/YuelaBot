@@ -3,6 +3,7 @@
 # Table name: game_keys
 #
 #  id         :bigint           not null, primary key
+#  claimed    :boolean          default(FALSE)
 #  key        :string
 #  name       :string
 #  created_at :datetime         not null
