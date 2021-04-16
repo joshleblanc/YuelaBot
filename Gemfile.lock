@@ -123,8 +123,6 @@ GEM
       xpath (~> 3.2)
     carmen (1.1.3)
       activesupport (>= 3.0.0)
-    cedar-component (0.1.2)
-      arbre
     childprocess (3.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -215,6 +213,8 @@ GEM
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    ilex (0.1.3)
+      arbre
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     json (2.5.1)
@@ -499,7 +499,6 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
-  cedar-component
   cowsay (~> 0.3.0)
   debase
   discordrb!
@@ -508,6 +507,7 @@ DEPENDENCIES
   foreman (~> 0.87.2)
   form-reflex
   google-api-client
+  ilex
   jbuilder (~> 2.7)
   kovid!
   listen (~> 3.3)

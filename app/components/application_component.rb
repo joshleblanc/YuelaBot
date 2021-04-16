@@ -1,7 +1,7 @@
 require 'ostruct'
 
 class ApplicationComponent < ViewComponentReflex::Component
-  extend Cedar::Component
+  extend Ilex::Component
 
   def initialize(**args)
     @props = OpenStruct.new(args)
