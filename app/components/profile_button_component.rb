@@ -24,7 +24,7 @@ class ProfileButtonComponent < ApplicationComponent
           text_node "Login with Discord"
         end
 
-        if current_user
+        if current_user&.avatar_url
           div class: "rounded-full overflow-hidden shadow-inner mb-1 mt-1 ml-2 flex-grow-0 flex-shrink-0 h-10 w-12" do
             helpers.image_tag current_user.avatar_url, class: "object-cover object-center"
           end
