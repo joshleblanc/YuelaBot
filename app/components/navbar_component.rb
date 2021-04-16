@@ -30,11 +30,14 @@ class NavbarComponent < ApplicationComponent
     end
   end
 
-  def initialize
+  def links
     @links = [
-      { label: "Home", to: -> { root_path } },
-      { label: "Game Keys", to: -> { game_keys_path } }
+      { label: "Home", to: -> { root_path } }
     ]
+    if current_user
+      @links << { label: "Game Keys", to: -> { game_keys_path } }
+    end
+    @links
   end
 
   render do
@@ -47,7 +50,7 @@ class NavbarComponent < ApplicationComponent
             end
             div class: "hidden md:block" do
               div class: "ml-10 flex items-baseline space-x-4" do
-                navbar_link_collection @links
+                navbar_link_collection links
               end
             end
           end
