@@ -15,7 +15,11 @@
     </div>
     <div class="col-span-1">
       <%= render PaperComponent.new do %>
-        <%= render "afks/form", afk: current_user.afk %>
+        <% if current_user %>
+          <%= render "afks/form", afk: current_user.afk %>
+        <% else %>
+
+        <% end %>
       <% end %>
     </div>
   </div>

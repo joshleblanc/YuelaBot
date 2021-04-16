@@ -78,7 +78,6 @@ gem 'steam-api'
 gem 'nokogiri'
 gem 'kovid', github: "siaw23/kovid"
 gem "sinatra", "~> 2.0"
-gem "haml", "~> 5.1"
 gem "cowsay", "~> 0.3.0"
 
 group :test do
@@ -98,6 +97,9 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "tailwindcss-rails", "~> 0.3.3"
 gem "stimulus_reflex", "~> 3.4"
 
-gem "view_component_reflex", path: "../view_component_reflex"
+gem "cedar", path: "D:/documents/dev/cedar"
+gem 'view_component_reflex'
+gem 'optimism'
+gem 'form-reflex'
 
 gem "turbo-rails", "~> 0.5.9"

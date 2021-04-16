@@ -25,7 +25,9 @@ module Commands
 
           event.user.pm "The game submission process will loop until you stop it."
           loop do
-            game_key = GameKey.new(server: event.server.id)
+            game_key = GameKey.new
+            game_key.servers << Server.where(external_id: event.server.id).first_or_create
+
             event.user.pm "You can cancel this at any time by saying 'stop'"
             event.user.pm "What game are you submitting?"
 

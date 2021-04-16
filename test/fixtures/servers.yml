@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: servers
+#
+#  id          :bigint           not null, primary key
+#  icon        :string
+#  name        :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  external_id :bigint
+#
+
+one:
+  external_id: 
+  name: MyString
+  icon: MyString
+
+two:
+  external_id: 
+  name: MyString
+  icon: MyString

@@ -11,6 +11,7 @@
     "autoprefixer": "^9",
     "copy-webpack-plugin": "^7.0.0",
     "postcss": "^7",
+    "slim-select": "^1.27.0",
     "stimulus": "^2.0.0",
     "stimulus_reflex": "3.4.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",

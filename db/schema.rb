@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_114553) do
+ActiveRecord::Schema.define(version: 2021_04_16_001612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,12 +46,21 @@ ActiveRecord::Schema.define(version: 2021_02_07_114553) do
     t.index ["user_id"], name: "index_birthdays_on_user_id"
   end
 
+  create_table "game_key_servers", force: :cascade do |t|
+    t.bigint "game_key_id", null: false
+    t.bigint "server_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_key_id"], name: "index_game_key_servers_on_game_key_id"
+    t.index ["server_id"], name: "index_game_key_servers_on_server_id"
+  end
+
   create_table "game_keys", force: :cascade do |t|
     t.string "name"
     t.string "key"
-    t.bigint "server"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "claimed", default: false
   end
 
   create_table "last_used_reactions", force: :cascade do |t|
@@ -85,6 +94,14 @@ ActiveRecord::Schema.define(version: 2021_02_07_114553) do
   create_table "server_prefixes", force: :cascade do |t|
     t.bigint "server"
     t.string "prefix"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "servers", force: :cascade do |t|
+    t.bigint "external_id"
+    t.string "name"
+    t.string "icon"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -132,6 +149,16 @@ ActiveRecord::Schema.define(version: 2021_02_07_114553) do
     t.integer "times_used", default: 0
   end
 
+  create_table "user_servers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "server_id", null: false
+    t.boolean "owner"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["server_id"], name: "index_user_servers_on_server_id"
+    t.index ["user_id"], name: "index_user_servers_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -141,4 +168,8 @@ ActiveRecord::Schema.define(version: 2021_02_07_114553) do
     t.string "email"
   end
 
+  add_foreign_key "game_key_servers", "game_keys"
+  add_foreign_key "game_key_servers", "servers"
+  add_foreign_key "user_servers", "servers"
+  add_foreign_key "user_servers", "users"
 end

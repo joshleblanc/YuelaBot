@@ -1,0 +1,9 @@
+<% content_for(:title) { t(".game_keys") } %>
+
+<div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 xl:max-w-6xl max-w-4xl">
+  <%= render partial: "game_keys/game_key", collection: @game_keys, as: :game_key, locals: { key_visible: false } %>
+</div>
+
+<br>
+
+<%= link_to 'New Game Key', new_game_key_path %>

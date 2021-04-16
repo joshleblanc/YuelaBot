@@ -1,0 +1,41 @@
+<%= render PaperComponent.new do %>
+  <div class="p-3">
+    <%= form_with(model: game_key, builder: CustomFormBuilder) do |form| %>
+      <% if game_key.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(game_key.errors.count, "error") %> prohibited this game_key from being saved:</h2>
+
+          <ul>
+            <% game_key.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form.container_for :name do %>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+        <%= form.error_for :name %>
+      <% end %>
+
+      <%= form.container_for :key do %>
+        <%= form.label :key %>
+        <%= form.text_field :key %>
+        <%= form.error_for :key %>
+      <% end %>
+
+      <%= form.container_for :server_ids do %>
+        <%= form.label :server_ids, t(".servers") %>
+        <%= form.select :server_ids, options_from_collection_for_select(current_user.servers, :id, :name), {}, { multiple: true } %>
+        <%= form.error_for :server_ids %>
+      <% end %>
+
+      <div class="actions">
+        <%= render ButtonComponent.new do %>
+          <%= t(".submit") %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

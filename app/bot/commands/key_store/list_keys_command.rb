@@ -20,7 +20,8 @@ module Commands
           if event.server.nil?
             return "Initiate this command in a server"
           end
-          keys = GameKey.where(server: event.server.id)
+          keys = GameKey.unclaimed.joins(:servers).where(servers: { external_id: event.server.id })
+
           if keys.empty?
             event.respond "No keys are available"
           else

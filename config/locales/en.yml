@@ -31,3 +31,18 @@
 
 en:
   hello: "Hello world"
+  view-notifications: "View Notifications"
+  open-main-menu: "Open main menu"
+  login-with-discord: "Login with Discord"
+  game_keys:
+    form:
+      servers: "Servers"
+      submit: "Submit"
+    show:
+      game_keys: "Game Keys"
+      game_key: "Game Key"
+    index:
+      game_keys: "Game Keys"
+    game_key:
+      claim: "Claim"
+      confirm-claim: "Are you sure you want to claim this?"

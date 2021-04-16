@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<% content_for(:title) { t(".game_key") } %>
+
+<%= render PaperComponent.new do %>
+  <div class="p-3">
+    <%= render ::Tags::LabelComponent.new(@game_key, :name) %>
+    <%= @game_key.name %>
+  </div>
+
+  <div class="p-3">
+    <%= render ::Tags::LabelComponent.new(@game_key, :key) %>
+    <%= @game_key.name %>
+  </div>
+
+  <div class="p-3">
+    <%= render ::Tags::LabelComponent.new(@game_key, :servers) %>
+    <% @game_key.servers.each do |server| %>
+      <%= server.name %>
+    <% end %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Edit', edit_game_key_path(@game_key) %> |
+<%= link_to 'Back', game_keys_path %>
