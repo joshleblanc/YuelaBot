@@ -2,7 +2,7 @@
 
 class ProfileButtonComponent < ApplicationComponent
   def container(opts = {}, &blk)
-    ctx = Cedar::Context.new(self)
+    ctx = Ilex::Context.new(self)
     if helpers.current_user
       link_to profile_edit_url, opts do
         ctx.instance_eval(&blk).to_s
