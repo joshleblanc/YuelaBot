@@ -98,6 +98,9 @@ GEM
     annotate (3.1.1)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
+    arbre (1.4.0)
+      activesupport (>= 3.0.0, < 6.2)
+      ruby2_keywords (>= 0.0.2, < 1.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -120,7 +123,8 @@ GEM
       xpath (~> 3.2)
     carmen (1.1.3)
       activesupport (>= 3.0.0)
-    cedar (0.2.89.pre)
+    cedar-component (0.1.2)
+      arbre
     childprocess (3.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -495,7 +499,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
-  cedar
+  cedar-component
   cowsay (~> 0.3.0)
   debase
   discordrb!
