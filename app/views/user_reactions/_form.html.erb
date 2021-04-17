@@ -15,6 +15,12 @@
           <%= form.error_for :output %>
         <% end %>
 
+        <%= form.container_for :chance do %>
+          <%= form.label :chance %>
+          <%= form.text_field :chance, type: "number", max: 1, min: 0, step: 0.01, data: { "reaction-tester-target": "output" } %>
+          <%= form.error_for :chance %>
+        <% end %>
+
         <%= form.container_for :server_ids do %>
           <%= form.label :server_ids, t('.servers') %>
           <%= form.select :server_ids, options_from_collection_for_select(current_user.servers, :id, :name, form.object.server_ids), {}, { multiple: true } %>
