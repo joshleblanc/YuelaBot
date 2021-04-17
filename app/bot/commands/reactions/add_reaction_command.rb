@@ -23,7 +23,7 @@ module Commands
               return "You need to provide a regex to match"
             end
             chance = 1 if chance.nil?
-            reaction = UserReaction.find_by(regex: regex, server: event.server.id)
+            reaction = UserReaction.joins(:servers).find_by(regex: regex, servers: { external_id: event.server.id })
             if reaction
               'Reaction already exists'
             else
@@ -33,7 +33,7 @@ module Commands
                   created_at: Time.now,
                   creator: event.author.username,
                   chance: chance.to_f,
-                  server: event.server.id
+                  servers: [Server.where(external_id: event.server.id).first_or_create(name: event.server.name, icon: event.server.icon_id)]
               )
               "Reaction #{ur.id} created"
             end

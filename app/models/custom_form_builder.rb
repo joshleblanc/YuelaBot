@@ -4,7 +4,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def text_field(method, options = {})
-    @template.render Tags::TextFieldComponent.new(@object_name, method, options)
+    @template.render Tags::TextFieldComponent.new(@object_name, method, objectify_options(options))
   end
 
   def container_for(method, **options, &block)
@@ -20,6 +20,6 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def select(method, choices = nil, options = {}, html_options = {}, &block)
-    @template.render Tags::SelectComponent.new(@object_name, method, choices, options, html_options, &block)
+    @template.render Tags::SelectComponent.new(@object_name, method, choices, objectify_options(options), @default_html_options.merge(html_options), &block)
   end
 end

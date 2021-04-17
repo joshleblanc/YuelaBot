@@ -1,0 +1,6 @@
+<% content_for(:title) { t(".title")} %>
+
+<%= render 'form', user_reaction: @user_reaction %>
+
+<%= link_to 'Show', @user_reaction %> |
+<%= link_to 'Back', user_reactions_path %>

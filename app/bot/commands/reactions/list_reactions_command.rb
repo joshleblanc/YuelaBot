@@ -22,7 +22,7 @@ module Commands
         def command(event)
           return if event.from_bot?
 
-          user_reactions = UserReaction.where(server: event.server.id)
+          user_reactions = UserReaction.joins(:servers).where(servers: { external_id: event.server.id })
           if user_reactions.empty?
             event << "No reactions registered"
           else

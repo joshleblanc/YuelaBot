@@ -1,6 +1,7 @@
 class GameKeysController < ApplicationController
-  before_action :set_game_key, only: %i[ show edit update destroy ]
   before_action :protect
+  before_action :set_game_key, only: %i[ show edit update destroy ]
+  before_action :validate_owner, only: %i[edit update destroy]
 
   # GET /game_keys or /game_keys.json
   def index
@@ -59,14 +60,20 @@ class GameKeysController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game_key
-      @game_key = GameKey.find(params[:id])
-      session[:model] = @game_key unless @stimulus_reflex
-    end
 
-    # Only allow a list of trusted parameters through.
-    def game_key_params
-      params.require(:game_key).permit(:key, :name, server_ids: [])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_game_key
+    @game_key = GameKey.find(params[:id])
+    session[:model] = @game_key unless @stimulus_reflex
+  end
+
+  # Only allow a list of trusted parameters through.
+  def game_key_params
+    params.require(:game_key).permit(:key, :name, server_ids: [])
+  end
+
+  # todo: actually add the creator to these, and check it
+  def validate_owner
+    redirect_back(fallback_location: root_url)
+  end
 end

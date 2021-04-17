@@ -31,6 +31,12 @@ GIT
       thor (~> 1.0)
       typhoeus (~> 1.3)
 
+PATH
+  remote: D:/documents/dev/cedar
+  specs:
+    ilex (0.1.4)
+      arbre
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -213,8 +219,6 @@ GEM
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    ilex (0.1.3)
-      arbre
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     json (2.5.1)
@@ -507,7 +511,7 @@ DEPENDENCIES
   foreman (~> 0.87.2)
   form-reflex
   google-api-client
-  ilex
+  ilex!
   jbuilder (~> 2.7)
   kovid!
   listen (~> 3.3)

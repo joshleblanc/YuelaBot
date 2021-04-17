@@ -1,0 +1,14 @@
+<div id="test-result">
+  <%= render ::Tags::LabelComponent.new(:user_reaction, :test_output) %>
+  <%= render ::Tags::TextFieldComponent.new(:user_reaction, :test_output, value: output) %>
+
+  <div class="text-sm pt-3 pl-1">
+    <% if local_assigns.key?(:match) %>
+      <% if match %>
+        <span class="text-green-500"><%= t(".match") %></span>
+      <% else %>
+        <span class="text-red-500"><%= t(".no-match") %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

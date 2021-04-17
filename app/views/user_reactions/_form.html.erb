@@ -1,0 +1,51 @@
+<div class="grid grid-cols-1 gap-2 xl:max-w-6xl max-w-4xl" data-controller="reaction-tester">
+  <%= render PaperComponent.new do %>
+    <div class="p-3">
+      <%= form_with(model: user_reaction, builder: CustomFormBuilder) do |form| %>
+
+        <%= form.container_for :regex do %>
+          <%= form.label :regex %>
+          <%= form.text_field :regex, data: { "reaction-tester-target": "regex" } %>
+          <%= form.error_for :regex %>
+        <% end %>
+
+        <%= form.container_for :output do %>
+          <%= form.label :output %>
+          <%= form.text_field :output, data: { "reaction-tester-target": "output" } %>
+          <%= form.error_for :output %>
+        <% end %>
+
+        <%= form.container_for :server_ids do %>
+          <%= form.label :server_ids, t('.servers') %>
+          <%= form.select :server_ids, options_from_collection_for_select(current_user.servers, :id, :name, form.object.server_ids), {}, { multiple: true } %>
+          <%= form.error_for :server_ids %>
+        <% end %>
+
+        <div class="actions">
+          <%= render ButtonComponent.new do %>
+            <%= t(".submit") %>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  <% end %>
+
+  <%= render PaperComponent.new do %>
+    <div class="p-3">
+      <h6><%= t(".user-reaction-test-title") %></h6>
+      <%= render ::Tags::LabelComponent.new(:user_reaction, :input) %>
+      <%= render ::Tags::TextFieldComponent.new(:user_reaction, :input, data: { "reaction-tester-target": "input" }) %>
+
+      <%= render "user_reactions/test_result", output: "" %>
+
+      <div class="mt-3">
+        <%= render ButtonComponent.new(data: {action: "click->reaction-tester#run"}) do %>
+          <%= t(".test") %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

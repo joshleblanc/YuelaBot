@@ -11,7 +11,7 @@ development:
   user: postgres
   host: localhost
   password: postgres
-  database: yuela_dev
+  database: yuela_prod_copy
   pool: 16
   timeout: 5000
 

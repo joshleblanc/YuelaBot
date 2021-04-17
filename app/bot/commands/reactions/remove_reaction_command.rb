@@ -20,8 +20,8 @@ module Commands
         def command(e, id)
           return if e.from_bot?
           begin
-            ur = UserReaction.find_by(id: id, server: e.server.id)
-            if ur 
+            ur = UserReaction.joins(:servers).find_by(id: id, servers: { external_id: e.server.id })
+            if ur
               ur.destroy
               "Reaction #{id} deleted"
             else

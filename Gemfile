@@ -97,7 +97,7 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "tailwindcss-rails", "~> 0.3.3"
 gem "stimulus_reflex", "~> 3.4"
 
-gem "ilex"
+gem "ilex", path: "D:/documents/dev/cedar"
 gem 'view_component_reflex'
 gem 'optimism'
 gem 'form-reflex'

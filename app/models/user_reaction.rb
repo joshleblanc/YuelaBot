@@ -9,13 +9,20 @@
 #  last_used_at  :datetime
 #  output        :text
 #  regex         :string
-#  server        :bigint
 #  times_used    :integer          default(0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  user_id       :bigint
+#
+# Indexes
+#
+#  index_user_reactions_on_user_id  (user_id)
 #
 class UserReaction < ApplicationRecord
     has_many :last_used_reactions
+    has_many :user_reaction_servers
+    has_many :servers, through: :user_reaction_servers
+    belongs_to :user, required: false
 
     def trigger(event)
         adjusted_output = output.sub(":user", event.author.mention)

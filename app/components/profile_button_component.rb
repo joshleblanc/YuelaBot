@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 class ProfileButtonComponent < ApplicationComponent
-  def container(opts = {}, &blk)
-    ctx = Ilex::Context.new(self)
+  def container(opts = {})
     if helpers.current_user
       link_to profile_edit_url, opts do
-        ctx.instance_eval(&blk).to_s
+        yield.html_safe
       end
     else
       button_to "/auth/discord", opts do
-        ctx.instance_eval(&blk).to_s
+        yield.html_safe
       end
     end
   end

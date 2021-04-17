@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_001612) do
+ActiveRecord::Schema.define(version: 2021_04_17_154924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,13 @@ ActiveRecord::Schema.define(version: 2021_04_16_001612) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "trivia_questions", force: :cascade do |t|
+    t.string "question"
+    t.string "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "twitch_configs", force: :cascade do |t|
     t.bigint "server"
     t.bigint "channel"
@@ -136,6 +143,15 @@ ActiveRecord::Schema.define(version: 2021_04_16_001612) do
     t.boolean "alias", default: false
   end
 
+  create_table "user_reaction_servers", force: :cascade do |t|
+    t.bigint "user_reaction_id", null: false
+    t.bigint "server_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["server_id"], name: "index_user_reaction_servers_on_server_id"
+    t.index ["user_reaction_id"], name: "index_user_reaction_servers_on_user_reaction_id"
+  end
+
   create_table "user_reactions", force: :cascade do |t|
     t.string "regex"
     t.text "output"
@@ -143,10 +159,11 @@ ActiveRecord::Schema.define(version: 2021_04_16_001612) do
     t.float "chance", default: 1.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "server"
     t.datetime "last_used_at"
     t.datetime "first_used_at"
     t.integer "times_used", default: 0
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_user_reactions_on_user_id"
   end
 
   create_table "user_servers", force: :cascade do |t|
@@ -170,6 +187,8 @@ ActiveRecord::Schema.define(version: 2021_04_16_001612) do
 
   add_foreign_key "game_key_servers", "game_keys"
   add_foreign_key "game_key_servers", "servers"
+  add_foreign_key "user_reaction_servers", "servers"
+  add_foreign_key "user_reaction_servers", "user_reactions"
   add_foreign_key "user_servers", "servers"
   add_foreign_key "user_servers", "users"
 end

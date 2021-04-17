@@ -46,3 +46,26 @@ en:
     game_key:
       claim: "Claim"
       confirm-claim: "Are you sure you want to claim this?"
+  user_reactions:
+    form:
+      submit: "Submit"
+      user-reaction-test-title: "Test Reaction"
+      test: "Test"
+      server: "Server"
+      servers: "Servers"
+    match:
+      no-match: "No match"
+      match: "Match"
+    test_result:
+      match: "Match"
+      no-match: "No Match"
+    index:
+      title: "User Reactions"
+    edit:
+      title: "Editing User Reaction"
+    new:
+      title: "New User Reaction"
+    show:
+      title: "Reaction"
+  user-reaction-test-title: "Test Reaction"
+  submit: "Test"

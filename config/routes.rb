@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :user_reactions
   resources :game_keys
   resources :afks, only: [:edit, :destroy, :new, :create]
   patch 'current_user/toggle_afk'

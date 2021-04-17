@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<% content_for(:title) { t(".title")} %>
+
+<%= render Table::TableComponent.new do %>
+  <%= render Table::TableHeadComponent.new do %>
+    <tr>
+      <%= render Table::TableHeaderComponent.new do %>
+        <%= t(".regex") %>
+      <% end %>
+      <%= render Table::TableHeaderComponent.new do %>
+        <%= t(".output") %>
+      <% end %>
+      <%= render Table::TableHeaderComponent.new(class: "w-64") do %>
+
+      <% end %>
+    </tr>
+  <% end %>
+
+  <%= render Table::TableBodyComponent.new do %>
+    <% @user_reactions.each do |user_reaction| %>
+      <tr>
+        <%= render Table::TableCellComponent.new do %>
+          <%= user_reaction.regex %>
+        <% end %>
+
+        <%= render Table::TableCellComponent.new(class: "overflow-ellipsis overflow-hidden") do %>
+          <%= user_reaction.output %>
+        <% end %>
+
+        <%= render Table::TableCellComponent.new do %>
+          <%= link_to 'Show', user_reaction %>
+          <%= link_to 'Edit', edit_user_reaction_path(user_reaction) if current_user == user_reaction.user %>
+          <%= link_to 'Destroy', user_reaction, method: :delete, data: {confirm: 'Are you sure?'} if current_user == user_reaction.user %>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+<% end %>
+
+<br>
+
+<%= link_to 'New User Reaction', new_user_reaction_path %>

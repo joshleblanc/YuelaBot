@@ -35,7 +35,10 @@ class NavbarComponent < ApplicationComponent
       { label: "Home", to: -> { root_path } }
     ]
     if current_user
-      @links << { label: "Game Keys", to: -> { game_keys_path } }
+      @links.push(
+        { label: "Game Keys", to: -> { game_keys_path } },
+        { label: "Reactions", to: -> { user_reactions_path }}
+      )
     end
     @links
   end
