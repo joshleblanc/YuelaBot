@@ -24,6 +24,9 @@ class UserReaction < ApplicationRecord
     has_many :servers, through: :user_reaction_servers
     belongs_to :user, required: false
 
+    validates_presence_of :regex
+    validates_presence_of :output
+
     def trigger(event)
         adjusted_output = output.sub(":user", event.author.mention)
         event.respond(event.message.content.sub(/#{regex}/, adjusted_output))
