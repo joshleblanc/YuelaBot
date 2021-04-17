@@ -8,7 +8,7 @@ unless ENV['DISCORD']
 end
 
 GLOBAL_MIDDLEWARE = [
-  CheckAboveMiddleware, 
+  CheckAboveMiddleware,
   SelfPromotionMiddleware,
   TypingMiddleware
 ]
@@ -97,8 +97,8 @@ BOT.message do |event|
   author_id = event.author.id
   user = User.find_or_create_by(id: author_id)
 
-  urs = UserReaction.all.select do |ur|
-    Regexp.new(ur.regex).match(event.message.content) && event.server.id == ur.server
+  urs = UserReaction.joins(:servers).where(servers: { external_id: event.server.id }).select do |ur|
+    Regexp.new(ur.regex).match(event.message.content)
   end
   urs.each do |ur|
     if rand <= ur.chance
@@ -131,7 +131,7 @@ end
 
 scheduler.every '1m' do
   TwitchStream.all.each(&:renew)
-  
+
   TwitchStreamEvent.all.each do |event|
     twitch_configs = TwitchConfig.where(server: event.server)
     event.data.each do |datum|
