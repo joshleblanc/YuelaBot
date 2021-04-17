@@ -26,6 +26,7 @@ class UserReaction < ApplicationRecord
 
     validates_presence_of :regex
     validates_presence_of :output
+    validates_presence_of :servers
 
     def trigger(event)
         adjusted_output = output.sub(":user", event.author.mention)
