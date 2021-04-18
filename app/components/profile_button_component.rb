@@ -4,11 +4,11 @@ class ProfileButtonComponent < ApplicationComponent
   def container(opts = {})
     if helpers.current_user
       link_to profile_edit_url, opts do
-        yield.html_safe
+        yield
       end
     else
       button_to "/auth/discord", opts do
-        yield.html_safe
+        yield
       end
     end
   end
