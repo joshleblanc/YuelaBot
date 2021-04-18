@@ -15,10 +15,9 @@ class ProfileButtonComponent < ApplicationComponent
 
   render do
     container data: { turbo: false } do
-      div class: "inline-flex items-center relative px-2 border rounded-full hover:shadow-lg text-white" do
+      div class: "inline-flex items-center relative border-2 px-2 rounded-full hover:shadow-lg text-white" do
         if current_user
           text_node current_user.name
-
         else
           text_node "Login with Discord"
         end
