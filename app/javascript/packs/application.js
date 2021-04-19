@@ -11,6 +11,6 @@ import "channels"
 Rails.start()
 ActiveStorage.start()
 
-import "stylesheets/application"
+import "stylesheets/application.scss"
 
 import "controllers"

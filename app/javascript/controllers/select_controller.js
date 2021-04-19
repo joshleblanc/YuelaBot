@@ -2,7 +2,6 @@
 
 import ApplicationController from './application_controller'
 import SlimSelect from 'slim-select'
-import 'slim-select/dist/slimselect.css';
 
 export default class extends ApplicationController {
   static values = {

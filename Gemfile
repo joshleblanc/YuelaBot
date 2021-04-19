@@ -9,7 +9,8 @@ gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 5.0'
+gem "webpacker", "6.0.0.beta.6"
+
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -104,3 +105,4 @@ gem 'optimism'
 gem 'form-reflex'
 
 gem "turbo-rails", "~> 0.5.9"
+gem "pagy", "~> 3.0.0"

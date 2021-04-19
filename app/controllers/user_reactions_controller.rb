@@ -5,7 +5,7 @@ class UserReactionsController < ApplicationController
 
   # GET /user_reactions or /user_reactions.json
   def index
-    @user_reactions = UserReaction.all
+    @pagy, @user_reactions = pagy(UserReaction.all)
   end
 
   # GET /user_reactions/1 or /user_reactions/1.json
