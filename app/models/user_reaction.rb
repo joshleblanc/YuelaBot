@@ -20,7 +20,7 @@
 #
 class UserReaction < ApplicationRecord
     has_many :last_used_reactions
-    has_many :user_reaction_servers
+    has_many :user_reaction_servers, dependent: :destroy
     has_many :servers, through: :user_reaction_servers
     belongs_to :user, required: false
 
