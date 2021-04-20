@@ -18,7 +18,7 @@ module Commands
           return if event.from_bot?
 
           begin
-            regex, chance, *output = args
+            regex, chance, *output = CSV.parse_line(args.join(' '), col_sep: ' ')
             if regex.nil?
               return "You need to provide a regex to match"
             end
