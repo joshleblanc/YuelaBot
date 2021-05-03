@@ -4,7 +4,7 @@ module Reactions
       include Discordrb::Webhooks
 
       def regex
-        /https?:\/\/(?:www\.)?typescriptlang\.org\/(?:play|dev\/bug-workbench)(?:\/index\.html)?\/?\??(?:\w+=[^\s#&]+)?(?:\&\w+=[^\s#&]+)*#code\/([\w\-+_]+={0,4})/;
+        /https?:\/\/(?:www\.)?(?:typescriptlang|staging-typescript)\.org\/(?:play|dev\/bug-workbench)(?:\/index\.html)?\/?(\??(?:\w+=[^\s#&]+)?(?:\&\w+=[^\s#&]+)*)#code\/([\w\-+_]+={0,4})/
       end
 
       def attributes
