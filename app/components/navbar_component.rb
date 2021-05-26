@@ -32,7 +32,8 @@ class NavbarComponent < ApplicationComponent
 
   def links
     @links = [
-      { label: "Home", to: -> { root_path } }
+      { label: "Home", to: -> { root_path } },
+      { label: "Crayta", to: -> { crayta_games_path }}
     ]
     if current_user
       @links.push(

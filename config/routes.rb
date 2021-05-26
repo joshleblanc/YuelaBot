@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :crayta do
+    get 'games' => "games#index"
+    get 'games/:id' => "games#show"
+    get 'games/search'
+  end
   resources :user_reactions
   resources :game_keys
   resources :afks, only: [:edit, :destroy, :new, :create]

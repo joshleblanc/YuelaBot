@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_17_154924) do
+ActiveRecord::Schema.define(version: 2021_05_26_192704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,65 @@ ActiveRecord::Schema.define(version: 2021_04_17_154924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_birthdays_on_user_id"
+  end
+
+  create_table "crayta_games", force: :cascade do |t|
+    t.uuid "external_id"
+    t.string "name"
+    t.string "description"
+    t.datetime "external_created_at"
+    t.datetime "external_updated_at"
+    t.boolean "published"
+    t.boolean "hidden"
+    t.boolean "publically_editable"
+    t.boolean "system_game"
+    t.boolean "copyable"
+    t.boolean "concealed"
+    t.boolean "archived"
+    t.uuid "cover_image"
+    t.integer "up_votes"
+    t.integer "down_votes"
+    t.integer "visits"
+    t.integer "max_players"
+    t.string "state_share_url"
+    t.boolean "blocked"
+    t.string "game_link"
+    t.boolean "binned"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "crayta_user_id", null: false
+    t.index ["crayta_user_id"], name: "index_crayta_games_on_crayta_user_id"
+  end
+
+  create_table "crayta_rail_snapshot_games", force: :cascade do |t|
+    t.bigint "crayta_rail_snapshot_id", null: false
+    t.bigint "crayta_game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["crayta_game_id"], name: "index_crayta_rail_snapshot_games_on_crayta_game_id"
+    t.index ["crayta_rail_snapshot_id"], name: "index_crayta_rail_snapshot_games_on_crayta_rail_snapshot_id"
+  end
+
+  create_table "crayta_rail_snapshots", force: :cascade do |t|
+    t.bigint "crayta_rail_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["crayta_rail_id"], name: "index_crayta_rail_snapshots_on_crayta_rail_id"
+  end
+
+  create_table "crayta_rails", force: :cascade do |t|
+    t.string "name"
+    t.boolean "current"
+    t.string "mode"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "crayta_users", force: :cascade do |t|
+    t.string "name"
+    t.uuid "external_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "game_key_servers", force: :cascade do |t|
@@ -104,13 +163,6 @@ ActiveRecord::Schema.define(version: 2021_04_17_154924) do
     t.string "icon"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "trivia_questions", force: :cascade do |t|
-    t.string "question"
-    t.string "answer"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "twitch_configs", force: :cascade do |t|
@@ -185,6 +237,10 @@ ActiveRecord::Schema.define(version: 2021_04_17_154924) do
     t.string "email"
   end
 
+  add_foreign_key "crayta_games", "crayta_users"
+  add_foreign_key "crayta_rail_snapshot_games", "crayta_games"
+  add_foreign_key "crayta_rail_snapshot_games", "crayta_rail_snapshots"
+  add_foreign_key "crayta_rail_snapshots", "crayta_rails"
   add_foreign_key "game_key_servers", "game_keys"
   add_foreign_key "game_key_servers", "servers"
   add_foreign_key "user_reaction_servers", "servers"

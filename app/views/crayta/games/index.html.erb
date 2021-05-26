@@ -1,0 +1,1 @@
+<%= render DataListComponent.new(header: "Crayta Games", data: @games.map { |g| [g.name, g.crayta_user.name]}) %>

@@ -1,0 +1,84 @@
+# == Schema Information
+#
+# Table name: crayta_games
+#
+#  id                  :bigint           not null, primary key
+#  archived            :boolean
+#  binned              :boolean
+#  blocked             :boolean
+#  concealed           :boolean
+#  copyable            :boolean
+#  cover_image         :uuid
+#  description         :string
+#  down_votes          :integer
+#  external_created_at :datetime
+#  external_updated_at :datetime
+#  game_link           :string
+#  hidden              :boolean
+#  max_players         :integer
+#  name                :string
+#  publically_editable :boolean
+#  published           :boolean
+#  state_share_url     :string
+#  system_game         :boolean
+#  up_votes            :integer
+#  visits              :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  crayta_user_id      :bigint           not null
+#  external_id         :uuid
+#
+# Indexes
+#
+#  index_crayta_games_on_crayta_user_id  (crayta_user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (crayta_user_id => crayta_users.id)
+#
+
+one:
+  external_id: 
+  name: MyString
+  description: MyString
+  external_created_at: 2021-05-26 11:26:29
+  external_updated_at: 2021-05-26 11:26:29
+  published: false
+  hidden: false
+  publically_editable: false
+  system_game: false
+  copyable: false
+  concealed: false
+  archived: false
+  cover_image: 
+  up_votes: 1
+  down_votes: 1
+  visits: 1
+  max_players: 1
+  state_share_url: MyString
+  blocked: false
+  game_link: MyString
+  binned: false
+
+two:
+  external_id: 
+  name: MyString
+  description: MyString
+  external_created_at: 2021-05-26 11:26:29
+  external_updated_at: 2021-05-26 11:26:29
+  published: false
+  hidden: false
+  publically_editable: false
+  system_game: false
+  copyable: false
+  concealed: false
+  archived: false
+  cover_image: 
+  up_votes: 1
+  down_votes: 1
+  visits: 1
+  max_players: 1
+  state_share_url: MyString
+  blocked: false
+  game_link: MyString
+  binned: false
