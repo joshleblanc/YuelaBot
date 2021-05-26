@@ -107,3 +107,4 @@ gem 'form-reflex'
 gem "turbo-rails", "~> 0.5.9"
 gem "pagy", "~> 3.0.0"
 gem 'whenever', require: false
+gem "chartkick", "~> 4.0"

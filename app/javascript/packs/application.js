@@ -14,3 +14,4 @@ ActiveStorage.start()
 import "stylesheets/application.scss"
 
 import "controllers"
+import "chartkick"

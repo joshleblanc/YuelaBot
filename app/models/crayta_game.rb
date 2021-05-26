@@ -38,9 +38,19 @@
 #
 class CraytaGame < ApplicationRecord
   belongs_to :crayta_user
+  has_many :crayta_rail_snapshot_games
+  has_many :crayta_rail_snapshots, through: :crayta_rail_snapshot_games
   # TODO: add the images array and videos array
   # TODO: Add crayta users
   # TODO: add names object?
   # TODO: add descriptions object?
   # TODO: add tags
+
+  def times_in_rails
+    
+    crayta_rail_snapshots.order(:created_at).find_each.each_cons(2).map do |crayta_rail_snapshots|
+      first, second = crayta_rail_snapshots
+      [first.crayta_rail.name, first.created_at, second.created_at]
+    end.reject { |a| a.compact.length < 3 }
+  end
 end

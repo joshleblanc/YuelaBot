@@ -2,7 +2,7 @@ class Crayta::GamesController < ApplicationController
   before_action :set_game, only: [:show]
 
   def index
-    @games = CraytaGame.all
+    @pagy, @games = pagy(CraytaGame.order(visits: :desc))
   end
 
   def show
