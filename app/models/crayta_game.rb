@@ -61,8 +61,8 @@ class CraytaGame < ApplicationRecord
           if diff == 6 then
             current_interval[1] = snapshot.created_at
           else
-            dates << current_interval
             current_interval = [snapshot.created_at]
+            dates << current_interval
           end
         end
       end
