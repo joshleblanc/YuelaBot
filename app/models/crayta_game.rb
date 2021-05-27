@@ -50,16 +50,34 @@ class CraytaGame < ApplicationRecord
 
     rails = crayta_rail_snapshots.order(:created_at).group_by { |a| a.crayta_rail.name }
     rails.map do |name, snapshots|
-      snapshots.each_cons(2).map do |snapshots|
-        first, second = snapshots
-        diff = ((second.created_at - first.created_at) / 100).round
-        if diff != 6 then # 10 minutes, same as the update time
-          []
+      dates = []
+      current_interval = []
+      dates << current_interval
+      snapshots.each do |snapshot|
+        if current_interval.empty?
+          current_interval << snapshot.created_at
         else
-          [name, first.created_at, second.created_at]
+          diff = ((snapshot.created_at - current_interval.last) / 100).round
+          if diff == 6 then
+            current_interval[1] = snapshot.created_at
+          else
+            current_interval = [snapshot.created_at]
+          end
         end
-        
+      end
+      dates.map do |date_arr|
+        [name, *date_arr]
       end.reject { |a| a.compact.length < 3 }
+      # snapshots.each_cons(2).map do |snapshots|
+      #   first, second = snapshots
+      #   diff = ((second.created_at - first.created_at) / 100).round
+      #   if diff != 6 then # 10 minutes, same as the update time
+      #     []
+      #   else
+      #     [name, first.created_at, second.created_at]
+      #   end
+        
+      # end.reject { |a| a.compact.length < 3 }
     end.flatten(1)
   end
 end
