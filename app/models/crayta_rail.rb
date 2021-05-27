@@ -16,8 +16,16 @@ class CraytaRail < ApplicationRecord
     current_snapshot.crayta_games
   end
 
+  def previous_games
+    previous_snapshot.crayta_games
+  end
+
+  def previous_snapshot
+    crayta_rail_snapshots.order(created_at: :desc).second
+  end
+
   def current_snapshot
-    crayta_rail_snapshots.order(:created_at).first
+    crayta_rail_snapshots.order(created_at: :desc).first
   end
 
   def self.recently_updated
@@ -58,9 +66,13 @@ class CraytaRail < ApplicationRecord
     rails.each do |rail|
       crayta_rail = where(name: rail["name"]).first_or_create(mode: rail["mode"])
       crayta_rail.update(mode: rail["mode"])
+
+      current_rail_games = crayta_rail.current_games
+
       crayta_rail_snapshot = crayta_rail.crayta_rail_snapshots.build
       rail["list"]["items"].each do |game|
         crayta_game = CraytaGame.where(external_id: game["gameId"]).first_or_create(crayta_user: CraytaUser.where(external_id: game["ownerId"]).first_or_create(name: game["ownerName"]))
+        
         crayta_game.update(
           name: game["name"],
           description: game["description"],
@@ -84,7 +96,10 @@ class CraytaRail < ApplicationRecord
         )
         crayta_rail_snapshot.crayta_games << crayta_game
       end
+
       crayta_rail_snapshot.save
     end
+
+    CraytaRailSubscription.notify
   end
 end
