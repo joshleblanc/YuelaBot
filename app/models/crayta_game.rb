@@ -69,16 +69,6 @@ class CraytaGame < ApplicationRecord
       dates.map do |date_arr|
         [name, *date_arr]
       end.reject { |a| a.compact.length < 3 }
-      # snapshots.each_cons(2).map do |snapshots|
-      #   first, second = snapshots
-      #   diff = ((second.created_at - first.created_at) / 100).round
-      #   if diff != 6 then # 10 minutes, same as the update time
-      #     []
-      #   else
-      #     [name, first.created_at, second.created_at]
-      #   end
-        
-      # end.reject { |a| a.compact.length < 3 }
     end.flatten(1)
   end
 end
