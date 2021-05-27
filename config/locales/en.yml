@@ -46,6 +46,10 @@ en:
     game_key:
       claim: "Claim"
       confirm-claim: "Are you sure you want to claim this?"
+  crayta:
+    games:
+      index: 
+        title: "Crayta Games"
   user_reactions:
     form:
       submit: "Submit"
