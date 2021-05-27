@@ -47,10 +47,13 @@ class CraytaGame < ApplicationRecord
   # TODO: add tags
 
   def times_in_rails
-    
-    crayta_rail_snapshots.order(:created_at).find_each.each_cons(2).map do |crayta_rail_snapshots|
-      first, second = crayta_rail_snapshots
-      [first.crayta_rail.name, first.created_at, second.created_at]
-    end.reject { |a| a.compact.length < 3 }
+
+    rails = crayta_rail_snapshots.order(:created_at).group_by { |a| a.crayta_rail.name }
+    rails.map do |name, snapshots|
+      snapshots.each_cons(2).map do |snapshots|
+        first, second = snapshots
+        [name, first.created_at, second.created_at]
+      end.reject { |a| a.compact.length < 3 }.flatten
+    end
   end
 end
