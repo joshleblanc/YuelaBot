@@ -6,6 +6,7 @@
 #  day        :integer
 #  month      :integer
 #  server     :bigint
+#  year       :integer          default(0)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :bigint
