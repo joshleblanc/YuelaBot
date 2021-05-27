@@ -53,7 +53,7 @@ class CraytaGame < ApplicationRecord
       snapshots.each_cons(2).map do |snapshots|
         first, second = snapshots
         [name, first.created_at, second.created_at]
-      end.reject { |a| a.compact.length < 3 }.flatten
-    end
+      end.reject { |a| a.compact.length < 3 }
+    end.flatten(1)
   end
 end
