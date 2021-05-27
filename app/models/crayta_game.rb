@@ -52,8 +52,8 @@ class CraytaGame < ApplicationRecord
     rails.map do |name, snapshots|
       snapshots.each_cons(2).map do |snapshots|
         first, second = snapshots
-        diff = (second.created_at - first.created_at).round
-        if diff != 600 then # 10 minutes, same as the update time
+        diff = ((second.created_at - first.created_at) / 100).round
+        if diff != 6 then # 10 minutes, same as the update time
           []
         else
           [name, first.created_at, second.created_at]
