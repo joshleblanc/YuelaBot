@@ -13,11 +13,11 @@ class CraytaRail < ApplicationRecord
   has_many :crayta_rail_snapshots
 
   def current_games
-    current_snapshot.crayta_games
+    current_snapshot&.crayta_games
   end
 
   def previous_games
-    previous_snapshot.crayta_games
+    previous_snapshot&.crayta_games
   end
 
   def previous_snapshot
@@ -66,8 +66,6 @@ class CraytaRail < ApplicationRecord
     rails.each do |rail|
       crayta_rail = where(name: rail["name"]).first_or_create(mode: rail["mode"])
       crayta_rail.update(mode: rail["mode"])
-
-      current_rail_games = crayta_rail.current_games
 
       crayta_rail_snapshot = crayta_rail.crayta_rail_snapshots.build
       rail["list"]["items"].each do |game|

@@ -16,6 +16,10 @@ class CraytaRailSubscription < ApplicationRecord
       current_games = rail.current_games
       previous_games = rail.previous_games
 
+      if current_games.nil? || previous_games.nil?
+        next
+      end
+
       new_games = current_games - previous_games
       removed_games = previous_games - current_games
 
