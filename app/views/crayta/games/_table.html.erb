@@ -1,0 +1,19 @@
+<%= render Table::TableComponent.new do |c| %>
+  <% c.table_header do |th| %>
+    <% th.cell { t(".name") } %>
+    <% th.cell { t(".creator") } %>
+    <% th.cell { t(".visits") } %>
+    <% th.cell %>
+  <% end %>
+ 
+ <% games.each do |game| %>
+  <% c.table_row do |r| %>
+    <% r.cell { game.name } %>
+    <% r.cell { link_to game.crayta_user.name, crayta_user_games_url(game.crayta_user) } %>
+    <% r.cell { game.visits.to_s } %>
+    <% r.cell { link_to('Show', game) } %>
+  <% end %>
+ <% end %>
+<% end %>
+
+<%== pagy_nav(pagy) %>

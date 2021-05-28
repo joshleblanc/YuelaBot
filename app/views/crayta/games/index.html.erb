@@ -1,21 +1,3 @@
 <% content_for(:title) { t(".title") } %>
 
-<%= render Table::TableComponent.new do |c| %>
-  <% c.table_header do |th| %>
-    <% th.cell { t(".name") } %>
-    <% th.cell { t(".creator") } %>
-    <% th.cell { t(".visits") } %>
-    <% th.cell %>
-  <% end %>
- 
- <% @games.each do |game| %>
-  <% c.table_row do |r| %>
-    <% r.cell { game.name } %>
-    <% r.cell { game.crayta_user.name } %>
-    <% r.cell { game.visits } %>
-    <% r.cell { link_to('Show', game) } %>
-  <% end %>
- <% end %>
-<% end %>
-
-<%== pagy_nav(@pagy) %>
+<%= render "crayta/games/table", pagy: @pagy, games: @games %>

@@ -1,2 +1,3 @@
-<h1>Crayta::Users#games</h1>
-<p>Find me in app/views/crayta/users/games.html.erb</p>
+<% content_for(:title) { @user.name } %>
+
+<%= render "crayta/games/table", pagy: @pagy, games: @games %>

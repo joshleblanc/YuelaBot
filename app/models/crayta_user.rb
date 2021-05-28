@@ -9,4 +9,5 @@
 #  external_id :uuid
 #
 class CraytaUser < ApplicationRecord
+  has_many :crayta_games
 end
