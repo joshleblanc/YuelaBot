@@ -13,11 +13,11 @@ class CraytaRail < ApplicationRecord
   has_many :crayta_rail_snapshots
 
   def current_games
-    current_snapshot&.crayta_games
+    current_snapshot&.crayta_games || CraytaGame.none
   end
 
   def previous_games
-    previous_snapshot&.crayta_games
+    previous_snapshot&.crayta_games || CraytaGame.none
   end
 
   def previous_snapshot
