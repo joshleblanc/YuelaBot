@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   namespace :crayta do
+    get 'users/:id/games' => "users#games"
+  end
+  namespace :crayta do
     get 'games' => "games#index"
     get 'games/:id' => "games#show", as: :game
     get 'games/search'

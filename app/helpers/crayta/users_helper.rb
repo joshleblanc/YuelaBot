@@ -1,0 +1,2 @@
+module Crayta::UsersHelper
+end

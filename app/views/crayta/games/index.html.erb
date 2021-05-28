@@ -1,41 +1,21 @@
-<% content_for(:title) { t(".title" ) } %>
+<% content_for(:title) { t(".title") } %>
 
-<%= render Table::TableComponent.new do %>
-  <%= render Table::TableHeadComponent.new do %>
-    <tr>
-      <%= render Table::TableHeaderComponent.new do %>
-        <%= t(".name") %>
-      <% end %>
-      <%= render Table::TableHeaderComponent.new do %>
-        <%= t(".creator") %>
-      <% end %>
-      <%= render Table::TableHeaderComponent.new do %>
-        <%= t(".visits") %>
-      <% end %>
-      <%= render Table::TableHeaderComponent.new(class: "w-64") do %>
-      <% end %>
-    </tr>
+<%= render Table::TableComponent.new do |c| %>
+  <% c.table_header do |th| %>
+    <% th.cell { t(".name") } %>
+    <% th.cell { t(".creator") } %>
+    <% th.cell { t(".visits") } %>
+    <% th.cell %>
   <% end %>
-
-  <%= render Table::TableBodyComponent.new do %>
-    <% @games.each do |game| %>
-      <tr>
-        <%= render Table::TableCellComponent.new do %>
-          <%= game.name %>
-        <% end %>
-        <%= render Table::TableCellComponent.new do %>
-          <%= game.crayta_user.name %>
-        <% end %>
-        <%= render Table::TableCellComponent.new do %>
-          <%= game.visits %>
-        <% end %>
-        <%= render Table::TableCellComponent.new do %>
-          <%= link_to 'Show', game %>
-        <% end %>
-
-      </tr>
-    <% end %>
+ 
+ <% @games.each do |game| %>
+  <% c.table_row do |r| %>
+    <% r.cell { game.name } %>
+    <% r.cell { game.crayta_user.name } %>
+    <% r.cell { game.visits } %>
+    <% r.cell { link_to('Show', game) } %>
   <% end %>
+ <% end %>
 <% end %>
 
 <%== pagy_nav(@pagy) %>
