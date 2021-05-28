@@ -23,16 +23,21 @@ class CraytaRailSubscription < ApplicationRecord
         next
       end
       
-      fields = [
-        EmbedField.new(
+      fields = []
+      unless new_games.empty?
+        fields << EmbedField.new(
           name: "Added",
           value: new_games.map(&:name).join(", ")
-        ),
-        EmbedField.new(
+        )
+      end
+
+      unless removed_games.empty?
+        fields << EmbedField.new(
           name: "Removed",
           value: removed_games.map(&:name).join(", ")
         )
-      ]
+      end
+        
       embed.fields = fields
       embed.color = "#F870D4"
       embed.timestamp = Time.now
