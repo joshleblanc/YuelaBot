@@ -3,9 +3,7 @@ class Table::TableRowComponent < ApplicationComponent
 
   render do
     tr do
-      cells.map do |cell|
-        cell
-      end.join.html_safe
+      cells.join.html_safe
     end
   end
 end

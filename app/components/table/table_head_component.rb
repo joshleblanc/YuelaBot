@@ -7,9 +7,7 @@ class Table::TableHeadComponent < ApplicationComponent
 
   render do
     thead class: "bg-gray-50", **@args do
-      cells.map do |cell|
-        cell
-      end.join.html_safe
+      cells.join.html_safe
     end
   end
 end
