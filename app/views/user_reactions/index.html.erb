@@ -6,7 +6,7 @@
   <% c.table_header do |th| %>
     <% th.cell { t(".regex") } %>
     <% th.cell { t(".output")} %>
-    <% th.cell {} %>
+    <% th.cell(class: "w-64") {} %>
   <% end %>
 
   <% @user_reactions.each do |user_reaction| %>
