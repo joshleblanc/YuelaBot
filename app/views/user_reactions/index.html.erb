@@ -12,7 +12,7 @@
   <% @user_reactions.each do |user_reaction| %>
     <% c.table_row do |r| %>
       <% r.cell { user_reaction.regex } %>
-      <% r.cell { user_reaction.output } %>
+      <% r.cell(class: "overflow-ellipsis overflow-hidden") { user_reaction.output } %>
       <% r.cell do %>
           <%= link_to 'Show', user_reaction %>
           <%= link_to 'Edit', edit_user_reaction_path(user_reaction) if current_user == user_reaction.user %>
