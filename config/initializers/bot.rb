@@ -1,4 +1,4 @@
-BOT = Discordrb::Commands::CommandBot.new({
+BOT = Discordrb::Commands::CommandBot.new(
   token: ENV['DISCORD'],
   prefix: ->(message) do
     next unless message&.server
@@ -9,4 +9,4 @@ BOT = Discordrb::Commands::CommandBot.new({
   end,
   log_level: :debug,
   parse_self: true
-})
+)
