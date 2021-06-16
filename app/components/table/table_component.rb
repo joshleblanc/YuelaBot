@@ -4,9 +4,9 @@ class Table::TableComponent < ApplicationComponent
 
   render do
     table class: "min-w-full divide-y divide-gray-200 table-fixed w-full" do
-      text_node table_headers.join.html_safe
+      text_node table_headers
       table__table_body do
-        table_rows.join.html_safe
+        table_rows
       end
     end
   end

@@ -3,7 +3,7 @@ class Table::TableRowComponent < ApplicationComponent
 
   render do
     tr do
-      cells.join.html_safe
+      cells
     end
   end
 end
