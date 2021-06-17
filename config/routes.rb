@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     get 'games/:id' => "games#show", as: :game
     get 'games/search'
     get 'users/:id/games' => "users#games", as: :user_games
+    get 'users' => "users#index"
 
   end
   resources :user_reactions

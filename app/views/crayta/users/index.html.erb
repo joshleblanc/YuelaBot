@@ -1,0 +1,19 @@
+<% content_for(:title) { t(".title") } %>
+
+<%= render Table::TableComponent.new do |c| %>
+  <% c.table_header do |th| %>
+    <% th.cell { t(".name") } %>
+    <% th.cell { t(".games") } %>
+    <% th.cell %>
+  <% end %>
+ 
+ <% @users.each do |user| %>
+  <% c.table_row do |r| %>
+    <% r.cell { user.name } %>
+    <% r.cell { user.crayta_games.size.to_s } %>
+    <% r.cell { link_to t(".show"), crayta_user_games_url(user) } %>
+  <% end %>
+ <% end %>
+<% end %>
+
+<%== pagy_nav(@pagy) %>

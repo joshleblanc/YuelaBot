@@ -37,7 +37,7 @@
 #  fk_rails_...  (crayta_user_id => crayta_users.id)
 #
 class CraytaGame < ApplicationRecord
-  belongs_to :crayta_user
+  belongs_to :crayta_user, counter_cache: true
   has_many :crayta_rail_snapshot_games
   has_many :crayta_rail_snapshots, through: :crayta_rail_snapshot_games
   # TODO: add the images array and videos array

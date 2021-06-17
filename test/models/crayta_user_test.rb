@@ -2,11 +2,12 @@
 #
 # Table name: crayta_users
 #
-#  id          :bigint           not null, primary key
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  external_id :uuid
+#  id                 :bigint           not null, primary key
+#  crayta_games_count :integer
+#  name               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  external_id        :uuid
 #
 require "test_helper"
 
