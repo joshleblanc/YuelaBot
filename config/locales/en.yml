@@ -50,6 +50,8 @@ en:
     games:
       index: 
         title: "Crayta Games"
+        total_visits: "Total visits:"
+        total_games: "Total games:"
       show:
         total_visits: "Total visits"
         play: "Play"
