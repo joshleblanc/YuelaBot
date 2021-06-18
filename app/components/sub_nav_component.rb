@@ -22,7 +22,7 @@ class SubNavComponent < ApplicationComponent
     end
 
     def active?
-      request.path.chomp("/") == @to.chomp("/")
+      request.path.start_with? @to.chomp("/")
     end
 
     def inactive?
