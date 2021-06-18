@@ -1,4 +1,5 @@
 <% content_for(:title) { t(".title") } %>
+<% content_for(:subnav) { render CraytaSubNavComponent.new } %>
 
 <%= render Table::TableComponent.new do |c| %>
   <% c.table_header do |th| %>

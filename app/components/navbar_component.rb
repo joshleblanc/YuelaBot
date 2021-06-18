@@ -9,7 +9,6 @@ class NavbarComponent < ApplicationComponent
     end
 
     def active?
-      p request.path, @to
       request.path.chomp("/") == @to.chomp("/")
     end
 
