@@ -36,7 +36,7 @@ class SubNavComponent < ApplicationComponent
 
   render do
     div class: "flex items-center mt-3 mb-3 space-x-4 overflow-y-auto 2xl:justify-center whitespace-nowrap" do
-      text_node helpers.send(:content)
+      content
     end
   end
 end
