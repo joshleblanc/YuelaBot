@@ -60,6 +60,7 @@ en:
     users:
       index:
         title: "Crayta Users"
+        visits: "Visits"
       games:
         total_visits: "Total visits:"
   user_reactions:

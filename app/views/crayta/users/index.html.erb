@@ -4,6 +4,7 @@
   <% c.table_header do |th| %>
     <% th.cell { t(".name") } %>
     <% th.cell { t(".games") } %>
+    <% th.cell { t(".visits") } %>
     <% th.cell %>
   <% end %>
  
@@ -11,6 +12,7 @@
   <% c.table_row do |r| %>
     <% r.cell { user.name } %>
     <% r.cell { user.crayta_games.size.to_s } %>
+    <% r.cell { user.crayta_games.sum(:visits).to_s } %>
     <% r.cell { link_to t(".show"), crayta_user_games_url(user) } %>
   <% end %>
  <% end %>
