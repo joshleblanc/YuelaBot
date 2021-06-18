@@ -52,6 +52,8 @@ class NavbarComponent < ApplicationComponent
             div class: "flex-shrink-0" do
               h6 "Yuela", class: "text-white"
             end
+          end
+          div class: "flex items-center" do
             div class: "hidden md:block" do
               div class: "ml-10 flex items-baseline space-x-4" do
                 navbar_link_collection links
