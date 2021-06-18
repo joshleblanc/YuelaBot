@@ -50,6 +50,11 @@ en:
     games:
       index: 
         title: "Crayta Games"
+      show:
+        total_visits: "Total visits"
+        play: "Play"
+        play_link: "Click here to play"
+        time_spent: "Time spent in rails"
     users:
       index:
         title: "Crayta Users"

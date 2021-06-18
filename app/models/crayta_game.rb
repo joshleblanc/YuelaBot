@@ -46,8 +46,15 @@ class CraytaGame < ApplicationRecord
   # TODO: add descriptions object?
   # TODO: add tags
 
-  def times_in_rails
+  def external_url
+    "https://play.crayta.com/games/#{external_id}"
+  end
 
+  def cover_url
+    "https://live.content.crayta.com/game/#{external_id}/#{cover_image}_cover"
+  end
+
+  def times_in_rails
     rails = crayta_rail_snapshots.order(:created_at).group_by { |a| a.crayta_rail.name }
     rails.map do |name, snapshots|
       dates = []

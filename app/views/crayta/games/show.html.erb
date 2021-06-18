@@ -1,2 +1,22 @@
-<% content_for(:title) { @game.name } %>
-<%= timeline @game.times_in_rails %>
+<%= content_for(:subnav) { render CraytaSubNavComponent.new } %>
+
+<div class="space-y-4">
+  <div class="grid grid-flow-col grid-cols-3 gap-4">
+    <div>
+      <%= image_tag @game.cover_url %>
+    </div>
+    <div class="col-span-2">
+      <%= render DataListComponent.new(
+          header: @game.name,
+          subtitle: "",
+          data: [
+              [t(".total_visits"), @game.visits],
+              [t(".play"), link_to(t(".play_link"), @game.external_url)],
+          ]
+      ) %>
+    </div>
+  </div>
+
+  <h2 class="text-lg font-bold"><%= t(".time_spent") %></h6>
+  <%= timeline @game.times_in_rails %>
+</div>
