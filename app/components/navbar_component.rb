@@ -9,7 +9,7 @@ class NavbarComponent < ApplicationComponent
     end
 
     def active?
-      request.path.chomp("/") == @to.chomp("/")
+      request.path.split("/").second == @to.split("/").second
     end
 
     def base_classes
