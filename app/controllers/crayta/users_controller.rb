@@ -2,7 +2,11 @@ class Crayta::UsersController < ApplicationController
   before_action :set_user, only: [:games]
 
   def index
-    @pagy, @users = pagy(CraytaUser.order(crayta_games_count: :desc))
+    query = CraytaUser.order(crayta_games_count: :desc)
+    if params[:q] 
+      query = query.where(CraytaUser.arel_table[:name].matches("%#{params[:q]}%"))
+    end
+    @pagy, @users = pagy(query)
   end
   
   def games

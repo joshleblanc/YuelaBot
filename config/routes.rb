@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :crayta do
-    get 'games' => "games#index"
+    get 'games' => "games#index", as: :games
     get 'games/:id' => "games#show", as: :game
     get 'games/:id/timeline' => "games#timeline", as: :game_timeline
     get 'games/search'

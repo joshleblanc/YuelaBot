@@ -2,6 +2,8 @@
   <%= render CraytaSubNavComponent.new %>
 <% end %>
 
+<%= render SearchbarComponent.new(table: "CraytaGame") %>
+
 <div>
   <span class="font-bold"><%= t(".total_visits") %></span>
   <span><%= number_to_human CraytaGame.sum(:visits) %></span>
@@ -11,6 +13,5 @@
   <span class="font-bold"><%= t(".total_games") %></span>
   <span><%= number_to_human CraytaGame.count %></span>
 </div>
-
 
 <%= render "crayta/games/table", pagy: @pagy, games: @games %>

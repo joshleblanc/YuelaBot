@@ -1,5 +1,7 @@
 <% content_for(:subnav) { render CraytaSubNavComponent.new } %>
 
+<%= render SearchbarComponent.new(target: "table") %>
+
 <%= render Table::TableComponent.new do |c| %>
   <% c.table_header do |th| %>
     <% th.cell { t(".name") } %>
@@ -7,15 +9,14 @@
     <% th.cell { t(".visits") } %>
     <% th.cell %>
   <% end %>
- 
- <% @users.each do |user| %>
-  <% c.table_row do |r| %>
-    <% r.cell { user.name } %>
-    <% r.cell { user.crayta_games.size.to_s } %>
-    <% r.cell { user.crayta_games.sum(:visits).to_s } %>
-    <% r.cell { link_to t(".show"), crayta_user_games_url(user) } %>
-  <% end %>
- <% end %>
-<% end %>
 
+  <% @users.each do |user| %>
+    <% c.table_row do |r| %>
+      <% r.cell { user.name } %>
+      <% r.cell { user.crayta_games.size.to_s } %>
+      <% r.cell { user.crayta_games.sum(:visits).to_s } %>
+      <% r.cell { link_to t(".show"), crayta_user_games_url(user) } %>
+    <% end %>
+  <% end %>
+<% end %>
 <%== pagy_nav(@pagy) %>

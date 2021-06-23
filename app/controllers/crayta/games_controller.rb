@@ -2,13 +2,14 @@ class Crayta::GamesController < ApplicationController
   before_action :set_game, only: [:show, :timeline]
 
   def index
-    @pagy, @games = pagy(CraytaGame.order(visits: :desc))
+    query = CraytaGame.order(visits: :desc)
+    if params[:q]
+      query = query.where(CraytaGame.arel_table[:name].matches("%#{params[:q]}%"))
+    end
+    @pagy, @games = pagy(query)
   end
 
   def show
-  end
-
-  def search
   end
 
   def timeline
