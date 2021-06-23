@@ -57,6 +57,7 @@ en:
         play: "Play"
         play_link: "Click here to play"
         time_spent: "Time spent in rails"
+        rank: "Rank"
     users:
       index:
         title: "Crayta Users"

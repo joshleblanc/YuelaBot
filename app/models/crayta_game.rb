@@ -54,6 +54,10 @@ class CraytaGame < ApplicationRecord
     "https://live.content.crayta.com/game/#{external_id}/#{cover_image}_cover"
   end
 
+  def rank 
+    CraytaGame.order(visits: :desc).pluck(:id).index(id)&.next
+  end
+
   def times_in_rails
     rails = crayta_rail_snapshots.order(:created_at).group_by { |a| a.crayta_rail.name }
     rails.map do |name, snapshots|
