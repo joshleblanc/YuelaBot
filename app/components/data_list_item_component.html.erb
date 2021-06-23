@@ -3,13 +3,6 @@
     <%= @data_list_item[0] %>
   </dt>
   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-    <% if @data_list_item[2] %>
-      <turbo-frame id="rank" src="<%= @data_list_item[1] %>">
-        <%= t(".loading") %>
-      </turbo-frame>
-    <% else %>
-      <%= @data_list_item[1] %>
-    <% end %>
-    
+    <%= @data_list_item[1] %>
   </dd>
 </div>

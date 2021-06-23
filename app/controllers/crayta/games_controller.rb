@@ -1,5 +1,5 @@
 class Crayta::GamesController < ApplicationController
-  before_action :set_game, only: [:show, :rank]
+  before_action :set_game, only: [:show, :timeline]
 
   def index
     @pagy, @games = pagy(CraytaGame.order(visits: :desc))
@@ -11,7 +11,8 @@ class Crayta::GamesController < ApplicationController
   def search
   end
 
-  def rank
+  def timeline
+    render json: @game.times_in_rails
   end
 
   private
