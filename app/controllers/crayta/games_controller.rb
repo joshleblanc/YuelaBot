@@ -1,5 +1,5 @@
 class Crayta::GamesController < ApplicationController
-  before_action :set_game, only: [:show]
+  before_action :set_game, only: [:show, :rank]
 
   def index
     @pagy, @games = pagy(CraytaGame.order(visits: :desc))
@@ -9,6 +9,9 @@ class Crayta::GamesController < ApplicationController
   end
 
   def search
+  end
+
+  def rank
   end
 
   private

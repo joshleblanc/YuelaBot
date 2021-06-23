@@ -34,6 +34,8 @@ en:
   view-notifications: "View Notifications"
   open-main-menu: "Open main menu"
   login-with-discord: "Login with Discord"
+  data_list_item_component:
+    loading: "Loading..."
   game_keys:
     form:
       servers: "Servers"

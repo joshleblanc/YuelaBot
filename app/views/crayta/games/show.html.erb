@@ -2,7 +2,7 @@
 
 <div class="space-y-4">
   <div class="grid grid-flow-col grid-cols-3 gap-4">
-    <div>
+  <div>
       <%= image_tag @game.cover_url %>
     </div>
     <div class="col-span-2">
@@ -11,7 +11,7 @@
           subtitle: "",
           data: [
               [t(".total_visits"), @game.visits],
-              [t(".rank"), @game.rank],
+              [t(".rank"), crayta_game_rank_url(@game), true],
               [t(".play"), link_to(t(".play_link"), @game.external_url)],
           ]
       ) %>
