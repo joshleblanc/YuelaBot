@@ -2,10 +2,10 @@ class SearchbarComponent < ApplicationComponent
  
   render do
     component_controller do
-      form "data-reflex" => "submit->Search#search" do
+      form method: :get do
         div class: "flex space-x-2 m-4" do
           div class: "flex-grow" do
-            text_field_component :q
+            text_field_component :q, { value: params[:q], autofocus: true }
           end
     
           div do
