@@ -43,7 +43,11 @@ class CraytaRailSubscription < ApplicationRecord
       embed.timestamp = Time.now
 
       find_each do |subscription|
-        BOT.send_message subscription.channel, nil, false, embed 
+        begin 
+          BOT.send_message subscription.channel, nil, false, embed 
+        rescue Discordrb::Errors::UnknownChannel
+          subscription.destroy
+        end
       end
     end
   end
