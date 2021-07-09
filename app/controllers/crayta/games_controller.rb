@@ -18,7 +18,7 @@ class Crayta::GamesController < ApplicationController
 
   def visits_history
     data = @game.versions.group_by_day(&:created_at).transform_values do |value|
-      value.map { |a| a.reify.visits }
+      value.map { |a| a&.reify&.visits }.compact
     end
     render json: data
   end
