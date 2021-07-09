@@ -1,5 +1,5 @@
 class Crayta::GamesController < ApplicationController
-  before_action :set_game, only: [:show, :timeline]
+  before_action :set_game, only: [:show, :timeline, :visits_history]
 
   def index
     query = CraytaGame.order(visits: :desc)
@@ -14,6 +14,13 @@ class Crayta::GamesController < ApplicationController
 
   def timeline
     render json: @game.times_in_rails
+  end
+
+  def visits_history
+    data = @game.versions.group_by_day(&:created_at).transform_values do |value|
+      value.map { |a| a.reify.visits }
+    end
+    render json: data
   end
 
   private

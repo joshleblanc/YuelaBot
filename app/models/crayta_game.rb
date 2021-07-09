@@ -37,6 +37,8 @@
 #  fk_rails_...  (crayta_user_id => crayta_users.id)
 #
 class CraytaGame < ApplicationRecord
+  has_paper_trail
+
   belongs_to :crayta_user, counter_cache: true
   has_many :crayta_rail_snapshot_games
   has_many :crayta_rail_snapshots, through: :crayta_rail_snapshot_games
@@ -59,7 +61,7 @@ class CraytaGame < ApplicationRecord
   end
 
   def times_in_rails
-    rails = crayta_rail_snapshots.order(:created_at).group_by { |a| a.crayta_rail.name }
+    rails = crayta_rail_snapshots.eager_load(:crayta_rail).order(:created_at).group_by { |a| a.crayta_rail.name }
     rails.map do |name, snapshots|
       dates = []
       current_interval = []

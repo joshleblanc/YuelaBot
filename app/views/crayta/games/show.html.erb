@@ -18,6 +18,7 @@
     </div>
   </div>
 
-  <h2 class="text-lg font-bold"><%= t(".time_spent") %></h2>
+<h2 class="text-lg font-bold"><%= t(".time_spent") %></h2>
   <%= timeline crayta_game_timeline_url(@game) %>
+  <%= area_chart crayta_game_visits_history_url(@game) %>
 </div>

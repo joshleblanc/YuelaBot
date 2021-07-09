@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     get 'games' => "games#index", as: :games
     get 'games/:id' => "games#show", as: :game
     get 'games/:id/timeline' => "games#timeline", as: :game_timeline
+    get 'games/:id/visits_history' => "games#visits_history", as: :game_visits_history
     get 'users/:id/games' => "users#games", as: :user_games
     get 'users' => "users#index"
   end

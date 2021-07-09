@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_185039) do
+ActiveRecord::Schema.define(version: 2021_07_09_145448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -243,6 +243,17 @@ ActiveRecord::Schema.define(version: 2021_06_17_185039) do
     t.boolean "banned", default: false
     t.string "avatar_url"
     t.string "email"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "crayta_games", "crayta_users"

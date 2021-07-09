@@ -109,3 +109,7 @@ gem "turbo-rails", "~> 0.5.9"
 gem "pagy", "~> 3.0.0"
 gem 'whenever', require: false
 gem "chartkick", "~> 4.0"
+
+gem "paper_trail", "~> 12.0"
+
+gem "groupdate", "~> 5.2"
