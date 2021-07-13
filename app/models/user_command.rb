@@ -18,7 +18,12 @@ class UserCommand < ApplicationRecord
       command = Commands.const_get(c)
       command.is_a?(Class) && [command.name, *command.attributes[:aliases]].include?(name.to_sym)
     end
-    Commands.const_get(existing_command) if existing_command
+    if existing_command
+      Commands.const_get(existing_command)
+    else
+      UserCommand.find_by(name: name)
+    end
+    
   end
 
   def self.can_create?(name)
@@ -45,7 +50,13 @@ class UserCommand < ApplicationRecord
   def run_alias_command(event, *args)
     command = UserCommand.existing_command(input)
     target_args = output.split.push(*args)
-    inject_middleware(command).call(event, *target_args)
+
+    if command.is_a? UserCommand
+      command.run(event, *args)
+    else
+      inject_middleware(command).call(event, *target_args)
+    end
+    
   end
 
   def run(event, *args)
