@@ -1,4 +1,4 @@
-FROM ruby:3.1
+FROM ruby:3.0
 
 RUN gem install "bundler:~>2.0" --no-document && \
     gem update --system && \
