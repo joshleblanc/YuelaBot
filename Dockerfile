@@ -75,7 +75,6 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 COPY ./Gemfile* /app/
-COPY ./config/jumpstart/Gemfile /app/config/jumpstart/
 RUN bundle config --local without "development test omit" && bundle install --jobs $(nproc) --retry 5
 COPY package.json yarn.lock /app/
 RUN yarn install
