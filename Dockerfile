@@ -84,6 +84,7 @@ COPY . /app
 WORKDIR /app
 
 ENV RAILS_ENV production
+ENV DISCORD
 RUN bin/rails assets:precompile
 
 RUN mkdir -p /var/spool/cron/crontabs/
