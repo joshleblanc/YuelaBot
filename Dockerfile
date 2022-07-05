@@ -1,5 +1,7 @@
 FROM ruby:3.0
 
+ARG DISCORD
+
 RUN gem install "bundler:~>2.0" --no-document && \
     gem update --system && \
     gem cleanup
