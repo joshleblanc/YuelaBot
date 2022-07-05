@@ -81,19 +81,6 @@ RUN yarn install
 
 COPY . /app
 
-# Docs
-
-WORKDIR /docs
-
-RUN git clone https://github.com/joshleblanc/crayta-docs .
-RUN npm install 
-RUN npm run build
-RUN ls /docs/build/assets
-RUN cp -r /docs/build/assets /app/public/crayta_api
-RUN cp /docs/build/404.html /app/app/views/docs/404.html
-RUN cp /docs/build/index.html /app/app/views/docs/index.html
-RUN cp -r /docs/build/docs /app/app/views/docs
-
 WORKDIR /app
 
 ENV RAILS_ENV production
