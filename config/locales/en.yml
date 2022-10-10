@@ -44,9 +44,10 @@ en:
       game_key: "Game Key"
     index:
       game_keys: "Game Keys"
-    game_key:
+    game_key_row:
       claim: "Claim"
       confirm-claim: "Are you sure you want to claim this?"
+      
   crayta:
     games:
       index: 

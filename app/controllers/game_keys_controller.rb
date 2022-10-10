@@ -5,7 +5,7 @@ class GameKeysController < ApplicationController
 
   # GET /game_keys or /game_keys.json
   def index
-    @game_keys = GameKey.eager_load(:servers).where(claimed: false, servers: current_user.servers).order(created_at: :desc)
+    @pagy, @game_keys = pagy(GameKey.eager_load(:servers).where(claimed: false, servers: current_user.servers).order(created_at: :desc))
   end
 
   # GET /game_keys/1 or /game_keys/1.json
