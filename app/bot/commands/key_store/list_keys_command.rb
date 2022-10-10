@@ -25,16 +25,22 @@ module Commands
           if keys.empty?
             event.respond "No keys are available"
           else
-            response = StringIO.new
-            response.puts "The following games are available:"
-            response.puts '```'
-            response.printf "%-5s %s\n", "ID", "Name"
-            keys.each do |k|
-              response.printf "(%03d) %s\n", k.id, k.name
+            pagination_container = PaginationContainer.new("Game Keys", keys, 5, event)
+            pagination_container.paginate do |embed, index|
+              range_start = index * 5
+              range_end = range_start + 5
+              response = StringIO.new
+              response.puts "The following games are available:"
+              response.puts '```'
+              response.printf "%-5s %s\n", "ID", "Name"
+              keys[range_start...range_end].each do |k|
+                response.printf "(%03d) %s\n", k.id, k.name
+              end
+              response.puts '```'
+              response.puts "You can claim any of these games with !!claim <id>"
+              embed.description = response.string
             end
-            response.puts '```'
-            response.puts "You can claim any of these games with !!claim <id>"
-            event.respond response.string
+            nil
           end
         end
       end
