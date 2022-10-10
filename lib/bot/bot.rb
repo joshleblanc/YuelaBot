@@ -81,6 +81,8 @@ end
 
 BOT.message do |event|
   next if event.from_bot?
+  next unless event.server.present?
+
   author_id = event.author.id
   user = User.find_or_create_by(id: author_id)
 
