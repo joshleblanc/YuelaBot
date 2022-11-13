@@ -1,7 +1,11 @@
+require "discordrb/ext"
+
 include Routines::ArchiveRoutine
 include Routines::BirthdayRoutine
 include Middleware
 include Helpers::InjectMiddleware
+
+include Discordrb::Ext
 
 unless ENV['DISCORD']
     abort "You're missing your discord API token! put discord=<your token here> in a .env file"
@@ -37,7 +41,7 @@ def find_commands(mod)
     command = mod.const_get(c)
     case command
     when Class
-      command
+      command.method_defined?(:command) ? command : nil
     when Module
       find_commands(command)
     else
@@ -140,3 +144,6 @@ scheduler.every '1m' do
     event.destroy
   end
 end
+
+
+Discordrb::Ext.extend(BOT)

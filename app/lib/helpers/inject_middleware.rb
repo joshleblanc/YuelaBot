@@ -1,6 +1,8 @@
 module Helpers
   module InjectMiddleware
     def inject_middleware(command)
+      return unless command.method_defined?(:command)
+
       method = command.method(:command).to_proc
       middleware = GLOBAL_MIDDLEWARE.dup.map(&:new)
       if command.respond_to?(:middleware)
