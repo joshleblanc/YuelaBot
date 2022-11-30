@@ -25,10 +25,10 @@ module Commands
           if keys.empty?
             event.respond "No keys are available"
           else
-            pagination_container = PaginationContainer.new("Game Keys", keys, 5, event)
+            pagination_container = PaginationContainer.new("Game Keys", keys, 25, event)
             pagination_container.paginate do |embed, index|
-              range_start = index * 5
-              range_end = range_start + 5
+              range_start = index * 25
+              range_end = range_start + 25
               response = StringIO.new
               response.puts "The following games are available:"
               response.puts '```'
