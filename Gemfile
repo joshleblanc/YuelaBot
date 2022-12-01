@@ -78,7 +78,7 @@ gem "octokit", "~> 4.0"
 gem 'steam-api'
 gem 'nokogiri'
 gem 'kovid', github: "siaw23/kovid"
-gem "sinatra", "~> 2.0"
+gem "sinatra", "~> 2.2"
 gem "cowsay", "~> 0.3.0"
 
 group :test do
