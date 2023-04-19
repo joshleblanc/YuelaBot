@@ -2,6 +2,8 @@ module Commands
   class XkcdCommand
     class << self
       include Discordrb::Webhooks
+      include Helpers::Requests
+
       def name
         :xkcd
       end
@@ -17,8 +19,7 @@ module Commands
       def command(event, id="")
         return if event.from_bot?
         begin
-          resp = open("http://xkcd.com/#{id}/info.0.json").read
-          json = JSON.parse(resp)
+          json = get_json("http://xkcd.com/#{id}/info.0.json")
           embed = Embed.new(
             title: json['title'],
             timestamp: Time.parse("#{json['year']}-#{json['month']}-#{json['day']}"),

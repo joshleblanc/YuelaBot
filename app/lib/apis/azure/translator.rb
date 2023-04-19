@@ -2,12 +2,13 @@ module Apis
   module Azure
     class Translator
       class << self
+        include Helpers::Requests
 
         @@base_url = "https://api.cognitive.microsofttranslator.com/"
 
         def languages
           path = "#{@@base_url}/languages?api-version=3.0"
-          JSON.parse(open(path).read)
+          get_json(path)
         end
 
         def translate(text, opts = {})

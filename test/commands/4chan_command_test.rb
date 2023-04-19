@@ -4,6 +4,7 @@ SimpleCov.start
 require 'test/unit/rr'
 class FourChanCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
+  include Helpers::Requests 
 
   def setup
     @event = Object.new
@@ -18,29 +19,29 @@ class FourChanCommandTest < Test::Unit::TestCase
 
 
     stub(Apis::FourChan).boards do
-      JSON.parse(open("./test/support/fixtures/4chan/boards.json").read)['boards']
+      get_json("./test/support/fixtures/4chan/boards.json")['boards']
     end
 
     stub(Apis::FourChan).catalog do |_|
-      JSON.parse(open("./test/support/fixtures/4chan/wg_catalog.json").read)
+      get_json("./test/support/fixtures/4chan/wg_catalog.json")
     end
 
     stub(Apis::FourChan).thread do |_, _|
-      JSON.parse(open("./test/support/fixtures/4chan/wg_thread.json").read)
+      get_json("./test/support/fixtures/4chan/wg_thread.json")
     end
 
     stub(Apis::FourChan).threads do |_|
-      JSON.parse(open('./test/support/fixtures/4chan/wg_threads.json').read)
+      get_json('./test/support/fixtures/4chan/wg_threads.json')
     end
 
     stub(Apis::FourChan).get_page  do |_, _|
-      JSON.parse(open("./test/support/fixtures/4chan/wg_first_page.json").read)
+      get_json("./test/support/fixtures/4chan/wg_first_page.json")
     end
   end
 
   def test_parse_response
     text, quotes = Commands::Random4chanCommand.parse_response(Apis::FourChan.thread('1', '1')['posts'].first['com'])
-    expected_text = open("./test/support/fixtures/4chan/parsed_post.json").read
+    expected_text = get("./test/support/fixtures/4chan/parsed_post.json")
     assert quotes.length == 7, "Expected 7 quotes, found #{quotes.length}"
     assert text == expected_text, "Expected: #{expected_text}\ngot: #{text}"
   end

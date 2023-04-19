@@ -113,3 +113,5 @@ gem "chartkick", "~> 4.0"
 gem "paper_trail", "~> 12.0"
 
 gem "groupdate", "~> 5.2"
+
+gem "faraday-follow_redirects", "~> 0.3.0"

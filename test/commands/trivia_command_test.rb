@@ -12,6 +12,8 @@ end
 
 class TriviaCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
+  include Helpers::Requests
+
   def setup
     message = Object.new
     user = Object.new
@@ -39,7 +41,7 @@ class TriviaCommandTest < Test::Unit::TestCase
     stub(@event).channel { @channel }
     stub(RestClient).get("jservice.io/api/random") do
       stub!.body do
-        open("./test/support/fixtures/trivia/trivia.json").read
+        get("./test/support/fixtures/trivia/trivia.json")
       end
     end
 
@@ -144,9 +146,9 @@ class TriviaCommandTest < Test::Unit::TestCase
       stub!.body do
         if request_count == 0
           request_count = 1
-          open("./test/support/fixtures/trivia/bad_trivia.json").read
+          get("./test/support/fixtures/trivia/bad_trivia.json")
         else
-          open("./test/support/fixtures/trivia/trivia.json").read
+          get("./test/support/fixtures/trivia/trivia.json")
         end
       end
     end

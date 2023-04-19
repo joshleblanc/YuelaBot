@@ -8,9 +8,6 @@ gitpod:
 
 development:
   adapter: postgresql
-  user: postgres
-  host: localhost
-  password: postgres
   database: yuela_dev
   pool: 16
   timeout: 5000
@@ -23,10 +20,7 @@ production:
 
 test:
   adapter: postgresql
-  host: localhost
   database: yuela_test
-  user: postgres
-  password: postgres
   pool: 5
   timeout: 5000
 

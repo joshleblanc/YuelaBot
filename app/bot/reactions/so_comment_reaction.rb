@@ -3,6 +3,7 @@ module Reactions
       class << self
         include Discordrb::Webhooks
         include Helpers::Markdown
+        include Helpers::Requests
 
         def counters
           [
@@ -55,8 +56,8 @@ module Reactions
           messageid = match_data.captures[0]
 
           uri = URI.parse(url)
-          body = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
-          comments = Nokogiri::HTML(open("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"), nil, Encoding::UTF_8.to_s)
+          body = Nokogiri::HTML(get(url), nil, Encoding::UTF_8.to_s)
+          comments = Nokogiri::HTML(get("https://#{uri.hostname}/posts/#{match_data.captures[1]}/comments"), nil, Encoding::UTF_8.to_s)
 
           message = comments.at_css("#comment-#{messageid}")
           question = body.at_css('#question-header .question-hyperlink')

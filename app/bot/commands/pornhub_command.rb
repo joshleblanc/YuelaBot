@@ -1,6 +1,8 @@
 module Commands
     class PornhubCommand
       class << self
+        include Helpers::Requests
+
         def name
           :pornhub
         end
@@ -19,8 +21,7 @@ module Commands
           if event.channel.nsfw?
              query = args.join(' ')
 
-             resp = open("http://www.pornhub.com/webmasters/search?search=#{query}").read
-             json = JSON.parse(resp)
+             json = get_json("http://www.pornhub.com/webmasters/search?search=#{query}")
              video = json['videos'].first
              video['url'] 
           else

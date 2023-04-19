@@ -1,5 +1,7 @@
 module Apis
   module FourChan
+    extend Helpers::Requests
+
     BASE_URL = "https://a.4cdn.org"
 
     def self.boards
@@ -28,7 +30,7 @@ module Apis
 
     private
     def self.get(url)
-      JSON.parse(open("#{BASE_URL}#{url}").read)
+      get_json("#{BASE_URL}#{url}")
     end
   end
 end

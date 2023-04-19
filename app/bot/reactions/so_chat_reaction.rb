@@ -3,6 +3,7 @@ module Reactions
     class << self
       include Discordrb::Webhooks
       include Helpers::Markdown
+      include Helpers::Requests
 
       def regex
         /https:\/\/chat(\.meta)?\.stack(overflow|exchange)\.com\/transcript\/(message\/|\d+\?m=)(\d+)/
@@ -18,7 +19,7 @@ module Reactions
         match_data = event.message.content.match(self.regex)
         url = match_data[0]
 
-        transcript = Nokogiri::HTML(open(url), nil, Encoding::UTF_8.to_s)
+        transcript = Nokogiri::HTML(get(url), nil, Encoding::UTF_8.to_s)
         message = transcript.at_css('div.highlight')
         container = message.parent.parent
         user = container.at_css('div.username').children[0]

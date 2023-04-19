@@ -9,6 +9,7 @@ end
 
 class DefineCommandTest < Test::Unit::TestCase
   include Discordrb::Webhooks
+  include Helpers::Requests
 
   def setup
     @event = Object.new
@@ -28,7 +29,7 @@ class DefineCommandTest < Test::Unit::TestCase
 
     ["pseudonym", "supper"].each { |w|
       stub(RestClient).get("https://api.wordnik.com/v4/word.json/#{w}/definitions", post_data) do
-        open("./test/support/fixtures/define/#{w}.json").read
+        get("./test/support/fixtures/define/#{w}.json")
       end
     }
   end
