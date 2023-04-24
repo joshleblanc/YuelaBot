@@ -1,5 +1,5 @@
 module Reactions
-  class ChainReaction
+  class JordanReaction
     class << self
       def attributes
         {}
