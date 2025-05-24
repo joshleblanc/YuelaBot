@@ -6,8 +6,6 @@ gem 'rails', '~> 8.0.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", "6.0.0.beta.6"
 
@@ -128,3 +126,5 @@ gem "jsbundling-rails", "~> 1.3"
 gem "csv", "~> 3.3"
 
 gem "ruby-openai", "~> 8.1"
+
+gem "propshaft", "~> 1.1"
