@@ -1,3 +1,11 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
 gitpod:
   adapter: postgresql
   user: gitpod
@@ -13,10 +21,19 @@ development:
   timeout: 5000
 
 production:
-  adapter: postgresql
-  url: <%= ENV['DATABASE_URL'] %>
-  pool: 15
-  timeout: 5000
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+  cable:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>_cable
+  cache:
+    <<: *default
+    database: <%= ENV['DATABASE_URL'] %>_cache
+  queue:
+    <<: *default
+    database: <%= ENV['DATABASE_URL'] %>_queue
+
 
 test:
   adapter: postgresql
