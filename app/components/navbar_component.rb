@@ -47,7 +47,7 @@ class NavbarComponent < ApplicationComponent
       div class: "mx-w-7xl mx-auto px-4 sm:px-6 lg:px-8" do
         div class: "flex items-center justify-between h-16" do
           div class: "flex items-center" do
-            div class: "flex-shrink-0" do
+            div class: "shrink-0" do
               h6 "Yuela", class: "text-white"
             end
           end

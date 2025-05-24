@@ -4,7 +4,7 @@ class SearchbarComponent < ApplicationComponent
     component_controller do
       form method: :get do
         div class: "flex space-x-2 m-4" do
-          div class: "flex-grow" do
+          div class: "grow" do
             text_field_component :q, { value: params[:q], autofocus: true }
           end
     

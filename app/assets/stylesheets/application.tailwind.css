@@ -1,9 +1,56 @@
-@import "tailwindcss";
+@import 'tailwindcss' layer(utilities);
 
-/* @import "tailwindcss/base"; */
-/* @import "tailwindcss/components"; */
-@import "tailwindcss/utilities";
-@import "slim-select/styles";
+@import 'tailwindcss/utilities' layer(utilities);
+@import 'slim-select/styles' layer(utilities);
+
+@theme {
+  --color-tertiary-50: #fafafd;
+  --color-tertiary-100: #f5f4fb;
+  --color-tertiary-200: #e5e5f6;
+  --color-tertiary-300: #d5d5f1;
+  --color-tertiary-400: #b6b5e6;
+  --color-tertiary-500: #9695db;
+  --color-tertiary-600: #8786c5;
+  --color-tertiary-700: #7170a4;
+  --color-tertiary-800: #5a5983;
+  --color-tertiary-900: #4a496b;
+
+  --color-danger-50: #fff2f2;
+  --color-danger-100: #ffe6e6;
+  --color-danger-200: #febfbf;
+  --color-danger-300: #fd9999;
+  --color-danger-400: #fc4d4d;
+  --color-danger-500: #fa0000;
+  --color-danger-600: #e10000;
+  --color-danger-700: #bc0000;
+  --color-danger-800: #960000;
+  --color-danger-900: #7b0000;
+
+  --color-secondary-50: #f4fdf6;
+  --color-secondary-100: #e9fbed;
+  --color-secondary-200: #c8f4d1;
+  --color-secondary-300: #a7edb5;
+  --color-secondary-400: #64e07e;
+  --color-secondary-500: #22d346;
+  --color-secondary-600: #1fbe3f;
+  --color-secondary-700: #1a9e35;
+  --color-secondary-800: #147f2a;
+  --color-secondary-900: #116722;
+
+  --color-primary-50: #fdf5fc;
+  --color-primary-100: #fceaf9;
+  --color-primary-200: #f6cbef;
+  --color-primary-300: #f1abe5;
+  --color-primary-400: #e76dd2;
+  --color-primary-500: #dc2ebf;
+  --color-primary-600: #c629ac;
+  --color-primary-700: #a5238f;
+  --color-primary-800: #841c73;
+  --color-primary-900: #6c175e;
+
+  --color-code-400: #fefcf9;
+  --color-code-600: #3c455b;
+}
 
 .pagy-nav,
 .pagy-nav-js,
@@ -33,10 +80,10 @@
 .pagy-nav .prev,
 .pagy-nav-js .prev,
 .pagy-combo-nav-js .prev {
-  @apply bg-white rounded-tl rounded-bl border-l border-t border-b border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-100;
+  @apply bg-white rounded-tl-sm rounded-bl-sm border-l border-t border-b border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-100;
 }
 .pagy-nav .next,
 .pagy-nav-js .next,
 .pagy-combo-nav-js .next {
-  @apply bg-white rounded-tr rounded-br border border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-200;
+  @apply bg-white rounded-tr-sm rounded-br-sm border border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-200;
 }
