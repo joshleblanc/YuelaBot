@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* @import "tailwindcss/base"; */
+/* @import "tailwindcss/components"; */
+@import "tailwindcss/utilities";
+@import "slim-select/styles";
+
+.pagy-nav,
+.pagy-nav-js,
+.pagy-combo-nav-js {
+  @apply inline-flex flex-wrap items-center justify-start;
+}
+
+.pagy-nav .page,
+.pagy-nav-js .page,
+.pagy-combo-nav-js .page,
+.pagy-combo-nav-js .pagy-combo-input {
+  @apply bg-white no-underline border-t border-b border-gray-400 p-2 px-4 cursor-pointer hover:bg-gray-200;
+}
+.pagy-nav .page:hover,
+.pagy-nav-js .page:hover {
+  @apply text-gray-900;
+}
+.pagy-nav .disabled,
+.pagy-nav-js .disabled,
+.pagy-combo-nav-js .disabled {
+  @apply cursor-not-allowed;
+}
+.pagy-nav .active,
+.pagy-nav-js .active {
+  @apply no-underline border py-2 px-4 cursor-pointer hover:bg-primary-600;
+}
+.pagy-nav .prev,
+.pagy-nav-js .prev,
+.pagy-combo-nav-js .prev {
+  @apply bg-white rounded-tl rounded-bl border-l border-t border-b border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-100;
+}
+.pagy-nav .next,
+.pagy-nav-js .next,
+.pagy-combo-nav-js .next {
+  @apply bg-white rounded-tr rounded-br border border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-200;
+}
