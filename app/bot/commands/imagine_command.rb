@@ -44,6 +44,7 @@ module Commands
 
       def command(e, *args)
         return if e.from_bot?
+        return if e.user.id.to_s == "152107946942136320"
 
         options, *prompt = args
 
