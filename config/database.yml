@@ -24,14 +24,16 @@ production:
   cable:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>_cable
+    migrations_paths: db/cable_migrate
+
   cache:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>_cache
+    migrations_paths: db/cache_migrate
   queue:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>_queue
-
-
+    migrations_paths: db/cache_migrate
 test:
   adapter: postgresql
   database: yuela_test
