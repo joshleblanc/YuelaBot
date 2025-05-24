@@ -2,13 +2,14 @@
 #
 # Table name: crayta_users
 #
-#  id                 :bigint           not null, primary key
-#  crayta_games_count :integer
+#  id                 :integer          not null, primary key
 #  name               :string
+#  external_id        :uuid
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  external_id        :uuid
+#  crayta_games_count :integer
 #
+
 class CraytaUser < ApplicationRecord
   has_many :crayta_games
 end

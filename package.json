@@ -8,6 +8,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "6.0.0-beta.6",
     "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@tailwindcss/cli": "^4.1.7",
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/line-clamp": "^0.2.0",
     "@tailwindcss/typography": "^0.4.0",
@@ -25,10 +26,10 @@
     "postcss-preset-env": "^6.7.0",
     "sass": "^1.32.8",
     "sass-loader": "^11.0.1",
-    "slim-select": "^1.27.0",
+    "slim-select": "^2.11.0",
     "stimulus": "^2.0.0",
-    "stimulus_reflex": "3.4.1",
-    "tailwindcss": "^2.1.1",
+    "stimulus_reflex": "3.5.4",
+    "tailwindcss": "^4.1.7",
     "tippy.js": "^6.3.1",
     "turbolinks": "^5.2.0",
     "webpack": "^5.30.0",
@@ -36,11 +37,16 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "esbuild": "^0.25.4",
     "webpack-dev-server": "^3.11.2"
   },
   "babel": {
     "presets": [
       "./node_modules/@rails/webpacker/package/babel/preset.js"
     ]
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
   }
 }

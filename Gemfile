@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.1'
+gem 'rails', '~> 8.0.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
@@ -89,7 +89,7 @@ gem "foreman", "~> 0.87.2"
 
 gem "dotenv-rails", "~> 2.7", require: 'dotenv/rails-now'
 
-gem "view_component", require: "view_component/engine"
+gem "view_component"
 
 gem "omniauth", "~> 2.0"
 gem "omniauth-discord", "~> 1.0"
@@ -102,8 +102,6 @@ gem 'ilex'
 #gem 'ilex', path: "../ilex"
 # gem "ilex", path: "D:/documents/dev/cedar"
 gem 'view_component_reflex'
-gem 'optimism'
-gem 'form-reflex'
 
 gem "turbo-rails", "~> 0.5.9"
 gem "pagy", "~> 3.0.0"
@@ -115,3 +113,14 @@ gem "paper_trail", "~> 12.0"
 gem "groupdate", "~> 5.2"
 
 gem "faraday-follow_redirects", "~> 0.3.0"
+
+gem 'psych', '<4'
+gem "dry-types", "~> 1.8"
+
+gem "solid_queue", "~> 1.1"
+gem "solid_cache", "~> 1.0"
+gem "solid_cable", "~> 3.0"
+
+gem "cssbundling-rails", "~> 1.4"
+
+gem "jsbundling-rails", "~> 1.3"

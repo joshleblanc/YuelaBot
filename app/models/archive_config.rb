@@ -2,9 +2,10 @@
 #
 # Table name: archive_configs
 #
-#  id      :bigint           not null, primary key
-#  channel :bigint
-#  server  :bigint
+#  id      :integer          not null, primary key
+#  server  :integer
+#  channel :integer
 #
+
 class ArchiveConfig < ApplicationRecord
 end

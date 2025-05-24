@@ -2,13 +2,14 @@
 #
 # Table name: servers
 #
-#  id          :bigint           not null, primary key
-#  icon        :string
+#  id          :integer          not null, primary key
+#  external_id :integer
 #  name        :string
+#  icon        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  external_id :bigint
 #
+
 class Server < ApplicationRecord
   has_many :user_servers
   has_many :users, through: :user_servers

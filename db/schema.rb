@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_09_145448) do
-
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_142813) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "afks", force: :cascade do |t|
     t.string "message"
@@ -69,8 +68,8 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
     t.boolean "blocked"
     t.string "game_link"
     t.boolean "binned"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "crayta_user_id", null: false
     t.index ["crayta_user_id"], name: "index_crayta_games_on_crayta_user_id"
   end
@@ -78,46 +77,46 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
   create_table "crayta_rail_snapshot_games", force: :cascade do |t|
     t.bigint "crayta_rail_snapshot_id", null: false
     t.bigint "crayta_game_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["crayta_game_id"], name: "index_crayta_rail_snapshot_games_on_crayta_game_id"
     t.index ["crayta_rail_snapshot_id"], name: "index_crayta_rail_snapshot_games_on_crayta_rail_snapshot_id"
   end
 
   create_table "crayta_rail_snapshots", force: :cascade do |t|
     t.bigint "crayta_rail_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["crayta_rail_id"], name: "index_crayta_rail_snapshots_on_crayta_rail_id"
   end
 
   create_table "crayta_rail_subscriptions", force: :cascade do |t|
     t.bigint "channel"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "crayta_rails", force: :cascade do |t|
     t.string "name"
     t.boolean "current"
     t.string "mode"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "crayta_users", force: :cascade do |t|
     t.string "name"
     t.uuid "external_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "crayta_games_count"
   end
 
   create_table "game_key_servers", force: :cascade do |t|
     t.bigint "game_key_id", null: false
     t.bigint "server_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["game_key_id"], name: "index_game_key_servers_on_game_key_id"
     t.index ["server_id"], name: "index_game_key_servers_on_server_id"
   end
@@ -161,16 +160,16 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
   create_table "server_prefixes", force: :cascade do |t|
     t.bigint "server"
     t.string "prefix"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "servers", force: :cascade do |t|
     t.bigint "external_id"
     t.string "name"
     t.string "icon"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "twitch_configs", force: :cascade do |t|
@@ -182,8 +181,8 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
     t.json "data"
     t.bigint "server"
     t.integer "twitch_user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "twitch_streams", force: :cascade do |t|
@@ -206,8 +205,8 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
   create_table "user_reaction_servers", force: :cascade do |t|
     t.bigint "user_reaction_id", null: false
     t.bigint "server_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["server_id"], name: "index_user_reaction_servers_on_server_id"
     t.index ["user_reaction_id"], name: "index_user_reaction_servers_on_user_reaction_id"
   end
@@ -230,8 +229,8 @@ ActiveRecord::Schema.define(version: 2021_07_09_145448) do
     t.bigint "user_id", null: false
     t.bigint "server_id", null: false
     t.boolean "owner"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["server_id"], name: "index_user_servers_on_server_id"
     t.index ["user_id"], name: "index_user_servers_on_user_id"
   end

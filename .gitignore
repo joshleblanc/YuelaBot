@@ -44,3 +44,5 @@ yarn-debug.log*
 *.sqlite3
 coverage
 .travis/deploy_key
+/app/assets/builds/*
+!/app/assets/builds/.keep

@@ -2,12 +2,13 @@
 #
 # Table name: twitch_streams
 #
-#  id             :bigint           not null, primary key
+#  id             :integer          not null, primary key
 #  expires_at     :datetime
-#  server         :bigint
+#  server         :integer
 #  twitch_login   :string
 #  twitch_user_id :integer
 #
+
 class TwitchStream < ApplicationRecord
   def expired?
     Time.now > expires_at
