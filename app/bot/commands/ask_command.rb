@@ -64,11 +64,15 @@ module Commands
           parameters: {
             model: options[:m],
             messages: [
+              { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
               { role: 'user', content: message.join(' ') }
             ]
           }
         )
-        response.dig("choices", 0, "message", "content")
+        content = response.dig("choices", 0, "message", "content")
+        content = content.gsub(/<think>.*?<\/think>/m, "").strip
+        
+        content[...2000]
       end
     end
   end
