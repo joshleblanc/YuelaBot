@@ -6,10 +6,7 @@ gem 'rails', '~> 8.0.0'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "6.0.0.beta.6"
 
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
@@ -93,7 +90,6 @@ gem "omniauth", "~> 2.0"
 gem "omniauth-discord", "~> 1.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
-gem "tailwindcss-rails", "~> 0.3.3"
 gem "stimulus_reflex", "~> 3.4"
 
 gem 'ilex'
