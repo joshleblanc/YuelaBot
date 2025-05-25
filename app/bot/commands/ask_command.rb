@@ -40,7 +40,7 @@ module Commands
       end
 
       def models 
-        OpenAI::Client.new.models.list["data"].map { it["id"] }
+        @models ||= VeniceClient::ModelsApi.new.list_models(type: "text").data.map { it[:id] }
       end
 
       def command(e, *args)
@@ -60,9 +60,9 @@ module Commands
           options[:m] = models.sample
         end
 
-        client = OpenAI::Client.new
-        response = client.chat(
-          parameters: {
+        client = VeniceClient::ChatApi.new
+        response = client.create_chat_completion(
+          body: {
             model: options[:m],
             messages: [
               { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
@@ -70,7 +70,7 @@ module Commands
             ]
           }
         )
-        content = response.dig("choices", 0, "message", "content")
+        content = response.choices.first[:message][:content]
         content = content.gsub(/<think>.*?<\/think>/m, "").strip
         
         content[...2000]

@@ -121,6 +121,6 @@ gem "jsbundling-rails", "~> 1.3"
 
 gem "csv", "~> 3.3"
 
-gem "ruby-openai", "~> 8.1"
-
 gem "propshaft", "~> 1.1"
+
+gem "venice_client"

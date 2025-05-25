@@ -188,7 +188,6 @@ GEM
     ethon (0.16.0)
       ffi (>= 1.15.0)
     event_emitter (0.2.6)
-    event_stream_parser (1.0.0)
     faraday (1.10.4)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -491,10 +490,6 @@ GEM
     rr (3.1.2)
     ruby-debug-ide (0.7.5)
       rake (>= 0.8.1)
-    ruby-openai (8.1.0)
-      event_stream_parser (>= 0.3.0, < 2.0.0)
-      faraday (>= 1)
-      faraday-multipart (>= 1)
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     rufus-scheduler (3.9.2)
@@ -579,6 +574,9 @@ GEM
     unicode-display_width (1.8.0)
     uri (1.0.3)
     useragent (0.16.11)
+    venice_client (1.0.1)
+      json (~> 2.1, >= 2.1.0)
+      typhoeus (~> 1.0, >= 1.0.1)
     version_gem (1.1.8)
     view_component (3.23.2)
       activesupport (>= 5.2.0, < 8.1)
@@ -675,7 +673,6 @@ DEPENDENCIES
   require_all
   rest-client
   ruby-debug-ide
-  ruby-openai (~> 8.1)
   rufus-scheduler
   selenium-webdriver
   simplecov (< 0.18)
@@ -689,6 +686,7 @@ DEPENDENCIES
   test-unit-rr
   turbo-rails (~> 0.5.9)
   tzinfo-data
+  venice_client
   view_component
   view_component_reflex
   web-console (>= 4.1.0)

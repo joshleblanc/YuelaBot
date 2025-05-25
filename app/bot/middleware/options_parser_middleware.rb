@@ -35,8 +35,9 @@ module Middleware
     # as the arguments
     def before(event, *args)
       options = {}
-      parser(options).parse!(args)      
-      [options, *args]
+      fixed_args = CSV.parse_line(args.join(' '), col_sep: ' ')
+      parser(options).parse!(fixed_args)      
+      [options, *fixed_args]
     end
 
     def after(event, output, *args)
