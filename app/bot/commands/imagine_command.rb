@@ -10,7 +10,7 @@ module Commands
       def attributes
         {
           description: <<~USAGE,
-            cowsay, need I say more?
+            Generate an image
             #{options_parser.usage}
           USAGE
           aliases: []

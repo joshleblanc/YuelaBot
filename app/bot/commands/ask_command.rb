@@ -9,7 +9,11 @@ module Commands
         {
           min_args: 1,
           usage: 'ask query',
-          description: 'Ask the bot a question'
+          description: <<~USAGE,
+            Ask the bot a question
+            #{options_parser.usage}
+          USAGE
+          aliases: []
         }
       end
 
