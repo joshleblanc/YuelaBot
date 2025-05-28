@@ -18,7 +18,7 @@ module Commands
       end
 
       def models 
-        @models ||= VeniceClient::ModelsApi.new.list_models(type: "image").map(&:id)
+        @models ||= VeniceClient::ModelsApi.new.list_models(type: "image").data.map { it[:id] }
       end
 
       def styles 
@@ -28,11 +28,18 @@ module Commands
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
           options[:m] = "venice-sd35"
+          options[:s] = "3D Model"
 
           option_parser.banner = "Usage: imagine [options] query"
 
-          option_parser.on("-l", "--list", "List available \"models\"") do
-            options[:l] = true
+          option_parser.on("-lm", "--list-models", "List available \"models\"") do |opt|
+            if opt == "m"
+              options[:lm] = true
+            end
+
+            if opt == "s"
+              options[:ls] = true
+            end
           end
 
           option_parser.on("-rs", "--random-style", "Use a random \"style\"") do
@@ -43,9 +50,16 @@ module Commands
             options[:s] = style
           end
 
-          option_parser.on("-ls", "--list-styles", "List available \"styles\"") do
-            options[:ls] = true
+          option_parser.on("-ls", "--list-styles", "List available \"styles\"") do |opt|
+            if opt == "m"
+              options[:lm] = true
+            end
+
+            if opt == "s"
+              options[:ls] = true
+            end
           end
+
 
           option_parser.on("-m", "--model MODEL", "Specify a \"model\"") do |model|
             options[:m] = model
@@ -76,7 +90,7 @@ module Commands
           return output
         end
 
-        if options[:l]
+        if options[:lm]
           output = "```\n"
           output << models.join("\n") 
           output << "```"
