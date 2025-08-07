@@ -1,4 +1,4 @@
-<%= render PaperComponent.new do %>
+<%= render 'shared/paper' do %>
   <div class="p-3">
     <%= form_with(model: game_key, builder: CustomFormBuilder) do |form| %>
       <% if game_key.errors.any? %>
@@ -32,7 +32,7 @@
       <% end %>
 
       <div class="actions">
-        <%= render ButtonComponent.new do %>
+        <%= render 'shared/button' do %>
           <%= t(".submit") %>
         <% end %>
       </div>

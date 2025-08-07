@@ -2,23 +2,17 @@
 
 <% content_for(:title) { t(".title")} %>
 
-<%= render Table::TableComponent.new do |c| %>
-  <% c.table_header do |th| %>
-    <% th.cell { t(".regex") } %>
-    <% th.cell { t(".output")} %>
-    <% th.cell(class: "w-64") {} %>
-  <% end %>
-
+<%= render 'shared/table', headers: [t(".regex"), t(".output"), ''] do %>
   <% @user_reactions.each do |user_reaction| %>
-    <% c.table_row do |r| %>
-      <% r.cell { user_reaction.regex } %>
-      <% r.cell(class: "text-ellipsis overflow-hidden") { user_reaction.output } %>
-      <% r.cell do %>
-          <%= link_to 'Show', user_reaction %>
-          <%= link_to 'Edit', edit_user_reaction_path(user_reaction) if current_user == user_reaction.user %>
-          <%= link_to 'Destroy', user_reaction, method: :delete, data: {confirm: 'Are you sure?'} if current_user == user_reaction.user %>
-      <% end %>
-    <% end %>
+    <tr>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user_reaction.regex %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-ellipsis overflow-hidden"><%= user_reaction.output %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-64">
+        <%= link_to 'Show', user_reaction %>
+        <%= link_to 'Edit', edit_user_reaction_path(user_reaction) if current_user == user_reaction.user %>
+        <%= link_to 'Destroy', user_reaction, method: :delete, data: {confirm: 'Are you sure?'} if current_user == user_reaction.user %>
+      </td>
+    </tr>
   <% end %>
 <% end %>
 

@@ -1,6 +1,6 @@
 <div id="test-result">
-  <%= render ::Tags::LabelComponent.new(:user_reaction, :test_output) %>
-  <%= render ::Tags::TextFieldComponent.new(:user_reaction, :test_output, value: output) %>
+  <%= styled_label_for :user_reaction, :test_output %>
+  <%= styled_text_field :user_reaction, :test_output, value: output %>
 
   <div class="text-sm pt-3 pl-1">
     <% if local_assigns.key?(:match) %>

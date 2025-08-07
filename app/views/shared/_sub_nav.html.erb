@@ -1,0 +1,9 @@
+<%
+  links = local_assigns[:links] || []
+%>
+
+<div class="flex items-center mt-3 mb-3 space-x-4 overflow-y-auto 2xl:justify-center whitespace-nowrap">
+  <% links.each do |link| %>
+    <%= render 'shared/sub_nav_link', link: link %>
+  <% end %>
+</div>

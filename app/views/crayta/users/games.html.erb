@@ -4,5 +4,5 @@
   <span><%= number_to_human @user.crayta_games.sum(:visits) %></span>
 </div>
 
-<% content_for(:subnav) { render CraytaSubNavComponent.new } %>
+<% content_for(:subnav) { render 'shared/crayta_sub_nav' } %>
 <%= render "crayta/games/table", pagy: @pagy, games: @games %>

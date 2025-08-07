@@ -1,4 +1,4 @@
-<%= content_for(:subnav) { render CraytaSubNavComponent.new } %>
+<%= content_for(:subnav) { render 'shared/crayta_sub_nav' } %>
 
 <div class="space-y-4">
   <div class="grid grid-flow-col grid-cols-3 gap-4">
@@ -6,15 +6,14 @@
       <%= image_tag @game.cover_url %>
     </div>
     <div class="col-span-2">
-      <%= render DataListComponent.new(
+      <%= render 'shared/data_list',
           header: @game.name,
           subtitle: "",
           data: [
               [t(".total_visits"), @game.visits],
               [t(".rank"), @game.rank],
               [t(".play"), link_to(t(".play_link"), @game.external_url)],
-          ]
-      ) %>
+          ] %>
     </div>
   </div>
 

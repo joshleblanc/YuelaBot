@@ -1,14 +1,14 @@
 <% content_for(:title) { t(".title") } %>
 
-<%= render PaperComponent.new do %>
+<%= render 'shared/paper' do %>
   <div class="p-3">
     <div class="p-3">
-      <%= render ::Tags::LabelComponent.new(:user_reaction, :regex) %>
+      <%= styled_label_for :user_reaction, :regex %>
       <pre><%= @user_reaction.regex %></pre>
     </div>
 
     <div class="p-3">
-      <%= render ::Tags::LabelComponent.new(:user_reaction, :output) %>
+      <%= styled_label_for :user_reaction, :output %>
       <pre class="whitespace-pre-wrap"><%= @user_reaction.output %></pre>
     </div>
   </div>

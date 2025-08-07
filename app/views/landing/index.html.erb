@@ -1,7 +1,7 @@
 <div class="container mx-auto">
   <div class="grid grid-cols-4 gap-4">
     <div class="col-span-3">
-      <%= render DataListComponent.new(
+      <%= render 'shared/data_list',
           header: "Quick Stats",
           subtitle: "little itty bitty numbers",
           data: [
@@ -10,11 +10,10 @@
               ["User Reactions", UserReaction.count],
               ["Birthday", Birthday.count],
               ["Afk", Afk.count]
-          ]
-      ) %>
+          ] %>
     </div>
     <div class="col-span-1">
-      <%= render PaperComponent.new do %>
+      <%= render 'shared/paper' do %>
         <% if current_user %>
           <%= render "afks/form", afk: current_user.afk %>
         <% else %>

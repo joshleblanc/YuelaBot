@@ -1,0 +1,25 @@
+<%
+  header = local_assigns[:header]
+  subtitle = local_assigns[:subtitle]
+  data = local_assigns[:data] || []
+%>
+
+<%= render 'shared/paper' do %>
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      <%= header %>
+    </h3>
+    <% if subtitle %>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+        <%= subtitle %>
+      </p>
+    <% end %>
+  </div>
+  <div class="border-t border-gray-200">
+    <dl>
+      <% data.each_with_index do |item, index| %>
+        <%= render 'shared/data_list_item', item: item, index: index %>
+      <% end %>
+    </dl>
+  </div>
+<% end %>

@@ -1,19 +1,12 @@
-<%= render Table::TableComponent.new do |c| %>
-  <% c.table_header do |th| %>
-    <% th.cell { t(".name") } %>
-    <% th.cell { t(".creator") } %>
-    <% th.cell { t(".visits") } %>
-    <% th.cell %>
+<%= render 'shared/table', headers: [t(".name"), t(".creator"), t(".visits"), ''] do %>
+  <% games.each do |game| %>
+    <tr>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= game.name %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= link_to game.crayta_user.name, crayta_user_games_url(game.crayta_user) %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= game.visits.to_s %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= link_to('Show', game) %></td>
+    </tr>
   <% end %>
- 
- <% games.each do |game| %>
-  <% c.table_row do |r| %>
-    <% r.cell { game.name } %>
-    <% r.cell { link_to game.crayta_user.name, crayta_user_games_url(game.crayta_user) } %>
-    <% r.cell { game.visits.to_s } %>
-    <% r.cell { link_to('Show', game) } %>
-  <% end %>
- <% end %>
 <% end %>
 
 <%== pagy_nav(pagy) %>

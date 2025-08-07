@@ -1,0 +1,12 @@
+<%= form_with url: request.path, method: :get, local: true do |form| %>
+  <div class="flex space-x-2 m-4">
+    <div class="grow">
+      <%= form.text_field :q, value: params[:q], autofocus: true, 
+          class: "disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300" %>
+    </div>
+    <div>
+      <%= form.submit t("searchbar_component.search"), 
+          class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" %>
+    </div>
+  </div>
+<% end %>

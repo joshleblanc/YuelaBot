@@ -1,8 +1,8 @@
 <% content_for(:subnav) do %>
-  <%= render CraytaSubNavComponent.new %>
+  <%= render 'shared/crayta_sub_nav' %>
 <% end %>
 
-<%= render SearchbarComponent.new(table: "CraytaGame") %>
+<%= render 'shared/searchbar' %>
 
 <div>
   <span class="font-bold"><%= t(".total_visits") %></span>

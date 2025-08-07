@@ -110,8 +110,6 @@ GEM
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
-    arbre (2.2.0)
-      activesupport (>= 7.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -279,8 +277,6 @@ GEM
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    ilex (0.1.5)
-      arbre
     io-console (0.8.0)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -315,7 +311,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    method_source (1.1.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
@@ -578,14 +573,6 @@ GEM
       json (~> 2.1, >= 2.1.0)
       typhoeus (~> 1.0, >= 1.0.1)
     version_gem (1.1.8)
-    view_component (3.23.2)
-      activesupport (>= 5.2.0, < 8.1)
-      concurrent-ruby (~> 1)
-      method_source (~> 1.0)
-    view_component_reflex (3.3.5)
-      rails (>= 5.2, < 9.0)
-      stimulus_reflex (>= 3.5.0.pre9)
-      view_component (>= 2.28.0)
     virtus (2.0.0)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -645,7 +632,6 @@ DEPENDENCIES
   foreman (~> 0.87.2)
   google-api-client
   groupdate (~> 5.2)
-  ilex
   jbuilder (~> 2.7)
   jsbundling-rails (~> 1.3)
   kovid!
@@ -687,8 +673,6 @@ DEPENDENCIES
   turbo-rails (~> 0.5.9)
   tzinfo-data
   venice_client
-  view_component
-  view_component_reflex
   web-console (>= 4.1.0)
   webdrivers
   whenever

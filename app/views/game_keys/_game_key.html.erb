@@ -1,5 +1,5 @@
 <div id="<%= dom_id(game_key) %>">
-  <%= render PaperComponent.new do %>
+  <%= render 'shared/paper' do %>
     <div class="p-3">
       <div class="grid grid-cols-2 gap-2 h-24">
         <div class="w-full bg-gray-400 rounded-lg"></div>
@@ -8,7 +8,7 @@
           <% if key_visible %>
             <p class="text-sm"><%= game_key.key %></p>
           <% else %>
-            <%= render ButtonComponent.new(data: { "claim-button-confirm": t(".confirm-claim"), controller: "claim-button", action: "click->claim-button#claim", game_key: game_key.to_signed_global_id.to_s }) do %>
+            <%= render 'shared/button', data: { "claim-button-confirm": t(".confirm-claim"), controller: "claim-button", action: "click->claim-button#claim", game_key: game_key.to_signed_global_id.to_s } do %>
               <%= t(".claim") %>
             <% end %>
           <% end %>

@@ -84,18 +84,13 @@ gem "foreman", "~> 0.87.2"
 
 gem "dotenv-rails", "~> 2.7", require: 'dotenv/rails-now'
 
-gem "view_component"
-
 gem "omniauth", "~> 2.0"
 gem "omniauth-discord", "~> 1.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "stimulus_reflex", "~> 3.4"
 
-gem 'ilex'
-#gem 'ilex', path: "../ilex"
-# gem "ilex", path: "D:/documents/dev/cedar"
-gem 'view_component_reflex'
+
 
 gem "turbo-rails", "~> 0.5.9"
 gem "pagy", "~> 3.0.0"

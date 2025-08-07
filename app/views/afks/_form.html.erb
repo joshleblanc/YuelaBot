@@ -6,7 +6,7 @@
       <%= content_tag :div, class: "mt-1 flex rounded-md p-2 m-2", data: tippy_data do %>
         <%= form.text_field :message, disabled: current_user.afk?, class: "disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300", placeholder: "I'm late for a very important date"  %>
       <% end %>
-      <%= render ButtonComponent.new do %>
+      <%= render 'shared/button' do %>
         <%= text %>
       <% end %>
     <% end %>

@@ -1,0 +1,15 @@
+<%
+  path = link[:path] || link[:to].call
+  label = link[:label]
+  
+  active = request.path.start_with?(path.chomp("/"))
+  
+  default_classes = "px-3 py-1.5 rounded-lg capitalize"
+  active_classes = "font-medium text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800"
+  inactive_classes = "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+  
+  link_classes = [default_classes]
+  link_classes << (active ? active_classes : inactive_classes)
+%>
+
+<%= link_to label, path, class: link_classes.join(' ') %>

@@ -1,22 +1,15 @@
-<% content_for(:subnav) { render CraytaSubNavComponent.new } %>
+<% content_for(:subnav) { render 'shared/crayta_sub_nav' } %>
 
-<%= render SearchbarComponent.new(target: "table") %>
+<%= render 'shared/searchbar' %>
 
-<%= render Table::TableComponent.new do |c| %>
-  <% c.table_header do |th| %>
-    <% th.cell { t(".name") } %>
-    <% th.cell { t(".games") } %>
-    <% th.cell { t(".visits") } %>
-    <% th.cell %>
-  <% end %>
-
+<%= render 'shared/table', headers: [t(".name"), t(".games"), t(".visits"), ''] do %>
   <% @users.each do |user| %>
-    <% c.table_row do |r| %>
-      <% r.cell { user.name } %>
-      <% r.cell { user.crayta_games.size.to_s } %>
-      <% r.cell { user.crayta_games.sum(:visits).to_s } %>
-      <% r.cell { link_to t(".show"), crayta_user_games_url(user) } %>
-    <% end %>
+    <tr>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.name %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.crayta_games.size.to_s %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.crayta_games.sum(:visits).to_s %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= link_to t(".show"), crayta_user_games_url(user) %></td>
+    </tr>
   <% end %>
 <% end %>
 <%== pagy_nav(@pagy) %>
