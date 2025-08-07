@@ -3,10 +3,10 @@
   button_classes = local_assigns[:class] || "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
   
   # Extract any data attributes or other HTML options
-  html_options = local_assigns.except(:class, :type, :content)
+  html_options = local_assigns.except(:class, :type)
   html_options[:class] = button_classes
   html_options[:type] ||= 'button'
 %>
 <%= button_tag html_options do %>
-  <%= content || yield %>
+  <%= yield %>
 <% end %>
