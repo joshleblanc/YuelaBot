@@ -3,9 +3,12 @@
   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= game_key.servers.first.name %></td>
   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
     <% if key_visible %>
-      <%= tag.td game_key.key, class: "whitespace-nowrap px-3 py-4 text-sm"%>
+      <span class="whitespace-nowrap px-3 py-4 text-sm"><%= game_key.key %></span>
     <% else %>
-      <%= tag.td t(".claim"), class: "cursor-pointer whitespace-nowrap px-3 py-4 text-sm text-gray-500", data: { "claim-button-confirm": t(".confirm-claim"), controller: "claim-button", action: "click->claim-button#claim", game_key: game_key.to_signed_global_id.to_s } %>
+      <%= button_to t(".claim"), claim_game_key_path(game_key), method: :patch,
+            params: { view: "row" },
+            form: { data: { turbo_confirm: t(".confirm-claim") } },
+            class: "text-indigo-600 hover:text-indigo-900" %>
     <% end %>
   </td>
 </tr>

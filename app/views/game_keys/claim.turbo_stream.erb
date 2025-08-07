@@ -1,0 +1,9 @@
+<% if params[:view] == 'row' %>
+  <%= turbo_stream.replace dom_id(@game_key) do %>
+    <%= render partial: "game_keys/game_key_row", locals: { game_key: @game_key, key_visible: true } %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace dom_id(@game_key) do %>
+    <%= render partial: "game_keys/game_key", locals: { game_key: @game_key, key_visible: true } %>
+  <% end %>
+<% end %>

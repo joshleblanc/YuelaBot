@@ -47,6 +47,9 @@ en:
     game_key_row:
       claim: "Claim"
       confirm-claim: "Are you sure you want to claim this?"
+    game_key:
+       claim: "Claim"
+       confirm-claim: "Are you sure you want to claim this?"
       
   crayta:
     games:

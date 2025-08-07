@@ -8,7 +8,11 @@ Rails.application.routes.draw do
     get 'users' => "users#index"
   end
   resources :user_reactions
-  resources :game_keys
+  resources :game_keys do
+    member do
+      patch :claim
+    end
+  end
   resources :afks, only: [:edit, :destroy, :new, :create]
   patch 'current_user/toggle_afk'
   get 'profile/edit'

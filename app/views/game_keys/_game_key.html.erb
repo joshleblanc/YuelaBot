@@ -8,8 +8,11 @@
           <% if key_visible %>
             <p class="text-sm"><%= game_key.key %></p>
           <% else %>
-            <%= render 'shared/button', data: { "claim-button-confirm": t(".confirm-claim"), controller: "claim-button", action: "click->claim-button#claim", game_key: game_key.to_signed_global_id.to_s } do %>
-              <%= t(".claim") %>
+            <%= form_with url: claim_game_key_path(game_key), method: :patch, data: { turbo_confirm: t(".confirm-claim") } do %>
+              <%= hidden_field_tag :view, 'card' %>
+              <%= render 'shared/button', type: 'submit' do %>
+                <%= t(".claim") %>
+              <% end %>
             <% end %>
           <% end %>
         </div>

@@ -50,6 +50,23 @@ class GameKeysController < ApplicationController
     end
   end
 
+  # PATCH /game_keys/:id/claim
+  def claim
+    @game_key = GameKey.unclaimed
+                       .joins(:servers)
+                       .where(servers: { id: current_user.servers.select(:id) })
+                       .find_by(id: params[:id])
+
+    return head :not_found unless @game_key
+
+    @game_key.claim!
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to game_keys_path, notice: t("game_keys.claimed", default: "Game key claimed!") }
+    end
+  end
+
   # DELETE /game_keys/1 or /game_keys/1.json
   def destroy
     @game_key.destroy
