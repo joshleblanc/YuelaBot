@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_24_142813) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_19_174355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,6 +44,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_24_142813) do
     t.datetime "updated_at", null: false
     t.integer "year", default: 0
     t.index ["user_id"], name: "index_birthdays_on_user_id"
+  end
+
+  create_table "bot_messages", force: :cascade do |t|
+    t.bigint "server_id"
+    t.bigint "user_id"
+    t.text "content"
+    t.string "role"
+    t.bigint "message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["server_id", "created_at"], name: "index_bot_messages_on_server_id_and_created_at"
+    t.index ["server_id"], name: "index_bot_messages_on_server_id"
+    t.index ["user_id"], name: "index_bot_messages_on_user_id"
   end
 
   create_table "crayta_games", force: :cascade do |t|

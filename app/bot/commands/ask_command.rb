@@ -64,18 +64,68 @@ module Commands
           options[:m] = models.sample
         end
 
+        # Prepare the final message content with reply context if applicable
+        final_message = message.join(' ')
+        if e.message.reply?
+          referenced_msg = e.message.referenced_message
+          if referenced_msg
+            reply_author = referenced_msg.author.display_name || referenced_msg.author.username
+            reply_content = referenced_msg.content
+            
+            # Truncate long messages for context
+            reply_content = reply_content[...500] + "..." if reply_content.length > 500
+            
+            # Build context string
+            reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
+            
+            # Prepend reply context to user's message
+            final_message = "#{reply_context} #{final_message}".strip
+          end
+        end
+
+        # Track message history if server is present
+        if e.server.present?
+          begin
+            user = User.find_or_create_by(id: e.author.id)
+            server = Server.find_or_create_by(external_id: e.server.id) do |s|
+              s.name = e.server.name
+            end
+
+            conversation = BotConversationService.new(
+              server_id: server.id,
+              user_id: user.id
+            )
+            
+            conversation.add_user_message(
+              content: final_message,
+              message_id: e.message.id
+            )
+          rescue => error
+            Rails.logger.error "Failed to track ask command message: #{error.message}"
+          end
+        end
+
         client = VeniceClient::ChatApi.new
         response = client.create_chat_completion(
           body: {
             model: options[:m],
             messages: [
               { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
-              { role: 'user', content: message.join(' ') }
+              { role: 'user', content: final_message }
             ]
           }
         )
         content = response.choices.first[:message][:content]
         content = content.gsub(/<think>.*?<\/think>/m, "").strip
+        
+        # Track assistant response
+        if e.server.present? && defined?(conversation)
+          begin
+            conversation.add_assistant_message(content: content)
+          rescue => error
+            Rails.logger.error "Failed to track ask command response: #{error.message}"
+          end
+        end
         
         content[...2000]
       end

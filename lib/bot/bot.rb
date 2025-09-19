@@ -108,8 +108,94 @@ BOT.message do |event|
 end
 
 BOT.mention do |event|
-  crg = CannedResponseGenerator.new
-  event << crg.generate(event.author.mention)
+  next if event.from_bot?
+  next unless event.server.present?
+  
+  begin
+    # Ensure user exists
+    user = User.find_or_create_by(id: event.author.id) do 
+      _1.name = e.author.name
+    end
+    
+    # Ensure server exists
+    server = Server.find_or_create_by(external_id: event.server.id) do |s|
+      s.name = event.server.name
+    end
+
+    # Initialize conversation service
+    conversation = BotConversationService.new(
+      server_id: server.id,
+      user_id: user.id
+    )
+
+
+    # Clean the message content (remove bot mention)
+    content = event.message.content.gsub(/<@!?#{BOT.profile.id}>/, '').strip
+
+    # Check if this is a reply and include reply context
+    if event.message.reply?
+      referenced_msg = event.message.referenced_message
+      if referenced_msg
+        reply_author = referenced_msg.author.display_name || referenced_msg.author.username
+        reply_content = referenced_msg.content
+        
+        # Truncate long messages for context
+        reply_content = reply_content[...500] + "..." if reply_content.length > 500
+        
+        # Build context string
+        reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
+        
+        # Prepend reply context to user's message
+        content = "#{reply_context} #{content}".strip
+      end
+    end
+    
+    # If no content after removing mention, use a default prompt
+    content = "Hello!" if content.empty?
+
+    # Add user message to history
+    conversation.add_user_message(
+      content: content,
+      message_id: event.message.id
+    )
+
+    # Build conversation history
+    messages = conversation.build_conversation_history
+
+    # Add current user message
+    messages << { role: 'user', content: "#{user.name}: #{content}" }
+
+    # Call Venice API
+    client = VeniceClient::ChatApi.new
+    response = client.create_chat_completion(
+      chat_completion_request: {
+        model: FetchTraitsJob.perform_now("text")["most_uncensored"],
+        messages: messages,
+        venice_parameters: {
+          strip_thinking_response: true
+        }
+      }
+    )
+
+    # Extract and clean response
+    bot_response = response.choices.first.message.content
+    bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
+    bot_response = bot_response[...2000] # Ensure under Discord limit
+
+    # Send response
+    event << bot_response
+
+    # Add assistant response to history
+    conversation.add_assistant_message(
+      content: bot_response
+    )
+
+  rescue => e
+    # Fallback to canned response on error
+    p "Bot mention error: #{e.message}, #{e.backtrace}"
+    crg = CannedResponseGenerator.new
+    event << crg.generate(event.author.mention)
+  end
 end
 
 scheduler = Rufus::Scheduler.new
