@@ -91,6 +91,17 @@ module Commands
           end
         end
 
+        # Resolve user mentions to usernames for better context
+        if e.message.mentions.any?
+          e.message.mentions.each do |mentioned_user|
+            # Replace mention with username for better readability
+            username = mentioned_user.display_name || mentioned_user.username
+            mention_pattern = /<@!?#{mentioned_user.id}>/
+            final_message = final_message.gsub(mention_pattern, "@#{username}")
+            original_ask_content = original_ask_content.gsub(mention_pattern, "@#{username}")
+          end
+        end
+
         # Track message history if server is present
         if e.server.present?
           begin

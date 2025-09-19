@@ -156,6 +156,17 @@ BOT.mention do |event|
       end
     end
     
+    # Resolve user mentions to usernames for better context
+    if event.message.mentions.any?
+      event.message.mentions.each do |mentioned_user|       
+        # Replace mention with username for better readability
+        username = mentioned_user.display_name || mentioned_user.username
+        mention_pattern = /<@!?#{mentioned_user.id}>/
+        content = content.gsub(mention_pattern, "@#{username}")
+        original_content = original_content.gsub(mention_pattern, "@#{username}")
+      end
+    end
+    
     # If no content after removing mention, use a default prompt
     content = "Hello!" if content.empty?
 
@@ -168,6 +179,7 @@ BOT.mention do |event|
     # Build conversation history
     messages = conversation.build_conversation_history
 
+    p content 
     # Add current user message
     messages << { role: 'user', content: content }
 
