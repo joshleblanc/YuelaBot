@@ -2,6 +2,10 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  user: postgres
+  password: postgres
+  timeout: 5000
 
 gitpod:
   adapter: postgresql
@@ -12,10 +16,8 @@ gitpod:
   timeout: 5000
 
 development:
-  adapter: postgresql
+  <<: *default
   database: yuela_dev
-  pool: 16
-  timeout: 5000
 
 production:
   primary:
@@ -35,10 +37,8 @@ production:
     url: <%= ENV['DATABASE_URL'] %>_queue
     migrations_paths: db/cache_migrate
 test:
-  adapter: postgresql
+  <<: *default
   database: yuela_test
-  pool: 5
-  timeout: 5000
 
 docker-compose:
   adapter: postgresql

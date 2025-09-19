@@ -4,7 +4,6 @@
   "name": "YuelaBot",
   "dockerComposeFile": "docker-compose.yml",
   "service": "rails-app",
-  "runArgs": ["--network=host"],
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
