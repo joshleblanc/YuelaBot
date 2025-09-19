@@ -125,11 +125,15 @@ BOT.mention do |event|
     # Initialize conversation service
     conversation = BotConversationService.new(
       server_id: server.id,
-      user_id: user.id
+      user_id: user.id,
+      bot_user: BOT.profile
     )
 
 
-    # Clean the message content (remove bot mention)
+    # Preserve original content with mentions for storage
+    original_content = event.message.content
+    
+    # Clean the message content (remove bot mention) for processing
     content = event.message.content.gsub(/<@!?#{BOT.profile.id}>/, '').strip
 
     # Check if this is a reply and include reply context
@@ -147,15 +151,17 @@ BOT.mention do |event|
         
         # Prepend reply context to user's message
         content = "#{reply_context} #{content}".strip
+        # Also add reply context to original content for storage
+        original_content = "#{reply_context} #{original_content}".strip
       end
     end
     
     # If no content after removing mention, use a default prompt
     content = "Hello!" if content.empty?
 
-    # Add user message to history
+    # Add user message to history (preserve original with mentions)
     conversation.add_user_message(
-      content: content,
+      content: original_content,
       message_id: event.message.id
     )
 
@@ -163,7 +169,7 @@ BOT.mention do |event|
     messages = conversation.build_conversation_history
 
     # Add current user message
-    messages << { role: 'user', content: "#{user.name}: #{content}" }
+    messages << { role: 'user', content: content }
 
     # Call Venice API
     client = VeniceClient::ChatApi.new

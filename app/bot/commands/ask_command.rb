@@ -66,6 +66,13 @@ module Commands
 
         # Prepare the final message content with reply context if applicable
         final_message = message.join(' ')
+        
+        # Preserve original message content with mentions for storage
+        original_message_content = e.message.content
+        # Extract just the ask command part (remove command prefix)
+        command_prefix_pattern = /^[!.]ask\s*/i
+        original_ask_content = original_message_content.gsub(command_prefix_pattern, '').strip
+        
         if e.message.reply?
           referenced_msg = e.message.referenced_message
           if referenced_msg
@@ -80,6 +87,7 @@ module Commands
             
             # Prepend reply context to user's message
             final_message = "#{reply_context} #{final_message}".strip
+            original_ask_content = "#{reply_context} #{original_ask_content}".strip
           end
         end
 
@@ -93,11 +101,12 @@ module Commands
 
             conversation = BotConversationService.new(
               server_id: server.id,
-              user_id: user.id
+              user_id: user.id,
+              bot_user: BOT.profile
             )
             
             conversation.add_user_message(
-              content: final_message,
+              content: original_ask_content,
               message_id: e.message.id
             )
           rescue => error
