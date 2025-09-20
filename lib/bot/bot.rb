@@ -112,6 +112,8 @@ BOT.mention do |event|
   next unless event.server.present?
   next if event.user.id.to_s == "152107946942136320"
   
+  event.channel.start_typing
+  
   begin
     # Ensure user exists
     user = User.find_or_create_by(id: event.author.id) do 
