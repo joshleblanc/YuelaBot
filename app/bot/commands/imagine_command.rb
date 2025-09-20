@@ -17,8 +17,8 @@ module Commands
         }
       end
 
-      def models 
-        @models ||= VeniceClient::ModelsApi.new.list_models(type: "image").data.map { it[:id] }
+      def traits 
+        @traits ||= FetchTraitsJob.perform_now("image")
       end
 
       def styles 
@@ -27,19 +27,13 @@ module Commands
 
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
-          options[:m] = "venice-sd35"
+          options[:t] = "default"
           options[:s] = "3D Model"
 
           option_parser.banner = "Usage: imagine [options] query"
 
-          option_parser.on("-lm", "--list-models", "List available \"models\"") do |opt|
-            if opt == "m"
-              options[:lm] = true
-            end
-
-            if opt == "s"
-              options[:ls] = true
-            end
+          option_parser.on("--list-traits", "List available \"traits\"") do
+            options[:lt] = true
           end
 
           option_parser.on("-rs", "--random-style", "Use a random \"style\"") do
@@ -50,22 +44,15 @@ module Commands
             options[:s] = style
           end
 
-          option_parser.on("-ls", "--list-styles", "List available \"styles\"") do |opt|
-            if opt == "m"
-              options[:lm] = true
-            end
-
-            if opt == "s"
-              options[:ls] = true
-            end
+          option_parser.on("--list-styles", "List available \"styles\"") do
+            options[:ls] = true
           end
 
-
-          option_parser.on("-m", "--model MODEL", "Specify a \"model\"") do |model|
-            options[:m] = model
+          option_parser.on("-t", "--trait TRAIT", "Specify a \"trait\"") do |trait|
+            options[:t] = trait
           end
 
-          option_parser.on("-r", "--random", "Use a random  \"model\"") do
+          option_parser.on("-r", "--random", "Use a random \"trait\"") do
             options[:r] = true
           end
         end
@@ -90,15 +77,15 @@ module Commands
           return output
         end
 
-        if options[:lm]
+        if options[:lt]
           output = "```\n"
-          output << models.join("\n") 
+          output << traits.keys.join("\n") 
           output << "```"
           return output
         end
 
         if options[:r]
-          options[:m] = models.sample
+          options[:t] = traits.keys.sample
         end
 
         if options[:rs]
@@ -107,8 +94,8 @@ module Commands
 
         client = VeniceClient::ImageApi.new
         response = client.generate_image(
-          body: {
-            model: options[:m],
+          generate_image_request: {
+            model: traits[options[:t]],
             prompt: prompt.join(" ").strip,
             width: 1024,
             height: 1024,
