@@ -110,7 +110,7 @@ end
 BOT.mention do |event|
   next if event.from_bot?
   next unless event.server.present?
-  next if e.user.id.to_s == "152107946942136320"
+  next if event.user.id.to_s == "152107946942136320"
   
   begin
     # Ensure user exists
