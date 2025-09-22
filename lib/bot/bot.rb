@@ -193,7 +193,8 @@ BOT.mention do |event|
         model: "venice-uncensored", #FetchTraitsJob.perform_now("text")["most_uncensored"],
         messages: messages,
         venice_parameters: {
-          strip_thinking_response: true
+          strip_thinking_response: true,
+          enable_web_search: "auto",
         }
       }
     )
