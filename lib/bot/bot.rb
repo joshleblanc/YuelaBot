@@ -173,6 +173,20 @@ BOT.mention do |event|
     # If no content after removing mention, use a default prompt
     content = "Hello!" if content.empty?
 
+    # Check if web search might be helpful and add search results to context
+    search_context = ""
+    if BotSearchHelper.should_perform_web_search?(content)
+      search_query = BotSearchHelper.extract_search_query(content)
+      Rails.logger.info "Performing web search for: #{search_query}"
+      search_results = WebSearchService.search(search_query, limit: 3)
+      unless search_results.empty?
+        search_context = WebSearchService.new.format_results_for_context(search_results, search_query)
+        Rails.logger.info "Found #{search_results.length} search results"
+      else
+        Rails.logger.info "No search results found"
+      end
+    end
+
     # Add user message to history (preserve original with mentions)
     conversation.add_user_message(
       content: original_content,
@@ -183,8 +197,9 @@ BOT.mention do |event|
     messages = conversation.build_conversation_history
 
     p content 
-    # Add current user message
-    messages << { role: 'user', content: content }
+    # Add current user message with search context if available
+    final_content = search_context.empty? ? content : "#{search_context}\nUser question: #{content}"
+    messages << { role: 'user', content: final_content }
 
     # Call Venice API
     client = VeniceClient::ChatApi.new
@@ -218,6 +233,8 @@ BOT.mention do |event|
     event << crg.generate(event.author.mention)
   end
 end
+
+
 
 scheduler = Rufus::Scheduler.new
 scheduler.every '1d', first: :now do
