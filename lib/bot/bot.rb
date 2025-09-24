@@ -193,7 +193,8 @@ BOT.mention do |event|
         model: "venice-uncensored", #FetchTraitsJob.perform_now("text")["most_uncensored"],
         messages: messages,
         venice_parameters: {
-          strip_thinking_response: true
+          strip_thinking_response: true,
+          enable_web_search: "auto",
         }
       }
     )
@@ -201,14 +202,21 @@ BOT.mention do |event|
     # Extract and clean response
     bot_response = response.choices.first.message.content
     bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
-    bot_response = bot_response[...2000] # Ensure under Discord limit
+    
+    # Store the full response for conversation history
+    full_response = bot_response
 
-    # Send response
-    event << bot_response
+    # Send response with pagination if needed
+    if bot_response.length > 2000
+      pagination = TextPaginationContainer.new(bot_response, event)
+      pagination.send_paginated
+    else
+      event << bot_response
+    end
 
-    # Add assistant response to history
+    # Add assistant response to history (use full response)
     conversation.add_assistant_message(
-      content: bot_response
+      content: full_response
     )
 
   rescue => e

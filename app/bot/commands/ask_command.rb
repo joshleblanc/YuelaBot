@@ -147,7 +147,14 @@ module Commands
           end
         end
         
-        content[...2000]
+        # Use pagination for long responses
+        if content.length > 2000
+          pagination = TextPaginationContainer.new(content, e)
+          pagination.send_paginated
+          nil # Return nil to prevent double-sending
+        else
+          content
+        end
       end
     end
   end
