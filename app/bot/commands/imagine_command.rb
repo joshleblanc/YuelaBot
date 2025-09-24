@@ -10,7 +10,7 @@ module Commands
       def attributes
         {
           description: <<~USAGE,
-            Generate an image
+            Generate an image (uses default model unless specified)
             #{options_parser.usage}
           USAGE
           aliases: []
@@ -21,19 +21,23 @@ module Commands
         @traits ||= FetchTraitsJob.perform_now("image")
       end
 
+      def models 
+        @models ||= VeniceClient::ModelsApi.new.list_models(type: "image").data.map(&:id)
+      end
+
       def styles 
         @styles ||= VeniceClient::ImageApi.new.image_styles_get.data
       end
 
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
-          options[:t] = "default"
-          options[:s] = "3D Model"
+          #options[:s] = "3D Model"
+          options[:m] = traits["default"]
 
           option_parser.banner = "Usage: imagine [options] query"
 
-          option_parser.on("--list-traits", "List available \"traits\"") do
-            options[:lt] = true
+          option_parser.on("--list-models", "List available \"models\"") do
+            options[:lm] = true
           end
 
           option_parser.on("-rs", "--random-style", "Use a random \"style\"") do
@@ -48,11 +52,11 @@ module Commands
             options[:ls] = true
           end
 
-          option_parser.on("-t", "--trait TRAIT", "Specify a \"trait\"") do |trait|
-            options[:t] = trait
+          option_parser.on("-m", "--model MODEL", "Specify a \"model\"") do |model|
+            options[:m] = model
           end
 
-          option_parser.on("-r", "--random", "Use a random \"trait\"") do
+          option_parser.on("-r", "--random", "Use a random \"model\"") do
             options[:r] = true
           end
         end
@@ -77,15 +81,15 @@ module Commands
           return output
         end
 
-        if options[:lt]
+        if options[:lm]
           output = "```\n"
-          output << traits.keys.join("\n") 
+          output << models.join("\n") 
           output << "```"
           return output
         end
 
         if options[:r]
-          options[:t] = traits.keys.sample
+          options[:m] = models.sample
         end
 
         if options[:rs]
@@ -93,16 +97,18 @@ module Commands
         end
 
         client = VeniceClient::ImageApi.new
-        response = client.generate_image(
-          generate_image_request: {
-            model: traits[options[:t]],
+        body = {
+            model: options[:m],
             prompt: prompt.join(" ").strip,
             width: 1024,
             height: 1024,
             format: "png",
-            style_preset: options[:s],
             safe_mode: false,
-          }
+        }
+        
+        body[:style_preset] = options[:s] if options[:s]
+        response = client.generate_image(
+          generate_image_request: body
         )
         b64 = response.images.first
         temp_file = Tempfile.new(["imagine", ".png"])
