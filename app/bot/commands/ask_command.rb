@@ -19,7 +19,7 @@ module Commands
 
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
-          options[:m] = "venice-uncensored"
+          options[:m] = "zai-org-glm-4.6"
 
           option_parser.banner = "Usage: ask [options] query"
 
