@@ -76,15 +76,21 @@ module Commands
         if e.message.reply?
           referenced_msg = e.message.referenced_message
           if referenced_msg
-            reply_author = referenced_msg.author.display_name || referenced_msg.author.username
             reply_content = referenced_msg.content
-            
+
             # Truncate long messages for context
             reply_content = reply_content[...500] + "..." if reply_content.length > 500
-            
-            # Build context string
-            reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
-            
+
+            # Build context string - distinguish between bot and user messages
+            if referenced_msg.author.id == BOT.profile.id
+              # User is replying to the bot's own message
+              reply_context = "[User is replying to your previous message: \"#{reply_content}\"]"
+            else
+              # User is replying to another user's message
+              reply_author = referenced_msg.author.display_name || referenced_msg.author.username
+              reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
+            end
+
             # Prepend reply context to user's message
             final_message = "#{reply_context} #{final_message}".strip
             original_ask_content = "#{reply_context} #{original_ask_content}".strip
