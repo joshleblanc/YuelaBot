@@ -217,7 +217,7 @@ BOT.mention do |event|
       pagination = TextPaginationContainer.new(bot_response, event)
       pagination.send_paginated
     else
-      event << bot_response
+      event.message.reply(bot_response)
     end
 
     # Add assistant response to history (use full response)
@@ -229,7 +229,7 @@ BOT.mention do |event|
     # Fallback to canned response on error
     p "Bot mention error: #{e.message}, #{e.backtrace}"
     crg = CannedResponseGenerator.new
-    event << crg.generate(event.author.mention)
+    event.message.reply(crg.generate(event.author.mention))
   end
 end
 
