@@ -13,8 +13,8 @@ class TextPaginationContainer
 
   def send_paginated
     if @pages.length == 1
-      # If only one page, send normally
-      @event << @pages.first
+      # If only one page, send as reply
+      @event.message.reply(@pages.first)
       return
     end
 
@@ -86,11 +86,11 @@ class TextPaginationContainer
 
   def send_current_page
     page_content = @pages[@current_page]
-    
+
     if @message
       @message.edit(page_content)
     else
-      @message = @event.respond(page_content)
+      @message = @event.message.reply(page_content)
     end
   end
 
