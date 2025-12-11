@@ -32,7 +32,7 @@ module Commands
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
           #options[:s] = "3D Model"
-          options[:m] = traits["default"]
+          options[:m] = "z-image-turbo"
 
           option_parser.banner = "Usage: imagine [options] query"
 

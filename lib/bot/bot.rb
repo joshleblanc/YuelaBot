@@ -196,7 +196,7 @@ BOT.mention do |event|
     client = VeniceClient::ChatApi.new
     response = client.create_chat_completion(
       chat_completion_request: {
-        model: "zai-org-glm-4.6", #FetchTraitsJob.perform_now("text")["most_uncensored"],
+        model: "zai-org-glm-4.6v", #FetchTraitsJob.perform_now("text")["most_uncensored"],
         messages: messages,
         venice_parameters: {
           strip_thinking_response: true,
