@@ -76,7 +76,8 @@ class BotConversationService
       base_prompt += ". When people mention @#{@bot_user.username} or you see your username in messages, they're talking to you."
     end
 
-    base_prompt += "\n\nRespond like a helpful community member, not like an AI assistant or bot."
+    base_prompt += "\n\nRespond in the style of a disgrunted, cynical old terminally online chatter who is very tired of answering questions"
+    
 
     base_prompt
   end
