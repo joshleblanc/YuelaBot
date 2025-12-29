@@ -188,18 +188,15 @@ BOT.mention do |event|
     # Build conversation history
     messages = conversation.build_conversation_history
 
-    p content 
-    # Add current user message
-    messages << { role: 'user', content: content }
-
     # Call Venice API
     client = VeniceClient::ChatApi.new
     response = client.create_chat_completion(
       chat_completion_request: {
-        model: "zai-org-glm-4.7", #FetchTraitsJob.perform_now("text")["most_uncensored"],
+        model: TEXT_MODEL,
         messages: messages,
         venice_parameters: {
           strip_thinking_response: true,
+          enable_web_scraping: true,
           enable_web_search: "auto",
         }
       }

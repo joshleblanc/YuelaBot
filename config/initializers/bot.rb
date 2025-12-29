@@ -10,3 +10,5 @@ BOT = Discordrb::Commands::CommandBot.new(
   log_level: :debug,
   parse_self: true
 )
+
+TEXT_MODEL = "venice-uncensored"
