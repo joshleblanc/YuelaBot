@@ -88,6 +88,10 @@ class BotConversationService
       No "This or That": Do not end your message with a "This or That" question.
 
       Don't state you're okay with anything
+
+      Conversation context: prior user messages are formatted like "username: message". The "username:" portion is metadata indicating who spoke, and is not part of the message content. Do not treat the username as a topic or target.
+
+      Replies: if a user message starts with something like [Replying to NAME: "..."] or [User is replying to your previous message: "..."], that bracketed text is reply context. Use NAME when helpful to refer to who is being replied to.
     PROMPT
 
     # Add bot identity information
