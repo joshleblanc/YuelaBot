@@ -46,9 +46,6 @@ def register_ask_application_command
 
   builder = Discordrb::Interactions::OptionBuilder.new
   builder.string('query', 'Your question', required: true)
-  builder.string('model', 'Specify a model', required: false)
-  builder.boolean('random', 'Use a random model', required: false)
-  builder.boolean('list', 'List available models', required: false)
 
   options = builder.to_a
   guild_id = ENV['DISCORD_SLASH_COMMAND_GUILD_ID']
@@ -77,6 +74,47 @@ rescue => e
 end
 
 register_ask_application_command
+
+def register_imagine_application_command
+  client_id = ENV['DISCORD_CLIENT_ID']
+  return if client_id.blank?
+
+  token = ENV['DISCORD']
+  return if token.blank?
+
+  auth_token = token.start_with?('Bot ') ? token : "Bot #{token}"
+  description = 'Generate an image'
+
+  builder = Discordrb::Interactions::OptionBuilder.new
+  builder.string('prompt', 'What to generate', required: true)
+
+  options = builder.to_a
+  guild_id = ENV['DISCORD_SLASH_COMMAND_GUILD_ID']
+
+  existing = if guild_id.present?
+               JSON.parse(Discordrb::API::Application.get_guild_commands(auth_token, client_id, guild_id)).find { |c| c['name'] == 'imagine' }
+             else
+               JSON.parse(Discordrb::API::Application.get_global_commands(auth_token, client_id)).find { |c| c['name'] == 'imagine' }
+             end
+
+  if existing
+    if guild_id.present?
+      Discordrb::API::Application.edit_guild_command(auth_token, client_id, guild_id, existing['id'], 'imagine', description, options, nil, 1, nil, [0,1,2])
+    else
+      Discordrb::API::Application.edit_global_command(auth_token, client_id, existing['id'], 'imagine', description, options, nil, 1, nil, [0,1,2])
+    end
+  else
+    if guild_id.present?
+      Discordrb::API::Application.create_guild_command(auth_token, client_id, guild_id, 'imagine', description, options, nil, 1, nil, [0,1,2])
+    else
+      Discordrb::API::Application.create_global_command(auth_token, client_id, 'imagine', description, options, nil, 1, nil, [0,1,2])
+    end
+  end
+rescue => e
+  Rails.logger.error "Failed to register /imagine application command: #{e.message}"
+end
+
+register_imagine_application_command
 
 def ask_venice(event, query)
   return if event.respond_to?(:from_bot?) && event.from_bot?
@@ -200,7 +238,7 @@ def ask_venice(event, query)
       event.message.reply(bot_response)
     else
       p "Sending response to slash command"
-      event.respond(content: bot_response)
+      event.edit_response(content: "> #{query}\n#{bot_response}")
     end
 
     # Add assistant response to history (use full response)
@@ -216,13 +254,26 @@ def ask_venice(event, query)
     if event.respond_to?(:message)
       event.message.reply(crg.generate(event.author.mention))
     else
-      event.respond(content: crg.generate(event.user.mention))
+      event.edit_response(content: crg.generate(event.user.mention))
     end
   end
 end
 
 BOT.application_command(:ask) do |event|
+  event.defer
   ask_venice(event, event.options['query'])
+end
+
+BOT.application_command(:imagine) do |event|
+  prompt = event.options['prompt']
+  event.defer
+
+  begin
+    Commands::ImagineCommand.command(event, { m: 'z-image-turbo' }, prompt)
+    event.edit_response(content: "> #{prompt}\n(sent)")
+  rescue => e
+    event.edit_response(content: "Error generating image: #{e.message}")
+  end
 end
 
 def find_commands(mod)

@@ -69,8 +69,10 @@ module Commands
       end
 
       def command(e, *args)
-        return if e.from_bot?
-        return if e.user.id.to_s == "152107946942136320"
+        return if e.respond_to?(:from_bot?) && e.from_bot?
+
+        author = e.respond_to?(:user) ? e.user : e.author
+        return if author.id.to_s == "152107946942136320"
 
         options, *prompt = args
 
@@ -115,7 +117,11 @@ module Commands
         temp_file.binmode
         temp_file.write(Base64.decode64(b64))
         temp_file.rewind
-        e.channel.send_file(temp_file)
+        if e.respond_to?(:interaction)
+          e.edit_response(content: "", attachments: [temp_file])
+        else
+          e.channel.send_file(temp_file)
+        end
         temp_file.unlink
         temp_file.close
       end
