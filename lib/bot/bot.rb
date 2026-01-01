@@ -61,15 +61,15 @@ def register_ask_application_command
 
   if existing
     if guild_id.present?
-      Discordrb::API::Application.edit_guild_command(auth_token, client_id, guild_id, existing['id'], 'ask', description, options)
+      Discordrb::API::Application.edit_guild_command(auth_token, client_id, guild_id, existing['id'], 'ask', description, options, nil, 1, nil, [0,1,2])
     else
-      Discordrb::API::Application.edit_global_command(auth_token, client_id, existing['id'], 'ask', description, options)
+      Discordrb::API::Application.edit_global_command(auth_token, client_id, existing['id'], 'ask', description, options, nil, 1, nil, [0,1,2])
     end
   else
     if guild_id.present?
-      Discordrb::API::Application.create_guild_command(auth_token, client_id, guild_id, 'ask', description, options)
+      Discordrb::API::Application.create_guild_command(auth_token, client_id, guild_id, 'ask', description, options, nil, 1, nil, [0,1,2])
     else
-      Discordrb::API::Application.create_global_command(auth_token, client_id, 'ask', description, options)
+      Discordrb::API::Application.create_global_command(auth_token, client_id, 'ask', description, options, nil, 1, nil, [0,1,2])
     end
   end
 rescue => e
@@ -80,12 +80,14 @@ register_ask_application_command
 
 def ask_venice(event, query)
   return if event.respond_to?(:from_bot?) && event.from_bot?
-  return unless event.server.present?
+  return unless event.server_id.present?
   return if event.user.id.to_s == "152107946942136320"
   
   event.channel.start_typing
 
   author = event.respond_to?(:author) ? event.author : event.user
+
+  p "Ingesting command #{event.server_id}"
   
   begin
     # Ensure user exists
@@ -94,8 +96,8 @@ def ask_venice(event, query)
     end
     
     # Ensure server exists
-    server = Server.find_or_create_by(external_id: event.server.id) do |s|
-      s.name = event.server.name
+    server = Server.find_or_create_by(external_id: event.server_id) do |s|
+      s.name = event.respond_to?(:server) ? event.server.name : "Unknown"
     end
 
     # Initialize conversation service
@@ -201,7 +203,11 @@ def ask_venice(event, query)
     # Fallback to canned response on error
     p "Bot mention error: #{e.message}, #{e.backtrace}"
     crg = CannedResponseGenerator.new
-    event.message.reply(crg.generate(event.author.mention))
+    if event.respond_to?(:message)
+      event.message.reply(crg.generate(event.author.mention))
+    else
+      event.respond(content: crg.generate(event.user.mention))
+    end
   end
 end
 
