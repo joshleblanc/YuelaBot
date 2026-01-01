@@ -270,7 +270,7 @@ BOT.application_command(:imagine) do |event|
 
   begin
     Commands::ImagineCommand.command(event, { m: 'z-image-turbo' }, prompt)
-    event.edit_response(content: "> #{prompt}\n(sent)")
+    event.edit_response(content: "> #{prompt}")
   rescue => e
     event.edit_response(content: "Error generating image: #{e.message}")
   end
