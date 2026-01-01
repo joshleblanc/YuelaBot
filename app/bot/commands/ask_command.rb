@@ -133,15 +133,20 @@ module Commands
 
         client = VeniceClient::ChatApi.new
         response = client.create_chat_completion(
-          body: {
+          chat_completion_request: {
             model: options[:m],
             messages: [
               { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
               { role: 'user', content: final_message }
-            ]
+            ],
+            venice_parameters: {
+              strip_thinking_response: true,
+              enable_web_scraping: true,
+              enable_web_search: "auto",
+            }
           }
         )
-        content = response.choices.first[:message][:content]
+        content = response.choices.first.message.content
         content = content.gsub(/<think>.*?<\/think>/m, "").strip
         
         # Track assistant response
