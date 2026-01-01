@@ -14,7 +14,11 @@ class TextPaginationContainer
   def send_paginated
     if @pages.length == 1
       # If only one page, send as reply
-      @event.message.reply(@pages.first)
+      if @event.respond_to?(:message)
+        @event.message.reply(@pages.first)
+      else
+        @event.respond(content: @pages.first)
+      end
       return
     end
 

@@ -1,5 +1,6 @@
 BOT = Discordrb::Commands::CommandBot.new(
   token: ENV['DISCORD'],
+  client_id: ENV['DISCORD_CLIENT_ID'],
   prefix: ->(message) do
     next unless message&.server
     prefix = ServerPrefix.where(server: message.server.id).first_or_create do |p|

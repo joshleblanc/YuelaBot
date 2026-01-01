@@ -1,3 +1,5 @@
+require 'json'
+
 include Routines::ArchiveRoutine
 include Routines::BirthdayRoutine
 include Middleware
@@ -30,6 +32,181 @@ end
 
 BOT.command(:ping) do |event|
   event.respond "pong"
+end
+
+def register_ask_application_command
+  client_id = ENV['DISCORD_CLIENT_ID']
+  return if client_id.blank?
+
+  token = ENV['DISCORD']
+  return if token.blank?
+
+  auth_token = token.start_with?('Bot ') ? token : "Bot #{token}"
+  description = 'Ask the bot a question'
+
+  builder = Discordrb::Interactions::OptionBuilder.new
+  builder.string('query', 'Your question', required: true)
+  builder.string('model', 'Specify a model', required: false)
+  builder.boolean('random', 'Use a random model', required: false)
+  builder.boolean('list', 'List available models', required: false)
+
+  options = builder.to_a
+  guild_id = ENV['DISCORD_SLASH_COMMAND_GUILD_ID']
+
+  existing = if guild_id.present?
+               JSON.parse(Discordrb::API::Application.get_guild_commands(auth_token, client_id, guild_id)).find { |c| c['name'] == 'ask' }
+             else
+               JSON.parse(Discordrb::API::Application.get_global_commands(auth_token, client_id)).find { |c| c['name'] == 'ask' }
+             end
+
+  if existing
+    if guild_id.present?
+      Discordrb::API::Application.edit_guild_command(auth_token, client_id, guild_id, existing['id'], 'ask', description, options)
+    else
+      Discordrb::API::Application.edit_global_command(auth_token, client_id, existing['id'], 'ask', description, options)
+    end
+  else
+    if guild_id.present?
+      Discordrb::API::Application.create_guild_command(auth_token, client_id, guild_id, 'ask', description, options)
+    else
+      Discordrb::API::Application.create_global_command(auth_token, client_id, 'ask', description, options)
+    end
+  end
+rescue => e
+  Rails.logger.error "Failed to register /ask application command: #{e.message}"
+end
+
+register_ask_application_command
+
+def ask_venice(event, query)
+  return if event.respond_to?(:from_bot?) && event.from_bot?
+  return unless event.server.present?
+  return if event.user.id.to_s == "152107946942136320"
+  
+  event.channel.start_typing
+
+  author = event.respond_to?(:author) ? event.author : event.user
+  
+  begin
+    # Ensure user exists
+    user = User.find_or_create_by(id: author.id) do 
+      _1.name = author.name
+    end
+    
+    # Ensure server exists
+    server = Server.find_or_create_by(external_id: event.server.id) do |s|
+      s.name = event.server.name
+    end
+
+    # Initialize conversation service
+    conversation = BotConversationService.new(
+      server_id: server.id,
+      user_id: user.id,
+      bot_user: BOT.profile
+    )
+
+
+    # Preserve original content with mentions for storage
+    original_content = query
+    
+    # Clean the message content (remove bot mention) for processing
+    content = query.gsub(/<@!?#{BOT.profile.id}>/, '').strip
+
+    # Check if this is a reply and include reply context
+    if event.respond_to?(:message) && event.message.reply?
+      referenced_msg = event.message.referenced_message
+      if referenced_msg
+        reply_content = referenced_msg.content
+
+        # Truncate long messages for context
+        reply_content = reply_content[...500] + "..." if reply_content.length > 500
+
+        # Build context string - distinguish between bot and user messages
+        if referenced_msg.author.id == BOT.profile.id
+          # User is replying to the bot's own message
+          reply_context = "[User is replying to your previous message: \"#{reply_content}\"]"
+        else
+          # User is replying to another user's message
+          reply_author = referenced_msg.author.display_name || referenced_msg.author.username
+          reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
+        end
+
+        # Prepend reply context to user's message
+        content = "#{reply_context} #{content}".strip
+        # Also add reply context to original content for storage
+        original_content = "#{reply_context} #{original_content}".strip
+      end
+    end
+    
+    # Resolve user mentions to usernames for better context
+    if event.respond_to?(:message) && event.message.mentions.any?
+      event.message.mentions.each do |mentioned_user|       
+        # Replace mention with username for better readability
+        username = mentioned_user.display_name || mentioned_user.username
+        mention_pattern = /<@!?#{mentioned_user.id}>/
+        content = content.gsub(mention_pattern, "@#{username}")
+        original_content = original_content.gsub(mention_pattern, "@#{username}")
+      end
+    end
+    
+    # If no content after removing mention, use a default prompt
+    content = "Hello!" if content.empty?
+
+    # Add user message to history (preserve original with mentions)
+    conversation.add_user_message(
+      content: original_content,
+      message_id: event.respond_to?(:message) ? event.message.id : event.interaction.id
+    )
+
+    # Build conversation history
+    messages = conversation.build_conversation_history
+
+    # Call Venice API
+    client = VeniceClient::ChatApi.new
+    response = client.create_chat_completion(
+      chat_completion_request: {
+        model: TEXT_MODEL,
+        messages: messages,
+        venice_parameters: {
+          strip_thinking_response: true,
+          enable_web_scraping: true,
+          enable_web_search: "auto",
+        }
+      }
+    )
+
+    # Extract and clean response
+    bot_response = response.choices.first.message.content
+    bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
+    
+    # Store the full response for conversation history
+    full_response = bot_response
+
+    # Send response with pagination if needed
+    if bot_response.length > 2000
+      pagination = TextPaginationContainer.new(bot_response, event)
+      pagination.send_paginated
+    elsif event.respond_to?(:message)
+      event.message.reply(bot_response)
+    else
+      event.respond(content: bot_response)
+    end
+
+    # Add assistant response to history (use full response)
+    conversation.add_assistant_message(
+      content: full_response
+    )
+
+  rescue => e
+    # Fallback to canned response on error
+    p "Bot mention error: #{e.message}, #{e.backtrace}"
+    crg = CannedResponseGenerator.new
+    event.message.reply(crg.generate(event.author.mention))
+  end
+end
+
+BOT.application_command(:ask) do |event|
+  ask_venice(event, event.options['query'])
 end
 
 def find_commands(mod)
@@ -108,126 +285,7 @@ BOT.message do |event|
 end
 
 BOT.mention do |event|
-  next if event.from_bot?
-  next unless event.server.present?
-  next if event.user.id.to_s == "152107946942136320"
-  
-  event.channel.start_typing
-  
-  begin
-    # Ensure user exists
-    user = User.find_or_create_by(id: event.author.id) do 
-      _1.name = e.author.name
-    end
-    
-    # Ensure server exists
-    server = Server.find_or_create_by(external_id: event.server.id) do |s|
-      s.name = event.server.name
-    end
-
-    # Initialize conversation service
-    conversation = BotConversationService.new(
-      server_id: server.id,
-      user_id: user.id,
-      bot_user: BOT.profile
-    )
-
-
-    # Preserve original content with mentions for storage
-    original_content = event.message.content
-    
-    # Clean the message content (remove bot mention) for processing
-    content = event.message.content.gsub(/<@!?#{BOT.profile.id}>/, '').strip
-
-    # Check if this is a reply and include reply context
-    if event.message.reply?
-      referenced_msg = event.message.referenced_message
-      if referenced_msg
-        reply_content = referenced_msg.content
-
-        # Truncate long messages for context
-        reply_content = reply_content[...500] + "..." if reply_content.length > 500
-
-        # Build context string - distinguish between bot and user messages
-        if referenced_msg.author.id == BOT.profile.id
-          # User is replying to the bot's own message
-          reply_context = "[User is replying to your previous message: \"#{reply_content}\"]"
-        else
-          # User is replying to another user's message
-          reply_author = referenced_msg.author.display_name || referenced_msg.author.username
-          reply_context = "[Replying to #{reply_author}: \"#{reply_content}\"]"
-        end
-
-        # Prepend reply context to user's message
-        content = "#{reply_context} #{content}".strip
-        # Also add reply context to original content for storage
-        original_content = "#{reply_context} #{original_content}".strip
-      end
-    end
-    
-    # Resolve user mentions to usernames for better context
-    if event.message.mentions.any?
-      event.message.mentions.each do |mentioned_user|       
-        # Replace mention with username for better readability
-        username = mentioned_user.display_name || mentioned_user.username
-        mention_pattern = /<@!?#{mentioned_user.id}>/
-        content = content.gsub(mention_pattern, "@#{username}")
-        original_content = original_content.gsub(mention_pattern, "@#{username}")
-      end
-    end
-    
-    # If no content after removing mention, use a default prompt
-    content = "Hello!" if content.empty?
-
-    # Add user message to history (preserve original with mentions)
-    conversation.add_user_message(
-      content: original_content,
-      message_id: event.message.id
-    )
-
-    # Build conversation history
-    messages = conversation.build_conversation_history
-
-    # Call Venice API
-    client = VeniceClient::ChatApi.new
-    response = client.create_chat_completion(
-      chat_completion_request: {
-        model: TEXT_MODEL,
-        messages: messages,
-        venice_parameters: {
-          strip_thinking_response: true,
-          enable_web_scraping: true,
-          enable_web_search: "auto",
-        }
-      }
-    )
-
-    # Extract and clean response
-    bot_response = response.choices.first.message.content
-    bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
-    
-    # Store the full response for conversation history
-    full_response = bot_response
-
-    # Send response with pagination if needed
-    if bot_response.length > 2000
-      pagination = TextPaginationContainer.new(bot_response, event)
-      pagination.send_paginated
-    else
-      event.message.reply(bot_response)
-    end
-
-    # Add assistant response to history (use full response)
-    conversation.add_assistant_message(
-      content: full_response
-    )
-
-  rescue => e
-    # Fallback to canned response on error
-    p "Bot mention error: #{e.message}, #{e.backtrace}"
-    crg = CannedResponseGenerator.new
-    event.message.reply(crg.generate(event.author.mention))
-  end
+  ask_venice(event, event.message.content)
 end
 
 scheduler = Rufus::Scheduler.new
