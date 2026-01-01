@@ -80,14 +80,19 @@ register_ask_application_command
 
 def ask_venice(event, query)
   return if event.respond_to?(:from_bot?) && event.from_bot?
-  return unless event.server_id.present?
   return if event.user.id.to_s == "152107946942136320"
   
-  event.channel.start_typing
+  channel_id = event.respond_to?(:channel_id) ? event.channel_id : event.channel.id
+  server_external_id = if event.respond_to?(:server_id)
+                         event.server_id
+                       else
+                         event.respond_to?(:server) ? event.server&.id : nil
+                       end
 
-  author = event.respond_to?(:author) ? event.author : event.user
-
-  p "Ingesting command #{event.server_id}"
+  
+  event.channel.start_typing unless event.respond_to?(:interaction) # just a hack to not do the typing thing for slash commands
+ 
+  author = event.user
   
   begin
     # Ensure user exists
@@ -95,14 +100,17 @@ def ask_venice(event, query)
       _1.name = author.name
     end
     
-    # Ensure server exists
-    server = Server.find_or_create_by(external_id: event.server_id) do |s|
-      s.name = event.respond_to?(:server) ? event.server.name : "Unknown"
+    server = nil
+    if server_external_id.present?
+      server = Server.find_or_create_by(external_id: server_external_id) do |s|
+        s.name = event.respond_to?(:server) ? event.server.name : "Unknown"
+      end
     end
 
     # Initialize conversation service
     conversation = BotConversationService.new(
-      server_id: server.id,
+      channel_id: channel_id,
+      server_id: server&.id,
       user_id: user.id,
       bot_user: BOT.profile
     )
@@ -191,12 +199,14 @@ def ask_venice(event, query)
     elsif event.respond_to?(:message)
       event.message.reply(bot_response)
     else
+      p "Sending response to slash command"
       event.respond(content: bot_response)
     end
 
     # Add assistant response to history (use full response)
     conversation.add_assistant_message(
-      content: full_response
+      content: full_response,
+      message_id: nil
     )
 
   rescue => e

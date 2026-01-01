@@ -108,27 +108,30 @@ module Commands
           end
         end
 
-        # Track message history if server is present
-        if e.server.present?
-          begin
-            user = User.find_or_create_by(id: e.author.id)
+        begin
+          user = User.find_or_create_by(id: e.author.id)
+          channel_id = e.channel.id
+
+          server = nil
+          if e.server.present?
             server = Server.find_or_create_by(external_id: e.server.id) do |s|
               s.name = e.server.name
             end
-
-            conversation = BotConversationService.new(
-              server_id: server.id,
-              user_id: user.id,
-              bot_user: BOT.profile
-            )
-            
-            conversation.add_user_message(
-              content: original_ask_content,
-              message_id: e.message.id
-            )
-          rescue => error
-            Rails.logger.error "Failed to track ask command message: #{error.message}"
           end
+
+          conversation = BotConversationService.new(
+            channel_id: channel_id,
+            server_id: server&.id,
+            user_id: user.id,
+            bot_user: BOT.profile
+          )
+          
+          conversation.add_user_message(
+            content: original_ask_content,
+            message_id: e.message.id
+          )
+        rescue => error
+          Rails.logger.error "Failed to track ask command message: #{error.message}"
         end
 
         client = VeniceClient::ChatApi.new
@@ -150,7 +153,7 @@ module Commands
         content = content.gsub(/<think>.*?<\/think>/m, "").strip
         
         # Track assistant response
-        if e.server.present? && defined?(conversation)
+        if defined?(conversation)
           begin
             conversation.add_assistant_message(content: content)
           rescue => error

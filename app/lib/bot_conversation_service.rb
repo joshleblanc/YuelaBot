@@ -1,5 +1,6 @@
 class BotConversationService
-  def initialize(server_id:, user_id:, bot_user: nil)
+  def initialize(channel_id:, user_id:, server_id: nil, bot_user: nil)
+    @channel_id = channel_id
     @server_id = server_id
     @user_id = user_id
     @bot_user = bot_user
@@ -8,6 +9,7 @@ class BotConversationService
   def add_user_message(content:, message_id: nil)
     BotMessage.add_user_message(
       server_id: @server_id,
+      channel_id: @channel_id,
       user_id: @user_id,
       content: content,
       message_id: message_id
@@ -17,6 +19,7 @@ class BotConversationService
   def add_assistant_message(content:, message_id: nil)
     BotMessage.add_assistant_message(
       server_id: @server_id,
+      channel_id: @channel_id,
       user_id: @user_id,
       content: content,
       message_id: message_id
@@ -24,11 +27,13 @@ class BotConversationService
   end
 
   def build_conversation_history
-    # Get recent conversation history for the server
-    server_history = BotMessage.includes(:user).conversation_history(@server_id, 15)
+    # Get recent conversation history for the current context (server if present, else channel)
+    server_history = BotMessage.includes(:user).conversation_history(server_id: @server_id, channel_id: @channel_id, limit: 15)
     
     # Get recent messages from the specific user
-    user_history = BotMessage.includes(:user).where(server_id: @server_id, user_id: @user_id)
+    user_history = BotMessage.includes(:user)
+                             .for_context(server_id: @server_id, channel_id: @channel_id)
+                             .where(user_id: @user_id)
                              .recent(5)
                              .order(:created_at)
 
