@@ -260,13 +260,13 @@ def ask_venice(event, query)
 end
 
 BOT.application_command(:ask) do |event|
-  event.defer
+  event.defer(ephemeral: false)
   ask_venice(event, event.options['query'])
 end
 
 BOT.application_command(:imagine) do |event|
   prompt = event.options['prompt']
-  event.defer
+  event.defer(ephemeral: false)
 
   begin
     Commands::ImagineCommand.command(event, { m: 'z-image-turbo' }, prompt)
