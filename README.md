@@ -1,7 +1,18 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c5616b0415f4470e44d/maintainability)](https://codeclimate.com/github/HorizonShadow/YuelaBot/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5c5616b0415f4470e44d/test_coverage)](https://codeclimate.com/github/HorizonShadow/YuelaBot/test_coverage)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/joshleblanc/YuelaBot)
+#### 🌏  Open in the Cloud 
+
+Click any of the buttons below to start a new development environment to demo or contribute to the codebase without having to install anything on your machine:
+
+[![Open in VS Code](https://img.shields.io/badge/Open%20in-VS%20Code-blue?logo=visualstudiocode)](https://vscode.dev/github/joshleblanc/yuelabot)
+[![Open in Glitch](https://img.shields.io/badge/Open%20in-Glitch-blue?logo=glitch)](https://glitch.com/edit/#!/import/github/joshleblanc/yuelabot)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/joshleblanc/yuelabot)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/joshleblanc/yuelabot)
+[![Edit in Codesandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/joshleblanc/yuelabot)
+[![Open in Repl.it](https://replit.com/badge/github/withastro/astro)](https://replit.com/github/joshleblanc/yuelabot)
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/joshleblanc/yuelabot)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/joshleblanc/yuelabot)
 
 # Quick Start
 
