@@ -1,6 +1,6 @@
 require 'optparse/shellwords'
 
-module Commands 
+module Commands
   class ImagineCommand
     class << self
       def name
@@ -17,22 +17,22 @@ module Commands
         }
       end
 
-      def traits 
+      def traits
         @traits ||= FetchTraitsJob.perform_now("image")
       end
 
-      def models 
+      def models
         @models ||= VeniceClient::ModelsApi.new.list_models(type: "image").data.map(&:id)
       end
 
-      def styles 
+      def styles
         @styles ||= VeniceClient::ImageApi.new.image_styles_get.data
       end
 
       def options_parser
         @options_parser ||= OptionsParserMiddleware.new do |option_parser, options|
           #options[:s] = "3D Model"
-          options[:m] = "z-image-turbo"
+          options[:m] = "grok-imagine"
 
           option_parser.banner = "Usage: imagine [options] query"
 
@@ -78,14 +78,14 @@ module Commands
 
         if options[:ls]
           output = "```\n"
-          output << styles.join("\n") 
+          output << styles.join("\n")
           output << "```"
           return output
         end
 
         if options[:lm]
           output = "```\n"
-          output << models.join("\n") 
+          output << models.join("\n")
           output << "```"
           return output
         end
@@ -107,7 +107,7 @@ module Commands
             format: "png",
             safe_mode: false,
         }
-        
+
         body[:style_preset] = options[:s] if options[:s]
         response = client.generate_image(
           generate_image_request: body

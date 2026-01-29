@@ -119,7 +119,7 @@ register_imagine_application_command
 def ask_venice(event, query)
   return if event.respond_to?(:from_bot?) && event.from_bot?
   return if event.user.id.to_s == "152107946942136320"
-  
+
   channel_id = event.respond_to?(:channel_id) ? event.channel_id : event.channel.id
   server_external_id = if event.respond_to?(:server_id)
                          event.server_id
@@ -127,17 +127,17 @@ def ask_venice(event, query)
                          event.respond_to?(:server) ? event.server&.id : nil
                        end
 
-  
+
   event.channel.start_typing unless event.respond_to?(:interaction) # just a hack to not do the typing thing for slash commands
- 
+
   author = event.user
-  
+
   begin
     # Ensure user exists
-    user = User.find_or_create_by(id: author.id) do 
+    user = User.find_or_create_by(id: author.id) do
       _1.name = author.name
     end
-    
+
     server = nil
     if server_external_id.present?
       server = Server.find_or_create_by(external_id: server_external_id) do |s|
@@ -156,7 +156,7 @@ def ask_venice(event, query)
 
     # Preserve original content with mentions for storage
     original_content = query
-    
+
     # Clean the message content (remove bot mention) for processing
     content = query.gsub(/<@!?#{BOT.profile.id}>/, '').strip
 
@@ -185,10 +185,10 @@ def ask_venice(event, query)
         original_content = "#{reply_context} #{original_content}".strip
       end
     end
-    
+
     # Resolve user mentions to usernames for better context
     if event.respond_to?(:message) && event.message.mentions.any?
-      event.message.mentions.each do |mentioned_user|       
+      event.message.mentions.each do |mentioned_user|
         # Replace mention with username for better readability
         username = mentioned_user.display_name || mentioned_user.username
         mention_pattern = /<@!?#{mentioned_user.id}>/
@@ -196,7 +196,7 @@ def ask_venice(event, query)
         original_content = original_content.gsub(mention_pattern, "@#{username}")
       end
     end
-    
+
     # If no content after removing mention, use a default prompt
     content = "Hello!" if content.empty?
 
@@ -226,7 +226,7 @@ def ask_venice(event, query)
     # Extract and clean response
     bot_response = response.choices.first.message.content
     bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
-    
+
     # Store the full response for conversation history
     full_response = bot_response
 
@@ -269,7 +269,7 @@ BOT.application_command(:imagine) do |event|
   event.defer(ephemeral: false)
 
   begin
-    Commands::ImagineCommand.command(event, { m: 'z-image-turbo' }, prompt)
+    Commands::ImagineCommand.command(event, { m: 'grok-imagine' }, prompt)
     event.edit_response(content: "> #{prompt}")
   rescue => e
     event.edit_response(content: "Error generating image: #{e.message}")

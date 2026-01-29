@@ -12,4 +12,4 @@ BOT = Discordrb::Commands::CommandBot.new(
   parse_self: true
 )
 
-TEXT_MODEL = "deepseek-v3.2"#"venice-uncensored"
+TEXT_MODEL = "zai-org-glm-4.7-flash"#"venice-uncensored"
