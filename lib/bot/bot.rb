@@ -238,7 +238,17 @@ def ask_venice(event, query)
       event.message.reply(bot_response)
     else
       p "Sending response to slash command"
-      event.edit_response(content: "> #{query}\n#{bot_response}")
+      # Calculate the base content (query prefix)
+      prefix = "> #{query}\n"
+      max_response_length = 2000 - prefix.length
+
+      if bot_response.length > max_response_length
+        # Truncate response and add note
+        truncated_response = bot_response[...max_response_length] + "... (truncated for Discord length limits)"
+        event.edit_response(content: "#{prefix}#{truncated_response}")
+      else
+        event.edit_response(content: "#{prefix}#{bot_response}")
+      end
     end
 
     # Add assistant response to history (use full response)
