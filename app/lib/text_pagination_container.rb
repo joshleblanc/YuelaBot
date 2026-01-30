@@ -28,10 +28,6 @@ class TextPaginationContainer
     add_awaits
   end
 
-  def is_application_command?
-    !@event.respond_to?(:message)
-  end
-
   private
 
   def split_text_into_pages(text, max_length)
@@ -95,27 +91,16 @@ class TextPaginationContainer
   def send_current_page
     page_content = @pages[@current_page]
 
-    if is_application_command?
-      # Handle ApplicationCommandEvent (slash commands)
-      if @message
-        @event.edit_response(content: page_content)
-      else
-        @message = @event.respond(content: page_content)
-      end
+    if @message
+      @message.edit(page_content)
     else
-      # Handle regular message events
-      if @message
-        @message.edit(page_content)
-      else
-        @message = @event.message.reply(page_content)
-      end
+      @message = @event.message.reply(page_content)
     end
   end
 
   def add_reactions
     return if @pages.length <= 1
-    return if is_application_command? # Slash commands don't support reactions on ephemeral responses
-
+    
     # Add reactions in a separate thread to avoid blocking
     Thread.new do
       Thread.current.abort_on_exception = true
@@ -133,8 +118,7 @@ class TextPaginationContainer
 
   def add_awaits
     return if @pages.length <= 1
-    return if is_application_command? # Slash commands don't support reactions for pagination
-
+    
     emojis = {
       start: "⏮",
       back: "◀",
@@ -142,12 +126,12 @@ class TextPaginationContainer
       end: "⏭",
       close: "❌"
     }
-
+    
     loop do
       response = BOT.add_await!(ReactionAddEvent, timeout: 300) # 5 minute timeout
       break unless response
       next unless response.user.id == @user.id && response.message.id == @message.id
-
+      
       Thread.new do
         begin
           case response.emoji.name
@@ -163,7 +147,7 @@ class TextPaginationContainer
             cleanup_and_exit
             break
           end
-
+          
           if emojis.values.include?(response.emoji.name)
             if response.emoji.name == emojis[:close]
               break
@@ -177,17 +161,13 @@ class TextPaginationContainer
         end
       end
     end
-
+    
     cleanup_and_exit
   end
 
   def cleanup_and_exit
     begin
-      if is_application_command?
-        @event.edit_response(content: "*Pagination closed*")
-      else
-        @message.delete_all_reactions if @message
-      end
+      @message.delete_all_reactions if @message
     rescue => e
       Rails.logger.error "Failed to remove pagination reactions: #{e.message}"
     end
