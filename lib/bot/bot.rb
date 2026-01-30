@@ -230,25 +230,24 @@ def ask_venice(event, query)
     # Store the full response for conversation history
     full_response = bot_response
 
-    # Send response with pagination if needed
-    if bot_response.length > 2000
-      pagination = TextPaginationContainer.new(bot_response, event)
-      pagination.send_paginated
-    elsif event.respond_to?(:message)
-      event.message.reply(bot_response)
-    else
-      p "Sending response to slash command"
-      # Calculate the base content (query prefix)
+    # Slash commands don't support reactions for pagination, so handle separately
+    if !event.respond_to?(:message)
+      # Slash command: send as single message (with truncation if needed)
       prefix = "> #{query}\n"
       max_response_length = 2000 - prefix.length
 
       if bot_response.length > max_response_length
-        # Truncate response and add note
         truncated_response = bot_response[...max_response_length] + "... (truncated for Discord length limits)"
         event.edit_response(content: "#{prefix}#{truncated_response}")
       else
         event.edit_response(content: "#{prefix}#{bot_response}")
       end
+    elsif bot_response.length > 2000
+      # Regular message: use pagination container
+      pagination = TextPaginationContainer.new(bot_response, event)
+      pagination.send_paginated
+    else
+      event.message.reply(bot_response)
     end
 
     # Add assistant response to history (use full response)
