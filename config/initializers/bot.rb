@@ -12,4 +12,4 @@ BOT = Discordrb::Commands::CommandBot.new(
   parse_self: true
 )
 
-TEXT_MODEL = "kimi-k2-5"
+TEXT_MODEL = "zai-org.glm-5"
