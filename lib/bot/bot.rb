@@ -46,6 +46,7 @@ def register_ask_application_command
 
   builder = Discordrb::Interactions::OptionBuilder.new
   builder.string('query', 'Your question', required: true)
+  builder.string('model', 'Optional model to use', required: false)
 
   options = builder.to_a
   guild_id = ENV['DISCORD_SLASH_COMMAND_GUILD_ID']
@@ -116,9 +117,12 @@ end
 
 register_imagine_application_command
 
-def ask_venice(event, query)
+def ask_venice(event, query, model = nil)
   return if event.respond_to?(:from_bot?) && event.from_bot?
   return if event.user.id.to_s == "152107946942136320"
+
+  # Use provided model or fall back to default
+  selected_model = model.presence || TEXT_MODEL
 
   channel_id = event.respond_to?(:channel_id) ? event.channel_id : event.channel.id
   server_external_id = if event.respond_to?(:server_id)
@@ -213,7 +217,7 @@ def ask_venice(event, query)
     client = VeniceClient::ChatApi.new
     response = client.create_chat_completion(
       chat_completion_request: {
-        model: TEXT_MODEL,
+        model: selected_model,
         messages: messages,
         venice_parameters: {
           strip_thinking_response: true,
@@ -270,7 +274,7 @@ end
 
 BOT.application_command(:ask) do |event|
   event.defer(ephemeral: false)
-  ask_venice(event, event.options['query'])
+  ask_venice(event, event.options['query'], event.options['model'])
 end
 
 BOT.application_command(:imagine) do |event|
