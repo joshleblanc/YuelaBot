@@ -1,5 +1,7 @@
 require 'json'
 
+require_relative '../lib/minimax_client'
+
 include Routines::ArchiveRoutine
 include Routines::BirthdayRoutine
 include Middleware
@@ -31,7 +33,22 @@ UserCommand.all.each do |command|
 end
 
 BOT.command(:ping) do |event|
-  event.respond "pong"
+  # Use MiniMax API for ping response if available, otherwise fallback to simple pong
+  if ENV['MINIMAX_API_KEY'].present?
+    begin
+      response = MinimaxClient.chat(
+        messages: [
+          { role: 'user', content: [{ type: 'text', text: "Reply with a very short, casual greeting. Keep it under 50 characters." }] }
+        ]
+      )
+      event.respond response.strip
+    rescue => e
+      Rails.logger.error "Minimax ping error: #{e.message}"
+      event.respond "pong"
+    end
+  else
+    event.respond "pong"
+  end
 end
 
 def register_ask_application_command
@@ -209,26 +226,40 @@ def ask_venice(event, query)
     # Build conversation history
     messages = conversation.build_conversation_history
 
-    # Call Venice API
-    client = VeniceClient::ChatApi.new
-    response = client.create_chat_completion(
-      chat_completion_request: {
-        model: TEXT_MODEL,
-        messages: messages,
-        venice_parameters: {
-          strip_thinking_response: true,
-          enable_web_scraping: true,
-          enable_web_search: "auto",
+    # Call MiniMax API if available, otherwise fall back to Venice
+    if ENV['MINIMAX_API_KEY'].present?
+      # Convert conversation history to MiniMax format
+      minimax_messages = messages.map do |msg|
+        { role: msg[:role], content: [{ type: 'text', text: msg[:content] }] }
+      end
+
+      bot_response = MinimaxClient.chat(
+        messages: minimax_messages,
+        system: "You are secretly linus torvalds. Keep responses less than 2000 characters"
+      )
+      full_response = bot_response
+    else
+      # Call Venice API
+      client = VeniceClient::ChatApi.new
+      response = client.create_chat_completion(
+        chat_completion_request: {
+          model: TEXT_MODEL,
+          messages: messages,
+          venice_parameters: {
+            strip_thinking_response: true,
+            enable_web_scraping: true,
+            enable_web_search: "auto",
+          }
         }
-      }
-    )
+      )
 
-    # Extract and clean response
-    bot_response = response.choices.first.message.content
-    bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
+      # Extract and clean response
+      bot_response = response.choices.first.message.content
+      bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
 
-    # Store the full response for conversation history
-    full_response = bot_response
+      # Store the full response for conversation history
+      full_response = bot_response
+    end
 
     # Slash commands don't support reactions for pagination, so handle separately
     if !event.respond_to?(:message)

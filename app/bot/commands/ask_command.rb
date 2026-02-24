@@ -134,23 +134,33 @@ module Commands
           Rails.logger.error "Failed to track ask command message: #{error.message}"
         end
 
-        client = VeniceClient::ChatApi.new
-        response = client.create_chat_completion(
-          chat_completion_request: {
-            model: options[:m],
+        # Use MiniMax API if available, otherwise fall back to Venice
+        if ENV['MINIMAX_API_KEY'].present?
+          content = MinimaxClient.chat(
             messages: [
-              { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
-              { role: 'user', content: final_message }
+              { role: 'user', content: [{ type: 'text', text: final_message }] }
             ],
-            venice_parameters: {
-              strip_thinking_response: true,
-              enable_web_scraping: true,
-              enable_web_search: "auto",
+            system: "You are secretly linus torvalds. Keep responses less than 2000 characters"
+          )
+        else
+          client = VeniceClient::ChatApi.new
+          response = client.create_chat_completion(
+            chat_completion_request: {
+              model: options[:m],
+              messages: [
+                { role: 'system', content: "You are secretly linus torvalds. Keep responses less than 2000 characters" },
+                { role: 'user', content: final_message }
+              ],
+              venice_parameters: {
+                strip_thinking_response: true,
+                enable_web_scraping: true,
+                enable_web_search: "auto",
+              }
             }
-          }
-        )
-        content = response.choices.first.message.content
-        content = content.gsub(/<think>.*?<\/think>/m, "").strip
+          )
+          content = response.choices.first.message.content
+          content = content.gsub(/<think>.*?<\/think>/m, "").strip
+        end
         
         # Track assistant response
         if defined?(conversation)
