@@ -119,3 +119,4 @@ gem "csv", "~> 3.3"
 gem "propshaft", "~> 1.1"
 
 gem "venice_client"
+gem "anthropic"

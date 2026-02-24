@@ -1,5 +1,7 @@
 require 'json'
 
+require_relative '../minimax_client'
+
 include Routines::ArchiveRoutine
 include Routines::BirthdayRoutine
 include Middleware
@@ -213,26 +215,44 @@ def ask_venice(event, query, model = nil)
     # Build conversation history
     messages = conversation.build_conversation_history
 
-    # Call Venice API
-    client = VeniceClient::ChatApi.new
-    response = client.create_chat_completion(
-      chat_completion_request: {
-        model: selected_model,
-        messages: messages,
-        venice_parameters: {
-          strip_thinking_response: true,
-          enable_web_scraping: true,
-          enable_web_search: "auto",
+    # Call MiniMax API if available, otherwise fall back to Venice
+    if ENV['MINIMAX_API_KEY'].present?
+      # MiniMax Anthropic-compatible API only supports 'user' and 'assistant' roles
+      # Filter out system messages (system prompt is passed separately)
+      filtered_messages = messages.reject { |msg| msg[:role] == 'system' }
+
+      # Convert conversation history to MiniMax format
+      minimax_messages = filtered_messages.map do |msg|
+        { role: msg[:role], content: [{ type: 'text', text: msg[:content] }] }
+      end
+
+      bot_response = MinimaxClient.chat(
+        messages: minimax_messages,
+        system: conversation.build_system_prompt
+      )
+      full_response = bot_response
+    else
+      # Call Venice API
+      client = VeniceClient::ChatApi.new
+      response = client.create_chat_completion(
+        chat_completion_request: {
+          model: selected_model,
+          messages: messages,
+          venice_parameters: {
+            strip_thinking_response: true,
+            enable_web_scraping: true,
+            enable_web_search: "auto",
+          }
         }
-      }
-    )
+      )
 
-    # Extract and clean response
-    bot_response = response.choices.first.message.content
-    bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
+      # Extract and clean response
+      bot_response = response.choices.first.message.content
+      bot_response = bot_response.gsub(/<think>.*?<\/think>/m, "").strip
 
-    # Store the full response for conversation history
-    full_response = bot_response
+      # Store the full response for conversation history
+      full_response = bot_response
+    end
 
     # Slash commands don't support reactions for pagination, so handle separately
     if !event.respond_to?(:message)
@@ -254,11 +274,13 @@ def ask_venice(event, query, model = nil)
       event.message.reply(bot_response)
     end
 
-    # Add assistant response to history (use full response)
-    conversation.add_assistant_message(
-      content: full_response,
-      message_id: nil
-    )
+    # Add assistant response to history (use full response), but only if not blank
+    if full_response.present?
+      conversation.add_assistant_message(
+        content: full_response,
+        message_id: nil
+      )
+    end
 
   rescue => e
     # Fallback to canned response on error
