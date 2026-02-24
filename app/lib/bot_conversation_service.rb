@@ -29,7 +29,7 @@ class BotConversationService
   def build_conversation_history
     # Get recent conversation history for the current context (server if present, else channel)
     server_history = BotMessage.includes(:user).conversation_history(server_id: @server_id, channel_id: @channel_id, limit: 15)
-    
+
     # Get recent messages from the specific user
     user_history = BotMessage.includes(:user)
                              .for_context(server_id: @server_id, channel_id: @channel_id)
@@ -39,16 +39,16 @@ class BotConversationService
 
     # Combine and deduplicate
     all_messages = (server_history + user_history).uniq.sort_by(&:created_at)
-    
+
     # Convert to Venice API format
     messages = []
-    
+
     # Add system prompt with context
     messages << {
       role: 'system',
       content: build_system_prompt
     }
-    
+
     # Add conversation history
     all_messages.each do |msg|
       # For assistant messages, don't prefix with username since it's the bot
@@ -65,11 +65,9 @@ class BotConversationService
         }
       end
     end
-    
+
     messages
   end
-
-  private
 
   def build_system_prompt
     base_prompt = <<~PROMPT
@@ -102,7 +100,7 @@ class BotConversationService
     end
 
     base_prompt += "\n\nRespond a patronizing way -- similar to a reddit user responding to a post they're knowledgable about"
-    
+
 
     base_prompt
   end

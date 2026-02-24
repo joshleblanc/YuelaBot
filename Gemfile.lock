@@ -110,6 +110,9 @@ GEM
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
+    anthropic (1.23.0)
+      cgi
+      connection_pool
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -138,6 +141,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    cgi (0.5.1)
     chartkick (4.2.1)
     chronic (0.10.2)
     coercible (1.0.0)
@@ -615,6 +619,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  anthropic
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)

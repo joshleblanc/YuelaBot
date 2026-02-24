@@ -1,6 +1,6 @@
 require 'json'
 
-require_relative '../lib/minimax_client'
+require_relative '../minimax_client'
 
 include Routines::ArchiveRoutine
 include Routines::BirthdayRoutine
@@ -33,22 +33,7 @@ UserCommand.all.each do |command|
 end
 
 BOT.command(:ping) do |event|
-  # Use MiniMax API for ping response if available, otherwise fallback to simple pong
-  if ENV['MINIMAX_API_KEY'].present?
-    begin
-      response = MinimaxClient.chat(
-        messages: [
-          { role: 'user', content: [{ type: 'text', text: "Reply with a very short, casual greeting. Keep it under 50 characters." }] }
-        ]
-      )
-      event.respond response.strip
-    rescue => e
-      Rails.logger.error "Minimax ping error: #{e.message}"
-      event.respond "pong"
-    end
-  else
-    event.respond "pong"
-  end
+  event.respond "pong"
 end
 
 def register_ask_application_command
@@ -228,14 +213,18 @@ def ask_venice(event, query)
 
     # Call MiniMax API if available, otherwise fall back to Venice
     if ENV['MINIMAX_API_KEY'].present?
+      # MiniMax Anthropic-compatible API only supports 'user' and 'assistant' roles
+      # Filter out system messages (system prompt is passed separately)
+      filtered_messages = messages.reject { |msg| msg[:role] == 'system' }
+
       # Convert conversation history to MiniMax format
-      minimax_messages = messages.map do |msg|
+      minimax_messages = filtered_messages.map do |msg|
         { role: msg[:role], content: [{ type: 'text', text: msg[:content] }] }
       end
 
       bot_response = MinimaxClient.chat(
         messages: minimax_messages,
-        system: "You are secretly linus torvalds. Keep responses less than 2000 characters"
+        system: conversation.build_system_prompt
       )
       full_response = bot_response
     else
@@ -281,11 +270,13 @@ def ask_venice(event, query)
       event.message.reply(bot_response)
     end
 
-    # Add assistant response to history (use full response)
-    conversation.add_assistant_message(
-      content: full_response,
-      message_id: nil
-    )
+    # Add assistant response to history (use full response), but only if not blank
+    if full_response.present?
+      conversation.add_assistant_message(
+        content: full_response,
+        message_id: nil
+      )
+    end
 
   rescue => e
     # Fallback to canned response on error
