@@ -90,6 +90,7 @@ def register_imagine_application_command
 
   builder = Discordrb::Interactions::OptionBuilder.new
   builder.string('prompt', 'What to generate', required: true)
+  builder.string('model', 'Optional model to use', required: false)
 
   options = builder.to_a
   guild_id = ENV['DISCORD_SLASH_COMMAND_GUILD_ID']
@@ -301,10 +302,11 @@ end
 
 BOT.application_command(:imagine) do |event|
   prompt = event.options['prompt']
+  model = event.options['model']
   event.defer(ephemeral: false)
 
   begin
-    Commands::ImagineCommand.command(event, { m: 'grok-imagine' }, prompt)
+    Commands::ImagineCommand.command(event, { m: model || 'chroma' }, prompt)
     event.edit_response(content: "> #{prompt}")
   rescue => e
     event.edit_response(content: "Error generating image: #{e.message}")
