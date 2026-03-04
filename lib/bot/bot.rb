@@ -284,7 +284,7 @@ BOT.application_command(:imagine) do |event|
   event.defer(ephemeral: false)
 
   begin
-    Commands::ImagineCommand.command(event, { m: model || 'grok-imagine' }, prompt)
+    Commands::ImagineCommand.command(event, { m: model || 'chroma' }, prompt)
     event.edit_response(content: "> #{prompt}")
   rescue => e
     event.edit_response(content: "Error generating image: #{e.message}")
