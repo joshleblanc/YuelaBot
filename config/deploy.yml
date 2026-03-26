@@ -1,5 +1,5 @@
 # Name of your application. Used to uniquely configure containers.
-service: yuela_bot
+service: yuela-bot
 
 # Name of the container image (use your-user/app-name on external registries).
 image: yuela_bot
@@ -65,7 +65,7 @@ env:
     - TRANSLATOR_KEY 
     - TWITCH_CLIENTID
     - TWITCH_SECRET 
-    - WORKNIK_KEY
+    - WORDNIK_KEY
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
