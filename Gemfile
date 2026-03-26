@@ -120,3 +120,5 @@ gem "propshaft", "~> 1.1"
 
 gem "venice_client"
 gem "anthropic"
+
+gem "thruster", "~> 0.1.20"

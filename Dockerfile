@@ -1,93 +1,88 @@
-FROM ruby:3.0
+# syntax=docker/dockerfile:1
+# check=error=true
 
-ARG DISCORD
-ARG RAILS_MASTER_KEY
+# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
+# docker build -t test_js_rails .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name test_js_rails test_js_rails
 
-RUN gem install "bundler:~>2.0" --no-document && \
-    gem update --system && \
-    gem cleanup
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
-# NodeJS (https://github.com/nodejs/docker-node/blob/main/14/bullseye/Dockerfile)
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+ARG RUBY_VERSION=3.4.5
+FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-ARG NODE_VERSION=16.13.1
-RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
-  && case "${dpkgArch##*-}" in \
-    amd64) ARCH='x64';; \
-    ppc64el) ARCH='ppc64le';; \
-    s390x) ARCH='s390x';; \
-    arm64) ARCH='arm64';; \
-    armhf) ARCH='armv7l';; \
-    i386) ARCH='x86';; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-  esac \
-  # gpg keys listed at https://github.com/nodejs/node#release-keys
-  && set -ex \
-  && for key in \
-    4ED778F539E3634C779C87C6D7062848A1AB005C \
-    94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
-    74F12602B6F1C4E913FAA37AD3A89613643B6201 \
-    71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
-    8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600 \
-    C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
-    C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C \
-    DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
-    A48C2BEE680E841632CD4E44F07496B3EB3C1762 \
-    108F52B48DB57BB0CC439B2997B01419BD92F80A \
-    B9E2F5981AA6E0CD28160D9FF13993A75599653C \
-  ; do \
-      gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys "$key" || \
-      gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key" ; \
-  done \
-  && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH.tar.xz" \
-  && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
-  && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
-  && grep " node-v$NODE_VERSION-linux-$ARCH.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
-  && tar -xJf "node-v$NODE_VERSION-linux-$ARCH.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
-  && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  # smoke tests
-  && node --version \
-  && npm --version
+# Rails app lives here
+WORKDIR /rails
 
-ARG YARN_VERSION=1.22.17
-RUN set -ex \
-  && for key in \
-    6A010C5166006599AA17F08146C2130DFD2497F5 \
-  ; do \
-    gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys "$key" || \
-    gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key" ; \
-  done \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
-  && gpg --batch --verify yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  && mkdir -p /opt \
-  && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
-  && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
-  && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
-  && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  # smoke test
-  && yarn --version
-
-# App dependencies
-
+# Install base packages
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends imagemagick libvips libvips-dev libvips-tools libpq-dev busybox-static && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
+    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# App
+# Set production environment variables and enable jemalloc for reduced memory usage and latency.
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development" \
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 
-WORKDIR /app
-COPY ./Gemfile* /app/
-RUN bundle config --local without "development test omit" && bundle install --jobs $(nproc) --retry 5
-COPY package.json yarn.lock /app/
-RUN yarn install
+# Throw-away build stage to reduce size of final image
+FROM base AS build
 
-COPY . /app
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips libyaml-dev node-gyp pkg-config python-is-python3 && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-WORKDIR /app
+# Install JavaScript dependencies
+ARG NODE_VERSION=24.1.0
+ARG YARN_VERSION=1.22.22
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
 
-ENV RAILS_ENV production
-RUN bin/rails assets:precompile
+# Install application gems
+COPY vendor/* ./vendor/
+COPY .ruby-version Gemfile Gemfile.lock ./
 
-RUN mkdir -p /var/spool/cron/crontabs/
-RUN whenever --update-crontab --crontab-command "busybox crontab"
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+    bundle exec bootsnap precompile -j 1 --gemfile
+
+# Install node modules
+COPY package.json yarn.lock ./
+RUN yarn install --immutable
+
+# Copy application code
+COPY . .
+
+# Precompile bootsnap code for faster boot times.
+# -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+RUN bundle exec bootsnap precompile -j 1 app/ lib/
+
+
+RUN rm -rf node_modules
+
+
+# Final stage for app image
+FROM base
+
+# Run and own only the runtime files as a non-root user for security
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
+USER 1000:1000
+
+# Copy built artifacts: gems, application
+COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
+COPY --chown=rails:rails --from=build /rails /rails
+
+# Entrypoint prepares the database.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+# Start server via Thruster by default, this can be overwritten at runtime
+EXPOSE 80
+CMD ["./bin/thrust", "./bin/rails", "server"]
