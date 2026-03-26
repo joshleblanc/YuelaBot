@@ -20,9 +20,9 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  ssl: true
+  host: yuela.moe
 
 # Where you keep your container images.
 registry:
@@ -136,8 +136,6 @@ accessories:
         - POSTGRES_PASSWORD
         - POSTGRES_USER
         - POSTGRES_DB
-    files:
-      - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
       - data:/var/postgresql/data
   redis:
