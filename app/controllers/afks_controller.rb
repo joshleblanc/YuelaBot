@@ -1,13 +1,11 @@
 class AfksController < ApplicationController
-  before_action :set_afk, only: %i[ show edit update destroy ]
+  before_action :set_afk, only: %i[ destroy ]
 
   # GET /afks/new
   def new
     @afk = Afk.new
     @afk.user = current_user
   end
-
-  # GET /afks/1/edit
   def edit
   end
 
@@ -18,7 +16,8 @@ class AfksController < ApplicationController
 
     respond_to do |format|
       if @afk.save
-        format.html { redirect_to edit_afk_url(@afk), notice: "Afk was successfully created." }
+        format.html { redirect_to root_path, notice: "You're now AFK!" }
+        format.turbo_stream
         format.json { render :show, status: :created, location: @afk }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -31,8 +30,11 @@ class AfksController < ApplicationController
   def destroy
     if @afk == current_user.afk
       @afk.destroy
+      current_user.reload
+      @afk = nil
       respond_to do |format|
-        format.html { redirect_to new_afk_url, notice: "Afk was successfully destroyed." }
+        format.html { redirect_to root_path, notice: "Welcome back from AFK!" }
+        format.turbo_stream
         format.json { head :no_content }
       end
     else

@@ -5,7 +5,7 @@
   # Extract any data attributes or other HTML options
   html_options = local_assigns.except(:class)
   html_options[:class] = button_classes
-  html_options[:type] ||= 'button'
+  html_options[:type] ||= 'submit'
 %>
 <%= button_tag html_options do %>
   <%= yield %>

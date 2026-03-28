@@ -15,7 +15,6 @@ class UserReactionsController < ApplicationController
   # GET /user_reactions/new
   def new
     @user_reaction = UserReaction.new
-    session[:model] = @user_reaction unless @stimulus_reflex
   end
 
   # GET /user_reactions/1/edit
@@ -59,11 +58,28 @@ class UserReactionsController < ApplicationController
     end
   end
 
+  def test
+    regex = params[:regex]
+    input_text = params[:input]
+    output_template = params[:output]
+    
+    match = Regexp.new(regex).match(input_text)
+    result = if match
+      input_text.sub(/#{regex}/, output_template)
+    else
+      ""
+    end
+    
+    render turbo_stream: turbo_stream.replace(
+      "test-result",
+      render_to_string(partial: "user_reactions/test_result", locals: { output: result, match: match })
+    )
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_reaction
       @user_reaction = UserReaction.find(params[:id])
-      session[:model] = @user_reaction unless @stimulus_reflex
     end
 
     # Only allow a list of trusted parameters through.

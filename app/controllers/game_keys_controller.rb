@@ -1,4 +1,5 @@
 class GameKeysController < ApplicationController
+  include ActionView::RecordIdentifier
   before_action :protect
   before_action :set_game_key, only: %i[ show edit update destroy ]
   before_action :validate_owner, only: %i[edit update destroy]
@@ -15,7 +16,6 @@ class GameKeysController < ApplicationController
   # GET /game_keys/new
   def new
     @game_key = GameKey.new
-    session[:model] = @game_key unless @stimulus_reflex
   end
 
   # GET /game_keys/1/edit
@@ -62,7 +62,19 @@ class GameKeysController < ApplicationController
     @game_key.claim!
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { 
+        if params[:view] == 'row'
+          render turbo_stream: turbo_stream.replace(
+            dom_id(@game_key),
+            render_to_string(partial: "game_keys/game_key_row", locals: { game_key: @game_key, key_visible: true })
+          )
+        else
+          render turbo_stream: turbo_stream.replace(
+            dom_id(@game_key),
+            render_to_string(partial: "game_keys/game_key", locals: { game_key: @game_key, key_visible: true })
+          )
+        end
+      }
       format.html { redirect_to game_keys_path, notice: t("game_keys.claimed", default: "Game key claimed!") }
     end
   end
@@ -81,7 +93,6 @@ class GameKeysController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_game_key
     @game_key = GameKey.find(params[:id])
-    session[:model] = @game_key unless @stimulus_reflex
   end
 
   # Only allow a list of trusted parameters through.

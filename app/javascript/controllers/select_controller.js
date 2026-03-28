@@ -37,15 +37,42 @@ export default class extends ApplicationController {
     if (this.hasReflexValue) document.addEventListener('data', this.results)
   }
 
-  search = (search, callback) =>
-    this.stimulate(this.reflexValue, search).then(() => callback(false))
+  search = (search, callback) => {
+    const url = this.buildUrl(search)
+    fetch(url, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => callback(data))
+      .catch(() => callback(false))
+  }
+
+  buildUrl (search) {
+    const reflex = this.reflexValue
+    if (!reflex) return '/'
+
+    // Convert "ControllerName#action" to "/controller_name/action"
+    const [controller, action] = reflex.split('#')
+    const controllerPath = controller.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '').replace('_controller', '')
+    return `/${controllerPath}/${action}?q=${encodeURIComponent(search)}`
+  }
 
   results = event => this.select.setData(event.detail.options)
 
   onChange = () => {
     if (!this.select.data.searchValue) return
-    if (this.select.selected() === undefined)
-      this.stimulate(this.reflexValue, '')
+    if (this.select.selected() === undefined) {
+      const url = this.buildUrl('')
+      fetch(url, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json'
+        }
+      })
+    }
   }
 
   get single () {

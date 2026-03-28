@@ -88,9 +88,6 @@ gem "omniauth", "~> 2.0"
 gem "omniauth-discord", "~> 1.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
-gem "stimulus_reflex", "~> 3.4"
-
-
 
 gem "turbo-rails", "~> 0.5.9"
 gem "pagy", "~> 3.0.0"

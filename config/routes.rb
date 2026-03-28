@@ -7,7 +7,11 @@ Rails.application.routes.draw do
     get 'users/:id/games' => "users#games", as: :user_games
     get 'users' => "users#index"
   end
-  resources :user_reactions
+  resources :user_reactions do
+    collection do
+      post :test
+    end
+  end
   resources :game_keys do
     member do
       patch :claim
