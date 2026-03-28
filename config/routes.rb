@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get 'profile/edit'
   get 'profile/update'
 
+  get "up" => "rails/health#show", as: :rails_health_check
+
   namespace :webhooks do
     get :twitch, to: "twitch#verify"
     post :twitch, to: "twitch#receive"
