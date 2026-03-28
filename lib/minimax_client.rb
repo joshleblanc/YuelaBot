@@ -12,7 +12,7 @@ class MinimaxClient
     end
 
     def model
-      ENV.fetch('MINIMAX_MODEL', 'MiniMax-M2.5')
+      ENV.fetch('MINIMAX_MODEL', 'MiniMax-M2.7-highspeed')
     end
 
     # Define available tools
