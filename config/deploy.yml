@@ -11,7 +11,7 @@ servers:
   bot:
     hosts: 
       - 147.189.173.240
-    cmd: ./bin/rails lib/bot/runner.rb
+    cmd: ./bin/rails runner lib/bot/runner.rb
     
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # If used with Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
