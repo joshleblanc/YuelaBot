@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  ADMINS: ${{ secrets.ADMINS }}
+  AZURE_FACE_API_KEY: ${{ secrets.AZURE_FACE_API_KEY }}
+  CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+  DEPLOY_PASS: ${{ secrets.DEPLOY_PASS }}
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+  DISCORD: ${{ secrets.DISCORD }}
+  DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+  DISCORD_SECRET_KEY: ${{ secrets.DISCORD_SECRET_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GOOGLE: ${{ secrets.GOOGLE }}
+  MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+  MINIMAX_MODEL: ${{ secrets.MINIMAX_MODEL }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  OPEN_WEATHER_KEY: ${{ secrets.OPEN_WEATHER_KEY }}
+  REDDIT_CLIENTID: ${{ secrets.REDDIT_CLIENTID }}
+  REDDIT_PASS: ${{ secrets.REDDIT_PASS }}
+  REDDIT_SECRET: ${{ secrets.REDDIT_SECRET }}
+  REDDIT_USER: ${{ secrets.REDDIT_USER }}
+  ROOM_ID: ${{ secrets.ROOM_ID }}
+  SEARCH_ID: ${{ secrets.SEARCH_ID }}
+  SO_PASS: ${{ secrets.SO_PASS }}
+  SO_USER: ${{ secrets.SO_USER }}
+  STEAM_KEY: ${{ secrets.STEAM_KEY }}
+  TRANSLATOR_KEY: ${{ secrets.TRANSLATOR_KEY }}
+  TWITCH_CLIENTID: ${{ secrets.TWITCH_CLIENTID }}
+  TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+  WORDNIK_KEY: ${{ secrets.WORDNIK_KEY }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+jobs:
+  # Run tests before deployment (unless skipped)
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    outputs:
+      deployment-id: ${{ steps.deployment.outputs.deployment-id }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4.4"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: |
+            ${{ secrets.KAMAL_SSH_PRIVATE_KEY }}
+
+      - name: Deploy with Kamal
+        run: kamal deploy
+
