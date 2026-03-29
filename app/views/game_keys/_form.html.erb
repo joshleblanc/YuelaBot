@@ -2,10 +2,10 @@
   <div class="p-3">
     <%= form_with(model: game_key, builder: CustomFormBuilder) do |form| %>
       <% if game_key.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(game_key.errors.count, "error") %> prohibited this game_key from being saved:</h2>
+        <div id="error_explanation" class="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
+          <h2 class="text-red-800 dark:text-red-200 font-medium"><%= pluralize(game_key.errors.count, "error") %> prohibited this game_key from being saved:</h2>
 
-          <ul>
+          <ul class="mt-2 text-red-600 dark:text-red-300 text-sm">
             <% game_key.errors.each do |error| %>
               <li><%= error.full_message %></li>
             <% end %>

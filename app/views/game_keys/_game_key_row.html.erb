@@ -1,14 +1,18 @@
-<tr id="<%= dom_id(game_key) %>">
-  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"><%= game_key.name %></td>
-  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= game_key.servers.first.name %></td>
-  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+<tr id="<%= dom_id(game_key) %>" class="hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors">
+  <td class="py-3 pl-3 pr-1 text-sm font-medium text-gray-700 dark:text-gray-200 sm:pl-6">
+    <div class="truncate max-w-[120px] sm:max-w-none"><%= game_key.name %></div>
+  </td>
+  <td class="px-2 py-3 text-sm text-gray-600 dark:text-gray-400">
+    <div class="truncate max-w-[80px] sm:max-w-none"><%= game_key.servers.first.name %></div>
+  </td>
+  <td class="px-2 py-3 text-right">
     <% if key_visible %>
-      <span class="whitespace-nowrap px-3 py-4 text-sm"><%= game_key.key %></span>
+      <span class="font-mono text-xs sm:text-sm text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded"><%= game_key.key %></span>
     <% else %>
       <%= button_to t(".claim"), claim_game_key_path(game_key), method: :patch,
             params: { view: "row" },
             form: { data: { turbo_confirm: t(".confirm-claim") } },
-            class: "text-indigo-600 hover:text-indigo-900" %>
+            class: "text-primary-500 hover:text-primary-300 dark:text-primary-400 dark:hover:text-primary-200 text-sm font-medium transition-colors" %>
     <% end %>
   </td>
 </tr>

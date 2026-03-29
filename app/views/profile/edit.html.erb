@@ -1,3 +1,6 @@
-<div class="container">
-  <%= button_to "Log out", sessions_url, method: :delete, class: "btn btn-danger"  %>
+<div class="container mx-auto py-8">
+  <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Profile Settings</h2>
+    <%= button_to "Log out", sessions_url, method: :delete, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"  %>
+  </div>
 </div>

@@ -1,6 +1,12 @@
-<h1>Editing Game Key</h1>
-
-<%= render 'form', game_key: @game_key %>
-
-<%= link_to 'Show', @game_key %> |
-<%= link_to 'Back', game_keys_path %>
+<div class="container mx-auto py-8">
+  <div class="max-w-lg mx-auto">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Editing Game Key</h1>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <%= render 'form', game_key: @game_key %>
+    </div>
+    <div class="mt-4 space-x-4">
+      <%= link_to 'Show', @game_key, class: "text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200" %>
+      <%= link_to 'Back', game_keys_path, class: "text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200" %>
+    </div>
+  </div>
+</div>

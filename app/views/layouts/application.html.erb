@@ -10,13 +10,19 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
+  <body class="bg-gray-100 dark:bg-gray-950">
+    <script>
+      if (localStorage.getItem('darkMode') === 'true' || 
+          (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
     <%= render 'shared/navbar' %>
     <%= yield(:subnav) %>
     <% if content_for?(:title) %>
-      <header class="bg-white shadow">
+      <header class="bg-gray-50/80 dark:bg-gray-900/50 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold text-gray-900">
+          <h1 class="text-2xl font-bold text-gray-800 dark:text-white tracking-tight">
             <%= yield(:title) %>
           </h1>
         </div>

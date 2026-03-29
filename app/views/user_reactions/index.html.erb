@@ -1,23 +1,41 @@
-<p id="notice"><%= notice %></p>
-
 <% content_for(:title) { t(".title")} %>
 
-<%= render 'shared/table', headers: [t(".regex"), t(".output"), ''] do %>
-  <% @user_reactions.each do |user_reaction| %>
-    <tr>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user_reaction.regex %></td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-ellipsis overflow-hidden"><%= user_reaction.output %></td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-64">
-        <%= link_to 'Show', user_reaction %>
-        <%= link_to 'Edit', edit_user_reaction_path(user_reaction) if current_user == user_reaction.user %>
-        <%= link_to 'Destroy', user_reaction, method: :delete, data: {confirm: 'Are you sure?'} if current_user == user_reaction.user %>
-      </td>
-    </tr>
+<% if @user_reactions.any? %>
+  <%= render 'shared/table', headers: [t(".regex"), t(".output"), ''] do %>
+    <% @user_reactions.each do |user_reaction| %>
+      <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors">
+        <td class="px-4 sm:px-6 py-3 text-sm">
+          <div class="truncate max-w-[100px] sm:max-w-none font-mono text-gray-700 dark:text-gray-200"><%= user_reaction.regex %></div>
+        </td>
+        <td class="px-4 sm:px-6 py-3 text-sm text-gray-600 dark:text-gray-400">
+          <div class="truncate max-w-[100px] sm:max-w-none"><%= user_reaction.output %></div>
+        </td>
+        <td class="px-4 sm:px-6 py-3 text-sm w-32 sm:w-auto">
+          <div class="flex flex-wrap gap-2">
+            <%= link_to 'Show', user_reaction, class: "text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-xs sm:text-sm" %>
+            <%= link_to 'Edit', edit_user_reaction_path(user_reaction), class: "text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-xs sm:text-sm" if current_user == user_reaction.user %>
+            <%= link_to 'Destroy', user_reaction, method: :delete, data: { turbo_confirm: t("confirm-destroy") }, class: "text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-xs sm:text-sm" if current_user == user_reaction.user %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
   <% end %>
+
+  <div class="px-4">
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% else %>
+  <div class="bg-gray-100/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 dark:border-gray-700/50 p-10 text-center mx-4">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/30 mb-4">
+      <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+    </div>
+    <p class="text-gray-700 dark:text-gray-300 mb-2 font-medium">No user reactions yet.</p>
+    <p class="text-gray-500 dark:text-gray-500 text-sm">Create a reaction to get started!</p>
+  </div>
 <% end %>
 
-<%== pagy_nav(@pagy) %>
-
-<br>
-
-<%= link_to 'New User Reaction', new_user_reaction_path %>
+<div class="mt-6 px-4">
+  <%= link_to 'New User Reaction', new_user_reaction_path, class: "inline-flex items-center justify-center rounded-xl border border-transparent bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all" %>
+</div>

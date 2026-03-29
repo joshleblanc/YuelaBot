@@ -1,6 +1,6 @@
 <div class="container mx-auto">
-  <div class="grid grid-cols-4 gap-4">
-    <div class="col-span-3">
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+    <div class="lg:col-span-3">
       <%= render 'shared/data_list',
           header: "Quick Stats",
           subtitle: "little itty bitty numbers",
@@ -12,7 +12,7 @@
               ["Afk", Afk.count]
           ] %>
     </div>
-    <div class="col-span-1">
+    <div class="lg:col-span-1">
       <%= render 'shared/paper' do %>
         <% if current_user %>
           <%= render "afks/form", afk: current_user.afk %>

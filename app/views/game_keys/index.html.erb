@@ -5,25 +5,31 @@
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto"></div>
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <%= link_to 'New Game Key', new_game_key_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+      <%= link_to 'New Game Key', new_game_key_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:w-auto" %>
     </div>
   </div>
   <div class="mt-8 flex flex-col">
     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
+        <div class="overflow-x-auto shadow-lg shadow-gray-900/10 dark:shadow-black/50 ring-1 ring-gray-300 dark:ring-gray-700 md:rounded-xl">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <tr>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Game Name</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Server</th>
-                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Key</th>
-                </th>
+                <th scope="col" class="py-3 pl-3 pr-1 text-left text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300 sm:pl-6">Game</th>
+                <th scope="col" class="px-2 py-3 text-left text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300">Server</th>
+                <th scope="col" class="px-2 py-3 text-right text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300">Action</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
-              <%= render partial: "game_keys/game_key_row", as: :game_key, collection: @game_keys, locals: { key_visible: false } %>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+              <% if @game_keys.any? %>
+                <%= render partial: "game_keys/game_key_row", as: :game_key, collection: @game_keys, locals: { key_visible: false } %>
+              <% else %>
+                <tr>
+                  <td colspan="3" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                    No game keys yet. Create one to get started!
+                  </td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

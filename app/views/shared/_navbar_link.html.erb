@@ -2,7 +2,7 @@
   # Determine if this link is active based on the current path
   active = request.path.split("/").second == path.split("/").second
   
-  base_classes = "px-3 py-2 rounded-md text-sm font-medium"
+  base_classes = "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150"
   inactive_classes = "text-primary-300 hover:bg-primary-700 hover:text-white"
   active_classes = "bg-primary-900 text-white"
   

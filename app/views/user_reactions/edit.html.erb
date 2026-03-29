@@ -1,6 +1,13 @@
 <% content_for(:title) { t(".title")} %>
 
-<%= render 'form', user_reaction: @user_reaction %>
-
-<%= link_to 'Show', @user_reaction %> |
-<%= link_to 'Back', user_reactions_path %>
+<div class="container mx-auto py-8">
+  <div class="max-w-lg mx-auto">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <%= render 'form', user_reaction: @user_reaction %>
+    </div>
+    <div class="mt-4 space-x-4">
+      <%= link_to 'Show', @user_reaction, class: "text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200" %>
+      <%= link_to 'Back', user_reactions_path, class: "text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200" %>
+    </div>
+  </div>
+</div>

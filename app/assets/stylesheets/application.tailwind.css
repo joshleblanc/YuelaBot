@@ -55,35 +55,35 @@
 .pagy-nav,
 .pagy-nav-js,
 .pagy-combo-nav-js {
-  @apply inline-flex flex-wrap items-center justify-start;
+  @apply inline-flex flex-wrap items-center justify-start gap-1 mt-4;
 }
 
 .pagy-nav .page,
 .pagy-nav-js .page,
 .pagy-combo-nav-js .page,
 .pagy-combo-nav-js .pagy-combo-input {
-  @apply bg-white no-underline border-t border-b border-gray-400 p-2 px-4 cursor-pointer hover:bg-gray-200;
+  @apply bg-gray-100 dark:bg-gray-800 no-underline border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-600 transition-all;
 }
 .pagy-nav .page:hover,
 .pagy-nav-js .page:hover {
-  @apply text-gray-900;
+  @apply text-gray-900 dark:text-white;
 }
 .pagy-nav .disabled,
 .pagy-nav-js .disabled,
 .pagy-combo-nav-js .disabled {
-  @apply cursor-not-allowed;
+  @apply opacity-40 cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800;
 }
 .pagy-nav .active,
 .pagy-nav-js .active {
-  @apply no-underline border py-2 px-4 cursor-pointer hover:bg-primary-600;
+  @apply no-underline border-primary-500 dark:border-primary-400 bg-primary-500 dark:bg-primary-600 text-white py-1.5 px-3 cursor-pointer hover:bg-primary-600 dark:hover:bg-primary-500;
 }
 .pagy-nav .prev,
 .pagy-nav-js .prev,
 .pagy-combo-nav-js .prev {
-  @apply bg-white rounded-tl-sm rounded-bl-sm border-l border-t border-b border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-100;
+  @apply bg-gray-100 dark:bg-gray-800 rounded-l-lg border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400;
 }
 .pagy-nav .next,
 .pagy-nav-js .next,
 .pagy-combo-nav-js .next {
-  @apply bg-white rounded-tr-sm rounded-br-sm border border-gray-400 py-2 px-4 no-underline cursor-pointer hover:bg-gray-200;
+  @apply bg-gray-100 dark:bg-gray-800 rounded-r-lg border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400;
 }

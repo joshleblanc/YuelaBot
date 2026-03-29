@@ -6,16 +6,16 @@
 
 <%= render 'shared/paper' do %>
   <div class="px-4 py-5 sm:px-6">
-    <h3 class="text-lg leading-6 font-medium text-gray-900">
+    <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
       <%= header %>
     </h3>
     <% if subtitle %>
-      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+      <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
         <%= subtitle %>
       </p>
     <% end %>
   </div>
-  <div class="border-t border-gray-200">
+  <div class="border-t border-gray-200 dark:border-gray-700">
     <dl>
       <% data.each_with_index do |item, index| %>
         <%= render 'shared/data_list_item', item: item, index: index %>

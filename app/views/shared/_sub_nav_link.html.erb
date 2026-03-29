@@ -4,9 +4,9 @@
   
   active = request.path.start_with?(path.chomp("/"))
   
-  default_classes = "px-3 py-1.5 rounded-lg capitalize"
-  active_classes = "font-medium text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800"
-  inactive_classes = "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+  default_classes = "px-4 py-2 rounded-lg capitalize text-sm font-medium transition-all duration-150"
+  active_classes = "bg-primary-600/20 text-primary-600 dark:text-primary-400 dark:bg-primary-500/20"
+  inactive_classes = "text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-200"
   
   link_classes = [default_classes]
   link_classes << (active ? active_classes : inactive_classes)

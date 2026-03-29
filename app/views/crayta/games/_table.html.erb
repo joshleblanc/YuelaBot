@@ -1,10 +1,10 @@
 <%= render 'shared/table', headers: [t(".name"), t(".creator"), t(".visits"), ''] do %>
   <% games.each do |game| %>
-    <tr>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= game.name %></td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= link_to game.crayta_user.name, crayta_user_games_url(game.crayta_user) %></td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= game.visits.to_s %></td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= link_to('Show', game) %></td>
+    <tr class="hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors">
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200"><%= game.name %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm"><%= link_to game.crayta_user.name, crayta_user_games_url(game.crayta_user), class: "text-primary-600 dark:text-primary-400 hover:underline" %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400"><%= game.visits.to_s %></td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm"><%= link_to 'Show', game, class: "text-primary-600 dark:text-primary-400 hover:underline" %></td>
     </tr>
   <% end %>
 <% end %>

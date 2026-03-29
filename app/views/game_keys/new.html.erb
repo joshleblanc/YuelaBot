@@ -1,5 +1,9 @@
-<h1>New Game Key</h1>
-
-<%= render 'form', game_key: @game_key %>
-
-<%= link_to 'Back', game_keys_path %>
+<div class="container mx-auto py-8">
+  <div class="max-w-lg mx-auto">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">New Game Key</h1>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <%= render 'form', game_key: @game_key %>
+    </div>
+    <%= link_to 'Back', game_keys_path, class: "mt-4 inline-block text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200" %>
+  </div>
+</div>
