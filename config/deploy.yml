@@ -121,13 +121,15 @@ builder:
 # ssh:
 #   user: app
 
+retain_containers: 1
+
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
   db:
     image: postgres:17
     host: 147.189.173.240
     # Change to 3306 to expose port to the world instead of just local network.
-    port: "127.0.0.1:5432:5432"
+    port: "5432"
     env:
       clear:
         DB_HOST: 127.0.0.1
