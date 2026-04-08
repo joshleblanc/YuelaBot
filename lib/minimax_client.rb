@@ -223,6 +223,13 @@ class MinimaxClient
         return "Error: Invalid URL. Must be a valid HTTP or HTTPS URL."
       end
 
+      # Browser headers to avoid 403 blocks (matching pi browse tool)
+      browser_headers = {
+        'User-Agent' => 'Mozilla/5.0 (compatible; pi-browser/1.0)',
+        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language' => 'en-US,en;q=0.5'
+      }
+
       begin
         # Fetch the page using Faraday (already available in the project)
         conn = Faraday.new(url: url) do |f|
@@ -231,7 +238,9 @@ class MinimaxClient
           f.adapter Faraday.default_adapter
         end
 
-        response = conn.get
+        response = conn.get do |req|
+          req.headers.merge!(browser_headers)
+        end
 
         if response.success?
           content_type = response.headers['content-type']
