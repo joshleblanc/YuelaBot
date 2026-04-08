@@ -37,6 +37,20 @@ class MinimaxClient
             },
             required: ["query"]
           }
+        },
+        {
+          name: "fetch_url",
+          description: "Fetch and parse content from a URL. Extracts page title, main content, and discovered links. Use this to read articles, documentation, or get detailed information from a specific webpage.",
+          input_schema: {
+            type: "object",
+            properties: {
+              url: {
+                type: "string",
+                description: "The URL to fetch (must be a valid HTTP/HTTPS URL)"
+              }
+            },
+            required: ["url"]
+          }
         }
       ]
     end
@@ -122,6 +136,8 @@ class MinimaxClient
       case name
       when "web_search"
         search(input[:query], input[:num_results])
+      when "fetch_url"
+        fetch_url(input[:url])
       else
         "Unknown tool: #{name}"
       end
@@ -196,6 +212,147 @@ class MinimaxClient
         model: model,
         system: system
       )
+    end
+
+    def fetch_url(url)
+      # Validate URL
+      return "Error: No URL provided" if url.nil? || url.to_s.strip.empty?
+
+      uri = URI.parse(url)
+      unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+        return "Error: Invalid URL. Must be a valid HTTP or HTTPS URL."
+      end
+
+      begin
+        # Fetch the page using Faraday (already available in the project)
+        conn = Faraday.new(url: url) do |f|
+          f.options.timeout = 15
+          f.options.open_timeout = 10
+          f.adapter Faraday.default_adapter
+        end
+
+        response = conn.get
+
+        if response.success?
+          content_type = response.headers['content-type']
+
+          # Only parse HTML content
+          if content_type&.include?('text/html')
+            parse_html_content(response.body, url)
+          else
+            "Fetched content is not HTML (#{content_type}). Content preview:\n\n#{response.body[0..1000]}"
+          end
+        else
+          "Error: HTTP #{response.status} - #{response.reason_phrase}"
+        end
+      rescue Faraday::Error, SocketError, OpenSSL::SSL::SSLError => e
+        "Error fetching URL: #{e.message}"
+      rescue Timeout::Error
+        "Error: Request timed out"
+      end
+    rescue URI::InvalidURIError
+      "Error: Invalid URL format"
+    end
+
+    def parse_html_content(html, source_url)
+      doc = Nokogiri::HTML(html)
+
+      # Extract title
+      title = doc.at_css('title')&.text&.strip || "No title found"
+
+      # Extract meta description
+      description = doc.at_css('meta[name="description"]')&.[]('content')&.strip
+
+      # Extract main content - try common article/content selectors
+      main_content = extract_main_content(doc)
+
+      # Extract links (up to 10 relevant ones)
+      links = extract_links(doc, source_url)
+
+      # Build output
+      output = "## #{title}\n\n"
+
+      if description
+        output += "**Description:** #{description}\n\n"
+      end
+
+      output += "**Source:** #{source_url}\n\n"
+
+      if main_content && main_content.length > 100
+        output += "### Content\n\n#{main_content[0..3000]}#{main_content.length > 3000 ? '...' : ''}\n\n"
+      elsif main_content
+        output += "### Content\n\n#{main_content}\n\n"
+      end
+
+      if links.any?
+        output += "### Links Found\n\n"
+        links.first(10).each do |link|
+          output += "- #{link[:text]}: #{link[:url]}\n"
+        end
+        output += "\n"
+      end
+
+      output
+    end
+
+    def extract_main_content(doc)
+      # Try to find main content using common selectors
+      content_selectors = [
+        'article',
+        'main',
+        '[role="main"]',
+        '.post-content',
+        '.article-content',
+        '.entry-content',
+        '.content',
+        '#content',
+        '.post',
+        '.article'
+      ]
+
+      content_element = nil
+      content_selectors.each do |selector|
+        element = doc.at_css(selector)
+        if element
+          content_element = element
+          break
+        end
+      end
+
+      content_element ||= doc.at_css('body')
+
+      return nil unless content_element
+
+      # Remove script, style, nav, header, footer elements
+      content_element.search('script, style, nav, header, footer, aside, .sidebar, .comments, .social-share, .advertisement, .ad, .related-posts').remove
+
+      # Get text content and clean it up
+      text = content_element.text
+      text.gsub(/\s+/, ' ').strip
+    end
+
+    def extract_links(doc, source_url)
+      base_uri = URI.parse(source_url)
+
+      doc.css('a[href]').map do |link|
+        href = link['href']
+        next if href.nil? || href.empty?
+
+        begin
+          # Handle relative URLs
+          resolved_url = base_uri.merge(href).to_s
+
+          # Only include http/https links
+          if resolved_url.start_with?('http')
+            {
+              text: link.text.strip[0..100],
+              url: resolved_url
+            }
+          end
+        rescue URI::Error
+          nil
+        end
+      end.compact.uniq { |l| l[:url] }
     end
   end
 end
